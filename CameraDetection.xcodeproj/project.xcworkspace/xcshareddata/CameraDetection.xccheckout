@@ -12,22 +12,34 @@
 	<dict>
 		<key>C78FED211CE1A8719DE2AED9B9C54F648B756E63</key>
 		<string>https://bitbucket.org/hbd730/project.git</string>
+		<key>FB4179B810A8C3F5FA3048C1BACD610DF8A20AD4</key>
+		<string>https://bitbucket.org/flightdynamics/detection.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CameraDetection/CameraDetection.xcodeproj</string>
+	<string>CameraDetection.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>C78FED211CE1A8719DE2AED9B9C54F648B756E63</key>
-		<string>../../..</string>
+		<string>../../../projects</string>
+		<key>FB4179B810A8C3F5FA3048C1BACD610DF8A20AD4</key>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://bitbucket.org/hbd730/project.git</string>
+	<string>https://bitbucket.org/flightdynamics/detection.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>C78FED211CE1A8719DE2AED9B9C54F648B756E63</string>
+	<string>FB4179B810A8C3F5FA3048C1BACD610DF8A20AD4</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FB4179B810A8C3F5FA3048C1BACD610DF8A20AD4</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CameraDetection</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
