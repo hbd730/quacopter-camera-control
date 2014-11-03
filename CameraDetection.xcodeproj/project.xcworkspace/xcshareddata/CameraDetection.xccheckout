@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B91B9940-2E48-47AF-8785-4EEC48E6493D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CameraDetection</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C78FED211CE1A8719DE2AED9B9C54F648B756E63</key>
+		<string>https://bitbucket.org/hbd730/project.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CameraDetection/CameraDetection.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C78FED211CE1A8719DE2AED9B9C54F648B756E63</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/hbd730/project.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C78FED211CE1A8719DE2AED9B9C54F648B756E63</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C78FED211CE1A8719DE2AED9B9C54F648B756E63</string>
+			<key>IDESourceControlWCCName</key>
+			<string>projects</string>
+		</dict>
+	</array>
+</dict>
+</plist>
