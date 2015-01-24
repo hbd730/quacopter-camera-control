@@ -14,9 +14,10 @@
 class DynamicTracking : public ITracking
 {
 public:
-	DynamicTracking();
+	DynamicTracking(cv::Point3i& position);
 	virtual ~DynamicTracking();
 	virtual std::string getName() const;
+	virtual cv::Point3i getCurrentPosition() const;
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);

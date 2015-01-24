@@ -15,7 +15,7 @@ const static int SENSITIVITY_VALUE = 100;
 // size of blur used to smooth the intensity image output from absdiff() function
 const static int BLUR_SIZE = 10;
 
-StaticTracking::StaticTracking():m_position(0,0),m_boundingRectangle(0,0,0,0)
+StaticTracking::StaticTracking(cv::Point3i& position):ITracking(position),m_boundingRectangle(0,0,0,0)
 {
 	
 }
@@ -27,6 +27,11 @@ StaticTracking::~StaticTracking()
 std::string StaticTracking::getName() const
 {
 	return "Static tracking";
+}
+
+cv::Point3i StaticTracking::getCurrentPosition() const
+{
+	return m_position;
 }
 
 void StaticTracking::init(cv::Mat &image)
@@ -74,6 +79,7 @@ void StaticTracking::searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFe
 	//these two vectors needed for output of findContours
 	vector< vector<cv::Point> > contours;
 	vector<cv::Vec4i> hierarchy;
+	
 	//find contours of filtered image using openCV findContours function
 	findContours(m_thresholdImage, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // retrieves external contours
 	
@@ -87,16 +93,18 @@ void StaticTracking::searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFe
 		
 		// make a bounding rectangle around the largest contour then find its centroid
 		m_boundingRectangle = cv::boundingRect(largestContourVec.at(0));
-		m_position.x = m_boundingRectangle.x + m_boundingRectangle.width/2;
-		m_position.y = m_boundingRectangle.y + m_boundingRectangle.height/2;
+		Point center;
+		center.x = m_boundingRectangle.x + m_boundingRectangle.width/2;
+		center.y = m_boundingRectangle.y + m_boundingRectangle.height/2;
+		// draw circle and cross around the object
+		circle(cameraFeed, center, 20, Scalar(0,255,0),2);
+		line(cameraFeed, center, cv::Point(center.x,center.y-25), Scalar(0,255,0),2);
+		line(cameraFeed, center, cv::Point(center.x,center.y+25), Scalar(0,255,0),2);
+		line(cameraFeed, center, cv::Point(center.x-25,center.y), Scalar(0,255,0),2);
+		line(cameraFeed, center, cv::Point(center.x+25,center.y), Scalar(0,255,0),2);
+		
+		// apply the position text to the screen
+		putText(cameraFeed,"(" + std::to_string(center.x)+ "," + std::to_string(center.y) + ")", center, 4, 1, Scalar(255,0,0),2);
+
 	}
-	// draw circle and cross around the object
-	circle(cameraFeed, m_position, 20, Scalar(0,255,0),2);
-	line(cameraFeed, m_position, cv::Point(m_position.x,m_position.y-25), Scalar(0,255,0),2);
-	line(cameraFeed, m_position, cv::Point(m_position.x,m_position.y+25), Scalar(0,255,0),2);
-	line(cameraFeed, m_position, cv::Point(m_position.x-25,m_position.y), Scalar(0,255,0),2);
-	line(cameraFeed, m_position, cv::Point(m_position.x+25,m_position.y), Scalar(0,255,0),2);
-	
-	// apply the position text to the screen
-	putText(cameraFeed,"(" + std::to_string(m_position.x)+ "," + std::to_string(m_position.y) + ")", m_position, 4, 1, Scalar(255,0,0),2);
 }

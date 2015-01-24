@@ -34,24 +34,26 @@ void TrackingDelegate::setStrategy(StrategyType type)
 		m_tracking = NULL;
 		m_state = kInit;
 	}
+	cv::Point3i pos(0,0,0);
 	switch(type)
 	{
 		case kStatic:
-			m_tracking = new StaticTracking();
+			m_tracking = new StaticTracking(pos);
 			break;
 		case kDynamic:
-			m_tracking = new DynamicTracking();
+			m_tracking = new DynamicTracking(pos);
 			break;
 		case kBall:
-			m_tracking = new BallTracking();
+			m_tracking = new BallTracking(pos);
 			break;
 		default:
 			break;
 	}
+
 	m_mutex.unlock();
 }
 
-void TrackingDelegate::startTracking(cv::Mat& currentFrame)
+cv::Point3i TrackingDelegate::startTracking(cv::Mat& currentFrame)
 {
 	m_mutex.lock();
 	switch(m_state)
@@ -68,6 +70,12 @@ void TrackingDelegate::startTracking(cv::Mat& currentFrame)
 		default:
 			break;
 	}
+	BallTracking* p = dynamic_cast<BallTracking*>(m_tracking);
+	if(p)
+		printf("It is a BallTracking Object\n");
+	
+	cv::Point3i position = m_tracking->getCurrentPosition();
 	m_mutex.unlock();
+	return position;
 }
 

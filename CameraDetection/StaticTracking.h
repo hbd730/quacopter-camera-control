@@ -14,18 +14,16 @@
 class StaticTracking : public ITracking
 {
 public:
-	StaticTracking();
+	StaticTracking(cv::Point3i& position);
 	virtual ~StaticTracking();
 	virtual std::string getName() const;
+	virtual cv::Point3i getCurrentPosition() const;
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
 	void searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFeed);
 	
 private:
-	// the position of the tracking object
-	cv::Point m_position;
-	
 	//bounding rectangle of the object, we will use the center of this as its position.
 	cv::Rect m_boundingRectangle;
 	

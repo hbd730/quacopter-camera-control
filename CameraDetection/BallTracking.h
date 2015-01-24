@@ -14,22 +14,22 @@
 class BallTracking : public ITracking
 {
 public:
-	BallTracking();
+	BallTracking(cv::Point3i& position);
 	virtual ~BallTracking();
 	virtual std::string getName() const;
+	virtual cv::Point3i getCurrentPosition() const;
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
 	void HoughDetection(const cv::Mat& src_gray, const cv::Mat& src_display, int cannyThreshold, int accumulatorThreshold);
 	void tackerBarHandler(int pos);
+	int calculateDistance(cv::Mat& thresholdImage);
 	
 private:
-	cv::Point m_position;
 	cv::Mat m_currentFrame;
 	cv::Mat m_grayImageCur;
 	int m_cannyThreshold;
 	int m_accumulatorThreshold;
-	
 };
 
 #endif /* defined(__CameraDetection__BallTracking__) */

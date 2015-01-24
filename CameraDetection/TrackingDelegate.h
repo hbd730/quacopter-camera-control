@@ -29,11 +29,11 @@ public:
 	TrackingDelegate();
 	virtual ~TrackingDelegate();
 	void setStrategy(StrategyType type);
-	void startTracking(cv::Mat& image);
+	cv::Point3i startTracking(cv::Mat& image);
 	
 private:
 	ITracking* m_tracking;
-	uint32_t m_state;
+	StateType m_state;
 	std::mutex m_mutex;
 };
 

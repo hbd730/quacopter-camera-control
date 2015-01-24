@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE2E52751A1718E200384F2B /* PIDController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E52731A1718E200384F2B /* PIDController.cpp */; };
+		DE2E52781A17190700384F2B /* PIDCalc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E52761A17190700384F2B /* PIDCalc.cpp */; };
+		DE2E527C1A172F3D00384F2B /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E527A1A172F3C00384F2B /* utils.cpp */; };
+		DE2E52801A17326700384F2B /* libzmq.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2E527F1A17326700384F2B /* libzmq.4.dylib */; };
+		DE2E52841A1733A300384F2B /* TracfficController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E52821A1733A300384F2B /* TracfficController.cpp */; };
 		DE32C4151A00EEAA00D3EC9C /* libopencv_core.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4111A00EEAA00D3EC9C /* libopencv_core.3.0.0.dylib */; };
 		DE32C4161A00EEAA00D3EC9C /* libopencv_features2d.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4121A00EEAA00D3EC9C /* libopencv_features2d.3.0.0.dylib */; };
 		DE32C4171A00EEAA00D3EC9C /* libopencv_highgui.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4131A00EEAA00D3EC9C /* libopencv_highgui.3.0.0.dylib */; };
@@ -20,6 +25,7 @@
 		DE32C4281A00EF3600D3EC9C /* libopencv_video.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4251A00EF3600D3EC9C /* libopencv_video.3.0.0.dylib */; };
 		DE32C42A1A00EF7D00D3EC9C /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE32C4291A00EF7D00D3EC9C /* AppDelegate.mm */; };
 		DE32C42C1A00EFA300D3EC9C /* libopencv_videoio.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C42B1A00EFA300D3EC9C /* libopencv_videoio.3.0.0.dylib */; };
+		DE406E091A27157D00085249 /* ControlWidgets.m in Sources */ = {isa = PBXBuildFile; fileRef = DE406E071A27157D00085249 /* ControlWidgets.m */; };
 		DE44C56B1A045863006E4F1C /* TrackingDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE3128061A0236C900A4C0BA /* TrackingDelegate.cpp */; };
 		DE44C56C1A045863006E4F1C /* StaticTracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE31280C1A0237C500A4C0BA /* StaticTracking.cpp */; };
 		DE44C56D1A045863006E4F1C /* DynamicTracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE31280F1A0237D800A4C0BA /* DynamicTracking.cpp */; };
@@ -33,6 +39,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DE2E52731A1718E200384F2B /* PIDController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PIDController.cpp; sourceTree = "<group>"; };
+		DE2E52741A1718E200384F2B /* PIDController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PIDController.h; sourceTree = "<group>"; };
+		DE2E52761A17190700384F2B /* PIDCalc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PIDCalc.cpp; sourceTree = "<group>"; };
+		DE2E52771A17190700384F2B /* PIDCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PIDCalc.h; sourceTree = "<group>"; };
+		DE2E527A1A172F3C00384F2B /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utils.cpp; sourceTree = "<group>"; };
+		DE2E527B1A172F3D00384F2B /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		DE2E527D1A1731DC00384F2B /* libzmq.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzmq.4.dylib; path = ../../../../usr/local/lib/libzmq.4.dylib; sourceTree = "<group>"; };
+		DE2E527F1A17326700384F2B /* libzmq.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzmq.4.dylib; path = ../../../../usr/local/lib/libzmq.4.dylib; sourceTree = "<group>"; };
+		DE2E52811A1732FE00384F2B /* DataTraffic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataTraffic.h; sourceTree = "<group>"; };
+		DE2E52821A1733A300384F2B /* TracfficController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracfficController.cpp; sourceTree = "<group>"; };
+		DE2E52831A1733A300384F2B /* TracfficController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracfficController.h; sourceTree = "<group>"; };
 		DE3128061A0236C900A4C0BA /* TrackingDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackingDelegate.cpp; sourceTree = "<group>"; };
 		DE3128071A0236C900A4C0BA /* TrackingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackingDelegate.h; sourceTree = "<group>"; };
 		DE31280C1A0237C500A4C0BA /* StaticTracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticTracking.cpp; sourceTree = "<group>"; };
@@ -55,6 +72,8 @@
 		DE32C4251A00EF3600D3EC9C /* libopencv_video.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.3.0.0.dylib; path = ../../../../usr/local/lib/libopencv_video.3.0.0.dylib; sourceTree = "<group>"; };
 		DE32C4291A00EF7D00D3EC9C /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		DE32C42B1A00EFA300D3EC9C /* libopencv_videoio.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_videoio.3.0.0.dylib; path = ../../../../usr/local/lib/libopencv_videoio.3.0.0.dylib; sourceTree = "<group>"; };
+		DE406E061A27157D00085249 /* ControlWidgets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlWidgets.h; sourceTree = "<group>"; };
+		DE406E071A27157D00085249 /* ControlWidgets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlWidgets.m; sourceTree = "<group>"; };
 		DE6EA0CA19F60BB8006C4847 /* OpenGLPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGLPreview.h; path = CameraDetection/OpenGLPreview.h; sourceTree = "<group>"; };
 		DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpenGLPreview.m; path = CameraDetection/OpenGLPreview.m; sourceTree = "<group>"; };
 		DE6EA0D519F616EF006C4847 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -73,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE2E52801A17326700384F2B /* libzmq.4.dylib in Frameworks */,
 				DE32C4181A00EEAA00D3EC9C /* libopencv_videostab.3.0.0.dylib in Frameworks */,
 				DE6EA0D819F6171D006C4847 /* AVFoundation.framework in Frameworks */,
 				DE32C4201A00EEEA00D3EC9C /* libopencv_shape.3.0.0.dylib in Frameworks */,
@@ -93,6 +113,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE2E52721A17111900384F2B /* PIDController */ = {
+			isa = PBXGroup;
+			children = (
+				DE2E52731A1718E200384F2B /* PIDController.cpp */,
+				DE2E52741A1718E200384F2B /* PIDController.h */,
+				DE2E52761A17190700384F2B /* PIDCalc.cpp */,
+				DE2E52771A17190700384F2B /* PIDCalc.h */,
+				DE2E527A1A172F3C00384F2B /* utils.cpp */,
+				DE2E527B1A172F3D00384F2B /* utils.h */,
+			);
+			name = PIDController;
+			sourceTree = "<group>";
+		};
+		DE2E52791A17197E00384F2B /* DataTracffic */ = {
+			isa = PBXGroup;
+			children = (
+				DE2E52811A1732FE00384F2B /* DataTraffic.h */,
+				DE2E52831A1733A300384F2B /* TracfficController.h */,
+				DE2E52821A1733A300384F2B /* TracfficController.cpp */,
+			);
+			name = DataTracffic;
+			sourceTree = "<group>";
+		};
 		DE6EA0C919F60AE4006C4847 /* OpenGLPreview */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,11 +191,15 @@
 		DE901E1319F270F4006CE487 /* CameraDetection */ = {
 			isa = PBXGroup;
 			children = (
+				DE2E52791A17197E00384F2B /* DataTracffic */,
+				DE2E52721A17111900384F2B /* PIDController */,
 				DE6EA0CF19F60C3E006C4847 /* ObjectTracking */,
 				DE6EA0CD19F60BEB006C4847 /* Camera */,
 				DE6EA0C919F60AE4006C4847 /* OpenGLPreview */,
 				DE901E1819F270F5006CE487 /* AppDelegate.h */,
 				DE32C4291A00EF7D00D3EC9C /* AppDelegate.mm */,
+				DE406E061A27157D00085249 /* ControlWidgets.h */,
+				DE406E071A27157D00085249 /* ControlWidgets.m */,
 				DE901E1D19F270F5006CE487 /* MainMenu.xib */,
 				DE901E1419F270F5006CE487 /* Supporting Files */,
 			);
@@ -172,6 +219,7 @@
 		DE901E3619F27F79006CE487 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DE2E527D1A1731DC00384F2B /* libzmq.4.dylib */,
 				DE6EA0D719F6171D006C4847 /* AVFoundation.framework */,
 				DE6EA0D519F616EF006C4847 /* CoreMedia.framework */,
 			);
@@ -181,6 +229,7 @@
 		DEE41A1C19FB81FB00F30758 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				DE2E527F1A17326700384F2B /* libzmq.4.dylib */,
 				DE32C42B1A00EFA300D3EC9C /* libopencv_videoio.3.0.0.dylib */,
 				DE32C4231A00EF3600D3EC9C /* libopencv_stitching.3.0.0.dylib */,
 				DE32C4241A00EF3600D3EC9C /* libopencv_superres.3.0.0.dylib */,
@@ -267,12 +316,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE44C56B1A045863006E4F1C /* TrackingDelegate.cpp in Sources */,
+				DE2E52841A1733A300384F2B /* TracfficController.cpp in Sources */,
 				DE44C56C1A045863006E4F1C /* StaticTracking.cpp in Sources */,
+				DE2E52781A17190700384F2B /* PIDCalc.cpp in Sources */,
 				DE44C56D1A045863006E4F1C /* DynamicTracking.cpp in Sources */,
 				DE44C56E1A045863006E4F1C /* BallTracking.cpp in Sources */,
+				DE406E091A27157D00085249 /* ControlWidgets.m in Sources */,
 				DE6EA0CC19F60BB8006C4847 /* OpenGLPreview.m in Sources */,
+				DE2E527C1A172F3D00384F2B /* utils.cpp in Sources */,
 				DE901E1719F270F5006CE487 /* main.m in Sources */,
 				DE32C42A1A00EF7D00D3EC9C /* AppDelegate.mm in Sources */,
+				DE2E52751A1718E200384F2B /* PIDController.cpp in Sources */,
 				DE6EA0DB19F619C3006C4847 /* Camera.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
