@@ -59,8 +59,7 @@
 	int thrustError = currentPosition.y - (int)height/2;
 	int thrust = m_thrustPIDCalc->run(thrustError);
 	
-	int pitchError = currentPosition.z - 68;
-	//int pitchError = 100 - currentPosition.z;
+	int pitchError = currentPosition.z - 75;
 	int pitch = m_pitchPIDCalc->run(pitchError);
 	
 	int yaw = 0;
@@ -84,9 +83,9 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new TracfficController();
-	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 40000, -40000, 78000, 0);
-	m_pitchPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 30, -30);
-	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 30, -30);
+	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 40000, -40000, 65000, 0);
+	m_pitchPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 15, -15, 15, -15);
+	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 15, -15, 15, -15);
 	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(1155, 650, 270, 180);
@@ -98,9 +97,10 @@
 	NSRect yawFrame = NSMakeRect(1155, 196, 270, 180);
 	[self addPIDGroupWithFrame:yawFrame andCalObject:m_yawPIDCalc];
 	
+	stopFlag = true;
+	[m_stopButton setTitle:@"Start"];
 	m_camera = [[Camera alloc] init];
 	m_camera.delegate = self;
-	stopFlag = false;
 	[m_camera startRunning];
 }
 

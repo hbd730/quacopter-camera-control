@@ -56,23 +56,19 @@ float pid_calc_t::run(float error) noexcept
 void pid_calc_t::setKp(float kp) noexcept
 {
 	kp_ = kp;
-	printf("kp is %f\n",kp_);
 }
 
 void pid_calc_t::setKi(float ki) noexcept
 {
 	ki_ = ki;
-	printf("ki is %f\n",ki_);
 }
 
 void pid_calc_t::setKd(float kd) noexcept
 {
 	kd_ = kd;
-	printf("kd is %f\n",kd_);
 }
 
 void pid_calc_t::setDt(float dt) noexcept
 {
 	dt_ = dt;
-	printf("dt is %f\n",dt_);
 }

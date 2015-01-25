@@ -69,11 +69,7 @@ cv::Point3i TrackingDelegate::startTracking(cv::Mat& currentFrame)
 			break;
 		default:
 			break;
-	}
-	BallTracking* p = dynamic_cast<BallTracking*>(m_tracking);
-	if(p)
-		printf("It is a BallTracking Object\n");
-	
+	}	
 	cv::Point3i position = m_tracking->getCurrentPosition();
 	m_mutex.unlock();
 	return position;
