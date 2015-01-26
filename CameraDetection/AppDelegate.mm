@@ -53,22 +53,22 @@
 	// Start tracking
 	cv::Point3i currentPosition = m_trackingDelegate->startTracking(currentFrame);
 	
-	int rollError = currentPosition.x - (int)width/2;
-	int roll = m_rollPIDCalc->run(rollError);
+	float thrustError = currentPosition.y - (int)height/2;
+	float thrust = m_thrustPIDCalc->run(thrustError);
 	
-	int thrustError = currentPosition.y - (int)height/2;
-	int thrust = m_thrustPIDCalc->run(thrustError);
+	float rollError = currentPosition.x - (int)width/2;
+	float roll = m_rollPIDCalc->run(rollError);
 	
-	int pitchError = currentPosition.z - 75;
-	int pitch = m_pitchPIDCalc->run(pitchError);
+	float pitchError = currentPosition.z - 75;
+	float pitch = m_pitchPIDCalc->run(pitchError);
 	
-	int yaw = 0;
+	float yaw = 0;
 	
 	if(stopFlag)
 		m_trafficController->sendParameter(0, 0, 0, 0);
 	else
 		m_trafficController->sendParameter(thrust, yaw, pitch, roll);
-
+	//printf("roll sum is %f\n", m_rollPIDCalc->getSum());
 	// Redering preview
 	[m_preview renderFromBuffer:imageBuffer];
 }
@@ -83,9 +83,9 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new TracfficController();
-	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 40000, -40000, 65000, 0);
-	m_pitchPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 15, -15, 15, -15);
-	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 15, -15, 15, -15);
+	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 65000, -50000, 65000, 0);
+	m_pitchPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
+	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
 	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(1155, 650, 270, 180);

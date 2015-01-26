@@ -19,7 +19,7 @@ public:
 	TracfficController& operator = (TracfficController&&) = delete;
 	virtual ~TracfficController() noexcept = default;
 	
-	void sendParameter(int thrust, int yaw, int pitch, int roll);
+	void sendParameter(int thrust, float yaw, float pitch, float roll);
 private:
 	zmq::context_t context;
 	zmq::socket_t publisher;

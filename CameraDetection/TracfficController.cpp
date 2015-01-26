@@ -16,13 +16,13 @@ TracfficController::TracfficController() noexcept
 	publisher.bind("tcp://*:5555");
 }
 
-void TracfficController::sendParameter(int thrust, int yaw, int pitch, int roll)
+void TracfficController::sendParameter(int thrust, float yaw, float pitch, float roll)
 {
 	// Send message to all subscribers
-	zmq::message_t message(20);
-	memset(message.data(),0,20);
+	zmq::message_t message(24);
+	memset(message.data(),0,24);
 	int dummyEnding = 0;
-	snprintf ((char *) message.data(), 20, "%d %d %d %d %d", thrust, yaw, pitch, roll, dummyEnding);
-	printf("thrust is: %d yaw is %d pitch is %d roll is %d\n", thrust, yaw, pitch, roll);
+	sprintf ((char *) message.data(), "%5d %4.2f %4.2f %4.2f %d", thrust, yaw, pitch, roll, dummyEnding);
+	printf("thrust is: %5d yaw is %4.2f pitch is %4.2f roll is %4.2f\n", thrust, yaw, pitch, roll);
 	publisher.send(message);
 }
