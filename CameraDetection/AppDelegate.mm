@@ -83,18 +83,18 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new TracfficController();
-	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 65000, -50000, 65000, 0);
+	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 5000, -5000, 65000, 0);
 	m_pitchPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
 	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
 	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
 	
-	NSRect thrustFrame = NSMakeRect(1155, 650, 270, 180);
+	NSRect thrustFrame = NSMakeRect(620, 379, 270, 180);
 	[self addPIDGroupWithFrame:thrustFrame andCalObject:m_thrustPIDCalc];
-	NSRect pitchFrame = NSMakeRect(1155, 498, 270, 180);
+	NSRect pitchFrame = NSMakeRect(620, 259, 270, 180);
 	[self addPIDGroupWithFrame:pitchFrame andCalObject:m_pitchPIDCalc];
-	NSRect	rollFrame = NSMakeRect(1155, 348, 270, 180);
+	NSRect	rollFrame = NSMakeRect(620, 139, 270, 180);
 	[self addPIDGroupWithFrame:rollFrame andCalObject:m_rollPIDCalc];
-	NSRect yawFrame = NSMakeRect(1155, 196, 270, 180);
+	NSRect yawFrame = NSMakeRect(620, 19, 270, 180);
 	[self addPIDGroupWithFrame:yawFrame andCalObject:m_yawPIDCalc];
 	
 	stopFlag = true;

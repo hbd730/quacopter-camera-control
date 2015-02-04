@@ -69,7 +69,8 @@ static void on_trackbar( int pos, void* value) //this callback print the current
 
 void BallTracking::init(cv::Mat &image)
 {
-	namedWindow( kWindowName, WINDOW_AUTOSIZE );
+	namedWindow( kWindowName, WINDOW_NORMAL |WINDOW_OPENGL );
+	resizeWindow(kWindowName, 400, 400);
 	cv::createTrackbar(kCannyThresholdTrackbarName, kWindowName, &m_cannyThreshold, kMaxCannyThreshold);
 	cv::createTrackbar(kAccumulatorThresholdTrackbarName, kWindowName, &m_accumulatorThreshold, kMaxAccumulatorThreshold);
 	//Create trackbars in "Control" window
@@ -81,7 +82,6 @@ void BallTracking::init(cv::Mat &image)
 	
 	cv::createTrackbar("LowV", kWindowName, &gLowV, 255, on_trackbar);//Value (0 - 255)
 	cv::createTrackbar("HighV", kWindowName, &gHighV, 255, on_trackbar);
-
 }
 
 void BallTracking::setReferenceFrame(cv::Mat& reference)
@@ -117,6 +117,7 @@ bool BallTracking::processFrame(cv::Mat &image)
 	erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 	
 	imshow(kWindowName, imgThresholded);
+	
 	// Calculate the moments of the thresholded image
 	Moments oMoments = moments(imgThresholded);
 	
