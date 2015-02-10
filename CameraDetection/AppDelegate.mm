@@ -11,7 +11,7 @@
 #import "Camera.h"
 #import "OpenGLPreview.h"
 #include "PIDCalc.h"
-#include "TracfficController.h"
+#include "CFRadioController.h"
 #include "ControlWidgets.h"
 
 @interface AppDelegate ()<CameraDelegate>
@@ -21,7 +21,7 @@
 	pid_calc_t* m_pitchPIDCalc;
 	pid_calc_t* m_yawPIDCalc;
 	pid_calc_t* m_rollPIDCalc;
-	TracfficController* m_trafficController;
+	IDataTraffic* m_trafficController;
 	ControlWidgets* m_controlWidget;
 	bool stopFlag;
 }
@@ -82,7 +82,7 @@
 	
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
-	m_trafficController = new TracfficController();
+	m_trafficController = new CFRadioController();
 	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 5000, -5000, 65000, 0);
 	m_pitchPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
 	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
@@ -147,6 +147,7 @@
 			break;
 	}
 }
+
 - (IBAction)stopAndReset:(id)sender
 {
 	stopFlag = !stopFlag;

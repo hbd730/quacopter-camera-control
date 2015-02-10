@@ -6,8 +6,20 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef CameraDetection_DataTraffic_h
-#define CameraDetection_DataTraffic_h
+#pragma once
+#include <stdio.h>
+class IDataTraffic
+{
 
+public:
+	IDataTraffic() noexcept{};
+	IDataTraffic(const IDataTraffic&) = delete;
+	IDataTraffic(IDataTraffic&&) = delete;
+	IDataTraffic& operator = (const IDataTraffic&) = delete;
+	IDataTraffic& operator = (IDataTraffic&&) = delete;
+	virtual ~IDataTraffic() noexcept = default;
+	virtual void sendParameter(int thrust, float yaw, float pitch, float roll) = 0;
 
-#endif
+protected:
+	void test(){printf("from base class\n");};
+};
