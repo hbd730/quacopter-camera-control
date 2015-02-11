@@ -70,10 +70,8 @@ static void on_trackbar( int pos, void* value) //this callback print the current
 void BallTracking::init(cv::Mat &image)
 {
 	namedWindow( kWindowName, WINDOW_NORMAL |WINDOW_OPENGL );
-	resizeWindow(kWindowName, 400, 400);
 	cv::createTrackbar(kCannyThresholdTrackbarName, kWindowName, &m_cannyThreshold, kMaxCannyThreshold);
 	cv::createTrackbar(kAccumulatorThresholdTrackbarName, kWindowName, &m_accumulatorThreshold, kMaxAccumulatorThreshold);
-	//Create trackbars in "Control" window
 	cv::createTrackbar("LowH", kWindowName, &gLowH, 179, on_trackbar); //Hue (0 - 179)
 	cv::createTrackbar("HighH", kWindowName, &gHighH, 179, on_trackbar);
 	

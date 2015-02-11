@@ -76,9 +76,9 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	// Insert code here to initialize your application
+	[m_strategyPopup addItemWithTitle:@"Ball Tracking"];
 	[m_strategyPopup addItemWithTitle:@"Static Tracking"];
 	[m_strategyPopup addItemWithTitle:@"Dynamic Tracking"];
-	[m_strategyPopup addItemWithTitle:@"Ball Tracking"];
 	
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);

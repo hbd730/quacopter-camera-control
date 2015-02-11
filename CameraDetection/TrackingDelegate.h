@@ -16,9 +16,9 @@ class TrackingDelegate
 public:
 	enum StrategyType
 	{
-		kStatic,
-		kDynamic,
-		kBall
+		kBall,
+	 	kStatic,
+		kDynamic
 	};
 	enum StateType
 	{

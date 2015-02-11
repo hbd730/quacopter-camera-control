@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		DE2E52781A17190700384F2B /* PIDCalc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E52761A17190700384F2B /* PIDCalc.cpp */; };
 		DE2E527C1A172F3D00384F2B /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E527A1A172F3C00384F2B /* utils.cpp */; };
-		DE2E52801A17326700384F2B /* libzmq.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2E527F1A17326700384F2B /* libzmq.4.dylib */; };
 		DE2E52841A1733A300384F2B /* ZeroMqController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E52821A1733A300384F2B /* ZeroMqController.cpp */; };
 		DE32C4151A00EEAA00D3EC9C /* libopencv_core.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4111A00EEAA00D3EC9C /* libopencv_core.3.0.0.dylib */; };
 		DE32C4161A00EEAA00D3EC9C /* libopencv_features2d.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4121A00EEAA00D3EC9C /* libopencv_features2d.3.0.0.dylib */; };
@@ -36,6 +35,12 @@
 		DE6EA0DB19F619C3006C4847 /* Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6EA0DA19F619C3006C4847 /* Camera.m */; };
 		DE901E1719F270F5006CE487 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DE901E1619F270F5006CE487 /* main.m */; };
 		DE901E1F19F270F5006CE487 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE901E1D19F270F5006CE487 /* MainMenu.xib */; };
+		DEA3674A1A8B03F800B7F4E7 /* CCrazyflie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA367461A8B03F800B7F4E7 /* CCrazyflie.cpp */; };
+		DEA3674B1A8B03F800B7F4E7 /* CCrazyRadio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA367471A8B03F800B7F4E7 /* CCrazyRadio.cpp */; };
+		DEA3674C1A8B03F800B7F4E7 /* CCRTPPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA367481A8B03F800B7F4E7 /* CCRTPPacket.cpp */; };
+		DEA3674D1A8B03F800B7F4E7 /* CTOC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA367491A8B03F800B7F4E7 /* CTOC.cpp */; };
+		DEA3674F1A8B072000B7F4E7 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */; };
+		DEA367501A8B076300B7F4E7 /* libzmq.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2E527D1A1731DC00384F2B /* libzmq.4.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +90,15 @@
 		DE901E1619F270F5006CE487 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DE901E1819F270F5006CE487 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DE901E1E19F270F5006CE487 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		DEA367421A8B03EE00B7F4E7 /* CCrazyflie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCrazyflie.h; path = libcflie/include/cflie/CCrazyflie.h; sourceTree = SOURCE_ROOT; };
+		DEA367431A8B03EE00B7F4E7 /* CCrazyRadio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCrazyRadio.h; path = libcflie/include/cflie/CCrazyRadio.h; sourceTree = SOURCE_ROOT; };
+		DEA367441A8B03EE00B7F4E7 /* CCRTPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCRTPPacket.h; path = libcflie/include/cflie/CCRTPPacket.h; sourceTree = SOURCE_ROOT; };
+		DEA367451A8B03EE00B7F4E7 /* CTOC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTOC.h; path = libcflie/include/cflie/CTOC.h; sourceTree = SOURCE_ROOT; };
+		DEA367461A8B03F800B7F4E7 /* CCrazyflie.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCrazyflie.cpp; path = libcflie/src/cflie/CCrazyflie.cpp; sourceTree = SOURCE_ROOT; };
+		DEA367471A8B03F800B7F4E7 /* CCrazyRadio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCrazyRadio.cpp; path = libcflie/src/cflie/CCrazyRadio.cpp; sourceTree = SOURCE_ROOT; };
+		DEA367481A8B03F800B7F4E7 /* CCRTPPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCRTPPacket.cpp; path = libcflie/src/cflie/CCRTPPacket.cpp; sourceTree = SOURCE_ROOT; };
+		DEA367491A8B03F800B7F4E7 /* CTOC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTOC.cpp; path = libcflie/src/cflie/CTOC.cpp; sourceTree = SOURCE_ROOT; };
+		DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-1.0.0.dylib"; path = "../../../../usr/local/lib/libusb-1.0.0.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +106,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE2E52801A17326700384F2B /* libzmq.4.dylib in Frameworks */,
+				DEA367501A8B076300B7F4E7 /* libzmq.4.dylib in Frameworks */,
+				DEA3674F1A8B072000B7F4E7 /* libusb-1.0.0.dylib in Frameworks */,
 				DE32C4181A00EEAA00D3EC9C /* libopencv_videostab.3.0.0.dylib in Frameworks */,
 				DE6EA0D819F6171D006C4847 /* AVFoundation.framework in Frameworks */,
 				DE32C4201A00EEEA00D3EC9C /* libopencv_shape.3.0.0.dylib in Frameworks */,
@@ -191,6 +206,7 @@
 		DE901E1319F270F4006CE487 /* CameraDetection */ = {
 			isa = PBXGroup;
 			children = (
+				DEA367291A8B012F00B7F4E7 /* LibCrazyFlie */,
 				DE2E52791A17197E00384F2B /* DataTracffic */,
 				DE2E52721A17111900384F2B /* PIDController */,
 				DE6EA0CF19F60C3E006C4847 /* ObjectTracking */,
@@ -219,11 +235,27 @@
 		DE901E3619F27F79006CE487 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */,
 				DE2E527D1A1731DC00384F2B /* libzmq.4.dylib */,
 				DE6EA0D719F6171D006C4847 /* AVFoundation.framework */,
 				DE6EA0D519F616EF006C4847 /* CoreMedia.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DEA367291A8B012F00B7F4E7 /* LibCrazyFlie */ = {
+			isa = PBXGroup;
+			children = (
+				DEA367461A8B03F800B7F4E7 /* CCrazyflie.cpp */,
+				DEA367471A8B03F800B7F4E7 /* CCrazyRadio.cpp */,
+				DEA367481A8B03F800B7F4E7 /* CCRTPPacket.cpp */,
+				DEA367491A8B03F800B7F4E7 /* CTOC.cpp */,
+				DEA367421A8B03EE00B7F4E7 /* CCrazyflie.h */,
+				DEA367431A8B03EE00B7F4E7 /* CCrazyRadio.h */,
+				DEA367441A8B03EE00B7F4E7 /* CCRTPPacket.h */,
+				DEA367451A8B03EE00B7F4E7 /* CTOC.h */,
+			);
+			name = LibCrazyFlie;
 			sourceTree = "<group>";
 		};
 		DEE41A1C19FB81FB00F30758 /* Lib */ = {
@@ -315,11 +347,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEA3674D1A8B03F800B7F4E7 /* CTOC.cpp in Sources */,
 				DE44C56B1A045863006E4F1C /* TrackingDelegate.cpp in Sources */,
 				DE2E52841A1733A300384F2B /* ZeroMqController.cpp in Sources */,
 				DE3D31DA1A88BC7600693BDE /* CFRadioController.cpp in Sources */,
 				DE44C56C1A045863006E4F1C /* StaticTracking.cpp in Sources */,
+				DEA3674C1A8B03F800B7F4E7 /* CCRTPPacket.cpp in Sources */,
 				DE2E52781A17190700384F2B /* PIDCalc.cpp in Sources */,
+				DEA3674A1A8B03F800B7F4E7 /* CCrazyflie.cpp in Sources */,
 				DE44C56D1A045863006E4F1C /* DynamicTracking.cpp in Sources */,
 				DE44C56E1A045863006E4F1C /* BallTracking.cpp in Sources */,
 				DE406E091A27157D00085249 /* ControlWidgets.m in Sources */,
@@ -327,6 +362,7 @@
 				DE2E527C1A172F3D00384F2B /* utils.cpp in Sources */,
 				DE901E1719F270F5006CE487 /* main.m in Sources */,
 				DE32C42A1A00EF7D00D3EC9C /* AppDelegate.mm in Sources */,
+				DEA3674B1A8B03F800B7F4E7 /* CCrazyRadio.cpp in Sources */,
 				DE6EA0DB19F619C3006C4847 /* Camera.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
