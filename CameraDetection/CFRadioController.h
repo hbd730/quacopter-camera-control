@@ -9,6 +9,10 @@
 #pragma once
 
 #include "DataTraffic.h"
+using namespace std;
+
+class CCrazyRadio;
+class CCrazyflie;
 
 class CFRadioController: public IDataTraffic
 {
@@ -19,6 +23,12 @@ public:
 	CFRadioController(CFRadioController&&) = delete;
 	CFRadioController& operator = (const CFRadioController&) = delete;
 	CFRadioController& operator = (CFRadioController&&) = delete;
-	virtual ~CFRadioController() noexcept = default;
+	virtual ~CFRadioController() noexcept;
 	virtual void sendParameter(int thrust, float yaw, float pitch, float roll);
+	
+private:
+	void radioTask(string msg);
+	
+	CCrazyRadio* m_crRadio;
+	CCrazyflie*  m_cfCopter;
 };

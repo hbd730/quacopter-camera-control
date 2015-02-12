@@ -100,10 +100,6 @@ bool CCrazyflie::sendSetpoint(float fRoll, float fPitch, float fYaw, short sThru
   }
 }
 
-
-
-
-
 void CCrazyflie::setThrust(int nThrust) {
   m_nThrust = nThrust;
   
