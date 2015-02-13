@@ -9,32 +9,31 @@
 
 #include "CFRadioController.h"
 #include "CCrazyflie.h"
-#include <thread>
+
 
 void CFRadioController::radioTask(string msg)
 {
     cout << "Radio thread started " << msg << endl;
 	
-	while(1) //m_cfCopter->cycle()
+	while(m_cfCopter->cycle() && m_stopThread == false)
 	{
 		cout << "we are in the loop" << endl;
-		std::this_thread::sleep_for( std::chrono::seconds(1) );
+		//std::this_thread::sleep_for( std::chrono::seconds(1) );
 	}
 }
 
 CFRadioController::CFRadioController() noexcept:
 	m_crRadio(NULL),
-	m_cfCopter(NULL)
+	m_cfCopter(NULL),
+	m_stopThread(false),
+	m_thread()
 {
 	m_crRadio = new CCrazyRadio("radio://0/10/250K");
 	if(m_crRadio->startRadio())
 	{
 		m_cfCopter = new CCrazyflie(m_crRadio);
-		m_cfCopter->setThrust(10001); // test value
+		m_cfCopter->setSendSetpoints(true);
 	}
-	
-    thread t1(&CFRadioController::radioTask, this, "successfully");
-    t1.join();
 }
 
 CFRadioController::~CFRadioController() noexcept
@@ -42,6 +41,14 @@ CFRadioController::~CFRadioController() noexcept
 	delete m_crRadio;
 	if(m_cfCopter)
 		delete m_cfCopter;
+	m_stopThread = true;
+	if(m_thread.joinable())
+		m_thread.join();
+}
+
+void CFRadioController::start()
+{
+	m_thread = thread(&CFRadioController::radioTask, this, "successfully");
 }
 
 void CFRadioController::sendParameter(int thrust, float yaw, float pitch, float roll)

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "DataTraffic.h"
+#include <thread>
 using namespace std;
 
 class CCrazyRadio;
@@ -25,10 +26,13 @@ public:
 	CFRadioController& operator = (CFRadioController&&) = delete;
 	virtual ~CFRadioController() noexcept;
 	virtual void sendParameter(int thrust, float yaw, float pitch, float roll);
+	void start();
 	
 private:
 	void radioTask(string msg);
 	
 	CCrazyRadio* m_crRadio;
 	CCrazyflie*  m_cfCopter;
+	bool m_stopThread;
+	thread m_thread;
 };

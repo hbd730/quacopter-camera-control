@@ -21,7 +21,7 @@
 	pid_calc_t* m_pitchPIDCalc;
 	pid_calc_t* m_yawPIDCalc;
 	pid_calc_t* m_rollPIDCalc;
-	IDataTraffic* m_trafficController;
+	CFRadioController* m_trafficController;
 	ControlWidgets* m_controlWidget;
 	bool stopFlag;
 }
@@ -154,7 +154,10 @@
 	if(stopFlag)
 		[m_stopButton setTitle:@"Start"];
 	else
+	{
+		m_trafficController->start();
 		[m_stopButton setTitle:@"Stop"];
+	}
 }
 
 - (void)addPIDGroupWithFrame:(NSRect)freame andCalObject:(pid_calc_t*)obj
