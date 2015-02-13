@@ -41,13 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CameraDetection/AppDelegate.mm"
-            timestampString = "444736502.500434"
+            filePath = "CameraDetection/CFRadioController.cpp"
+            timestampString = "445508422.442056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "-frameCaptured:"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "CFRadioController::sendParameter(int thrust, float yaw, float pitch, float roll)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

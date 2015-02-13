@@ -17,15 +17,16 @@ void CFRadioController::radioTask(string msg)
 	
 	while(m_cfCopter->cycle() && m_stopThread == false)
 	{
-		cout << "we are in the loop" << endl;
+		
 		//std::this_thread::sleep_for( std::chrono::seconds(1) );
 	}
+	cout << "Radio thread terminated!"  << endl;
 }
 
 CFRadioController::CFRadioController() noexcept:
 	m_crRadio(NULL),
 	m_cfCopter(NULL),
-	m_stopThread(false),
+	m_stopThread(true),
 	m_thread()
 {
 	m_crRadio = new CCrazyRadio("radio://0/10/250K");
@@ -38,17 +39,22 @@ CFRadioController::CFRadioController() noexcept:
 
 CFRadioController::~CFRadioController() noexcept
 {
-	delete m_crRadio;
-	if(m_cfCopter)
-		delete m_cfCopter;
 	m_stopThread = true;
 	if(m_thread.joinable())
 		m_thread.join();
+	delete m_crRadio;
+	if(m_cfCopter)
+		delete m_cfCopter;
+
 }
 
 void CFRadioController::start()
 {
-	m_thread = thread(&CFRadioController::radioTask, this, "successfully");
+	if(m_stopThread)
+	{
+		m_stopThread = false;
+		m_thread = thread(&CFRadioController::radioTask, this, "successfully");
+	}
 }
 
 void CFRadioController::sendParameter(int thrust, float yaw, float pitch, float roll)
@@ -60,4 +66,6 @@ void CFRadioController::sendParameter(int thrust, float yaw, float pitch, float 
 		m_cfCopter->setPitch(pitch);
 		m_cfCopter->setRoll(roll);
 	}
+	cout << "thrust is " << thrust << "yaw is " << yaw \
+	<< "pitch is " << pitch << "roll is " << roll << endl;
 }
