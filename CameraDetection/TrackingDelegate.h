@@ -30,6 +30,7 @@ public:
 	virtual ~TrackingDelegate();
 	void setStrategy(StrategyType type);
 	cv::Point3i startTracking(cv::Mat& image);
+	cv::Mat getOutputImage() const {return m_tracking->getOutputImage();};
 	
 private:
 	ITracking* m_tracking;

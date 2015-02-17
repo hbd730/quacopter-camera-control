@@ -68,9 +68,9 @@
 		m_trafficController->sendParameter(0, 0, 0, 0);
 	else
 		m_trafficController->sendParameter(thrust, yaw, pitch, roll);
-	//printf("roll sum is %f\n", m_rollPIDCalc->getSum());
 	// Redering preview
 	[m_preview renderFromBuffer:imageBuffer];
+	//imshow("test", m_trackingDelegate->getOutputImage());
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

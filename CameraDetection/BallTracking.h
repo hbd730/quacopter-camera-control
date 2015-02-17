@@ -17,7 +17,6 @@ public:
 	BallTracking(cv::Point3i& position);
 	virtual ~BallTracking();
 	virtual std::string getName() const;
-	virtual cv::Point3i getCurrentPosition() const;
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
@@ -26,10 +25,14 @@ public:
 	int calculateDistance(cv::Mat& thresholdImage);
 	
 private:
-	cv::Mat m_currentFrame;
-	cv::Mat m_grayImageCur;
 	int m_cannyThreshold;
 	int m_accumulatorThreshold;
+	int gLowH;
+	int gHighH;
+	int gLowS;
+	int gHighS;
+	int gLowV;
+	int gHighV;
 };
 
 #endif /* defined(__CameraDetection__BallTracking__) */

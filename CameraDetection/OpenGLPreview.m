@@ -59,7 +59,7 @@ if (cond)                                                                       
 	}
 	
 	glBindTexture(GL_TEXTURE_RECTANGLE_EXT, m_textureId);
-	glPixelStorei(GL_UNPACK_ROW_LENGTH, (GLint)rowBytes / 4);
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, (GLint)frameWidth);
 	
 	glDisable(GL_FRAGMENT_PROGRAM_ARB);
 	
