@@ -88,14 +88,14 @@
 	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
 	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
 	
-	NSRect thrustFrame = NSMakeRect(620, 379, 270, 180);
+	NSRect thrustFrame = NSMakeRect(80, 215, 270, 180);
 	[self addPIDGroupWithFrame:thrustFrame andCalObject:m_thrustPIDCalc];
-	NSRect pitchFrame = NSMakeRect(620, 259, 270, 180);
+	NSRect pitchFrame = NSMakeRect(510, 215, 270, 180);
 	[self addPIDGroupWithFrame:pitchFrame andCalObject:m_pitchPIDCalc];
-	NSRect	rollFrame = NSMakeRect(620, 139, 270, 180);
-	[self addPIDGroupWithFrame:rollFrame andCalObject:m_rollPIDCalc];
-	NSRect yawFrame = NSMakeRect(620, 19, 270, 180);
+	NSRect yawFrame = NSMakeRect(80, 120, 270, 180);
 	[self addPIDGroupWithFrame:yawFrame andCalObject:m_yawPIDCalc];
+    NSRect	rollFrame = NSMakeRect(510, 120, 270, 180);
+	[self addPIDGroupWithFrame:rollFrame andCalObject:m_rollPIDCalc];
 	
 	stopFlag = true;
 	[m_stopButton setTitle:@"Start"];
@@ -140,9 +140,9 @@
 		case kPIDkd:
 			cal->setKd(value);
 			break;
-		case kPIDdt:
-			cal->setDt(value);
-			break;
+//		case kPIDdt:
+//			cal->setDt(value);
+//			break;
 		default:
 			break;
 	}

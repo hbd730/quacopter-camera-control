@@ -31,23 +31,23 @@
 	self = [super initWithFrame:frameRect];
 	if (self)
 	{
-		NSRect frameSliderKp = NSMakeRect(0, 90, 181, 22);
+		NSRect frameSliderKp = NSMakeRect(0, 60, 181, 22);
 		m_kpSlider = [self createSliderWithFrame:frameSliderKp andTag:kPIDkp];
-		NSRect frameSliderKi = NSMakeRect(0, 60, 181, 22);
+		NSRect frameSliderKi = NSMakeRect(0, 30, 181, 22);
 		m_kiSlider = [self createSliderWithFrame:frameSliderKi andTag:kPIDki];
-		NSRect frameSliderKd = NSMakeRect(0, 30, 181, 22);
+		NSRect frameSliderKd = NSMakeRect(0, 0, 181, 22);
 		m_kdSlider = [self createSliderWithFrame:frameSliderKd andTag:kPIDkd];
-		NSRect frameSliderDt = NSMakeRect(0, 0, 181, 22);
-		m_dtSlider = [self createSliderWithFrame:frameSliderDt andTag:kPIDdt];
+//		NSRect frameSliderDt = NSMakeRect(0, 0, 181, 22);
+//		m_dtSlider = [self createSliderWithFrame:frameSliderDt andTag:kPIDdt];
 
-		NSRect frameTextKp = NSMakeRect(190, 90, 53, 22);
+		NSRect frameTextKp = NSMakeRect(190, 60, 53, 22);
 		m_kpTextfield = [self createTextFieldWithFrame:frameTextKp andTag:kPIDkp];
-		NSRect frameTextKi = NSMakeRect(190, 60, 53, 22);
+		NSRect frameTextKi = NSMakeRect(190, 30, 53, 22);
 		m_kiTextfield = [self createTextFieldWithFrame:frameTextKi andTag:kPIDki];
-		NSRect frameTextKd = NSMakeRect(190, 30, 53, 22);
+		NSRect frameTextKd = NSMakeRect(190, 0, 53, 22);
 		m_kdTextfield = [self createTextFieldWithFrame:frameTextKd andTag:kPIDkd];
-		NSRect frameTextDt = NSMakeRect(190, 0, 53, 22);
-		m_dtTextfield = [self createTextFieldWithFrame:frameTextDt andTag:kPIDdt];
+//		NSRect frameTextDt = NSMakeRect(190, 0, 53, 22);
+//		m_dtTextfield = [self createTextFieldWithFrame:frameTextDt andTag:kPIDdt];
 	}
 	activeControlID = 0;
 	
@@ -90,9 +90,9 @@
 		case kPIDkd:
 			[m_kdTextfield setFloatValue:parameterValue];
 			break;
-		case kPIDdt:
-			[m_dtTextfield setFloatValue:parameterValue];
-			break;
+//		case kPIDdt:
+//			[m_dtTextfield setFloatValue:parameterValue];
+//			break;
 		default:
 			break;
 	}
@@ -117,9 +117,9 @@
 		case kPIDkd:
 			[m_kdSlider setFloatValue:parameterValue];
 			break;
-		case kPIDdt:
-			[m_dtSlider setFloatValue:parameterValue];
-			break;
+//		case kPIDdt:
+//			[m_dtSlider setFloatValue:parameterValue];
+//			break;
 		default:
 			break;
 	}

@@ -12,7 +12,7 @@
 {
 	enum ParameterType: NSInteger
 	{
-		kPIDkp, kPIDki, kPIDkd, kPIDdt
+		kPIDkp, kPIDki, kPIDkd
 	};
 }
 @property (assign,readonly) enum ParameterType activeControlID;
