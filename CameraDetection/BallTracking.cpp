@@ -112,11 +112,11 @@ bool BallTracking::processFrame(cv::Mat &image)
 			m_position.z = calculateDistance(m_outputImage);
 			Point center(posX, posY);
 			// circle center
-			circle(image, center, 3, Scalar(0,255,0), -1, 8, 0);
+			circle(image, center, 4, Scalar(0,255,0), -1, 8, 0);
 						
 			// Put position text around
 			putText(image,"(" + std::to_string(m_position.x)+ "," + std::to_string(m_position.y) \
-					+ "," + std::to_string(m_position.z) + ")", center, 4, 1, Scalar(255,0,0),2);
+					+ "," + std::to_string(m_position.z) + ")", center, 4, 2, Scalar(255,0,0), 2);
 		}
 	}
 	return true;

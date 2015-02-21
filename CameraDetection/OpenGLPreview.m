@@ -65,15 +65,27 @@ if (cond)                                                                       
 	
 	type = GL_UNSIGNED_BYTE;
 	
+	GLint internalFormat = GL_RGBA;
+	GLint format = GL_BGRA;
+	if(rowBytes != frameWidth)
+	{
+		internalFormat = GL_RGBA;
+		format = GL_BGRA;
+	}
+	else
+	{
+		internalFormat = GL_DEPTH_COMPONENT;
+		format = GL_DEPTH_COMPONENT;
+	}
 	if (newTexture)
 	{
 		// Use glTexImage2D() since this is a new texture.
-		glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, m_textureWidth, m_textureHeight, 0, GL_BGRA, type, address);
+		glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, internalFormat, m_textureWidth, m_textureHeight, 0, format, type, address);
 	}
 	else
 	{
 		// Use glTexSubImageID() since this is an existing texture.
-		glTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, m_textureWidth, m_textureHeight, GL_BGRA, type, address);
+		glTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, m_textureWidth, m_textureHeight, format, type, address);
 	}
 	
 	BAIL_IF(CVPixelBufferUnlockBaseAddress(pixBuf, 0), "CVPixelBufferUnlockBaseAddress failed.\n");

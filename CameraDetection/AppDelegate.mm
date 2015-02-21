@@ -14,6 +14,8 @@
 #include "CFRadioController.h"
 #include "ControlWidgets.h"
 
+#define CFReleaseSafe(CF) { CFTypeRef _cf = (CF); if (_cf){ (CF) = NULL; CFRelease(_cf); } }
+
 @interface AppDelegate ()<CameraDelegate>
 {
 	TrackingDelegate* m_trackingDelegate;
@@ -28,14 +30,16 @@
 @property (assign) IBOutlet NSButton *m_stopButton;
 @property (assign) IBOutlet NSView *m_view;
 @property (nonatomic, strong) Camera* m_camera;
-@property (assign) IBOutlet OpenGLPreview* m_preview;
+@property (assign) IBOutlet OpenGLPreview* m_capturePreview;
+@property (assign) IBOutlet OpenGLPreview* m_outputPreview;
 @property (assign) IBOutlet NSPopUpButton* m_strategyPopup;
 @end
 
 @implementation AppDelegate
 @synthesize m_view;
 @synthesize m_camera;
-@synthesize m_preview;
+@synthesize m_capturePreview;
+@synthesize m_outputPreview;
 @synthesize m_strategyPopup;
 @synthesize m_stopButton;
 
@@ -43,7 +47,7 @@
 {
 	// Get information about the image
 	uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
-	size_t width = CVPixelBufferGetWidth(imageBuffer);
+	size_t width = CVPixelBufferGetWidth(imageBuffer);  // format kCVPixelFormatType_32BGRA to get use CVPixelBufferGetPixelFormatType
 	size_t height = CVPixelBufferGetHeight(imageBuffer);
 	size_t stride = CVPixelBufferGetBytesPerRow(imageBuffer);
 	
@@ -68,9 +72,24 @@
 		m_trafficController->sendParameter(0, 0, 0, 0);
 	else
 		m_trafficController->sendParameter(thrust, yaw, pitch, roll);
-	// Redering preview
-	[m_preview renderFromBuffer:imageBuffer];
-	//imshow("test", m_trackingDelegate->getOutputImage());
+	
+	// Redering capture preview
+	[m_capturePreview renderFromBuffer:imageBuffer];
+	
+	CVPixelBufferRef outputBuffer = NULL;
+	cv::Mat outputImage = m_trackingDelegate->getOutputImage();
+	uint8_t *outputAddress = outputImage.data;
+	OSStatus error = CVPixelBufferCreateWithBytes(kCFAllocatorDefault, width, height, kCVPixelFormatType_OneComponent8, outputAddress, width, \
+												  NULL, NULL, NULL, &outputBuffer);
+	if(error)
+	{
+		NSError *errorCode = [NSError errorWithDomain:NSOSStatusErrorDomain code:error userInfo:nil];
+		NSLog(@"Error: %@", [errorCode description]);
+	}
+	else // Redering output preview
+		[m_outputPreview renderFromBuffer:outputBuffer];
+	
+	CFReleaseSafe(outputBuffer);
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -88,13 +107,13 @@
 	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
 	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
 	
-	NSRect thrustFrame = NSMakeRect(80, 215, 270, 180);
+	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
 	[self addPIDGroupWithFrame:thrustFrame andCalObject:m_thrustPIDCalc];
-	NSRect pitchFrame = NSMakeRect(510, 215, 270, 180);
+	NSRect pitchFrame = NSMakeRect(510, 195, 270, 180);
 	[self addPIDGroupWithFrame:pitchFrame andCalObject:m_pitchPIDCalc];
-	NSRect yawFrame = NSMakeRect(80, 120, 270, 180);
+	NSRect yawFrame = NSMakeRect(80, 100, 270, 180);
 	[self addPIDGroupWithFrame:yawFrame andCalObject:m_yawPIDCalc];
-    NSRect	rollFrame = NSMakeRect(510, 120, 270, 180);
+    NSRect	rollFrame = NSMakeRect(510, 100, 270, 180);
 	[self addPIDGroupWithFrame:rollFrame andCalObject:m_rollPIDCalc];
 	
 	stopFlag = true;
@@ -140,9 +159,6 @@
 		case kPIDkd:
 			cal->setKd(value);
 			break;
-//		case kPIDdt:
-//			cal->setDt(value);
-//			break;
 		default:
 			break;
 	}

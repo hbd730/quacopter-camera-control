@@ -37,8 +37,6 @@
 		m_kiSlider = [self createSliderWithFrame:frameSliderKi andTag:kPIDki];
 		NSRect frameSliderKd = NSMakeRect(0, 0, 181, 22);
 		m_kdSlider = [self createSliderWithFrame:frameSliderKd andTag:kPIDkd];
-//		NSRect frameSliderDt = NSMakeRect(0, 0, 181, 22);
-//		m_dtSlider = [self createSliderWithFrame:frameSliderDt andTag:kPIDdt];
 
 		NSRect frameTextKp = NSMakeRect(190, 60, 53, 22);
 		m_kpTextfield = [self createTextFieldWithFrame:frameTextKp andTag:kPIDkp];
@@ -46,8 +44,6 @@
 		m_kiTextfield = [self createTextFieldWithFrame:frameTextKi andTag:kPIDki];
 		NSRect frameTextKd = NSMakeRect(190, 0, 53, 22);
 		m_kdTextfield = [self createTextFieldWithFrame:frameTextKd andTag:kPIDkd];
-//		NSRect frameTextDt = NSMakeRect(190, 0, 53, 22);
-//		m_dtTextfield = [self createTextFieldWithFrame:frameTextDt andTag:kPIDdt];
 	}
 	activeControlID = 0;
 	
@@ -90,9 +86,6 @@
 		case kPIDkd:
 			[m_kdTextfield setFloatValue:parameterValue];
 			break;
-//		case kPIDdt:
-//			[m_dtTextfield setFloatValue:parameterValue];
-//			break;
 		default:
 			break;
 	}
@@ -117,9 +110,6 @@
 		case kPIDkd:
 			[m_kdSlider setFloatValue:parameterValue];
 			break;
-//		case kPIDdt:
-//			[m_dtSlider setFloatValue:parameterValue];
-//			break;
 		default:
 			break;
 	}
