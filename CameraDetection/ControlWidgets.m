@@ -8,20 +8,8 @@
 
 #import "ControlWidgets.h"
 
-@interface ControlWidgets ()
-{
-	NSSlider* m_kpSlider;
-	NSSlider* m_kiSlider;
-	NSSlider* m_kdSlider;
-	NSSlider* m_dtSlider;
-	NSTextField* m_kpTextfield;
-	NSTextField* m_kiTextfield;
-	NSTextField* m_kdTextfield;
-	NSTextField* m_dtTextfield;
-}
-@end
-
 @implementation ControlWidgets
+
 @synthesize activeControlID;
 @synthesize activeValue;
 @synthesize associatedObject;
@@ -29,24 +17,7 @@
 - (id)initWithFrame:(NSRect)frameRect
 {
 	self = [super initWithFrame:frameRect];
-	if (self)
-	{
-		NSRect frameSliderKp = NSMakeRect(0, 60, 181, 22);
-		m_kpSlider = [self createSliderWithFrame:frameSliderKp andTag:kPIDkp];
-		NSRect frameSliderKi = NSMakeRect(0, 30, 181, 22);
-		m_kiSlider = [self createSliderWithFrame:frameSliderKi andTag:kPIDki];
-		NSRect frameSliderKd = NSMakeRect(0, 0, 181, 22);
-		m_kdSlider = [self createSliderWithFrame:frameSliderKd andTag:kPIDkd];
-
-		NSRect frameTextKp = NSMakeRect(190, 60, 53, 22);
-		m_kpTextfield = [self createTextFieldWithFrame:frameTextKp andTag:kPIDkp];
-		NSRect frameTextKi = NSMakeRect(190, 30, 53, 22);
-		m_kiTextfield = [self createTextFieldWithFrame:frameTextKi andTag:kPIDki];
-		NSRect frameTextKd = NSMakeRect(190, 0, 53, 22);
-		m_kdTextfield = [self createTextFieldWithFrame:frameTextKd andTag:kPIDkd];
-	}
 	activeControlID = 0;
-	
 	return self;
 }
 
@@ -77,14 +48,14 @@
 	activeValue = parameterValue;
 	switch([sender tag])
 	{
-		case kPIDkp:
-			[m_kpTextfield setFloatValue:parameterValue];
+		case kFirst:
+			[m_textfield1 setFloatValue:parameterValue];
 			break;
-		case kPIDki:
-			[m_kiTextfield setFloatValue:parameterValue];
+		case kSecond:
+			[m_textfield2 setFloatValue:parameterValue];
 			break;
-		case kPIDkd:
-			[m_kdTextfield setFloatValue:parameterValue];
+		case kThird:
+			[m_textfield3 setFloatValue:parameterValue];
 			break;
 		default:
 			break;
@@ -101,20 +72,90 @@
 	activeValue = parameterValue;
 	switch([sender tag])
 	{
-		case kPIDkp:
-			[m_kpSlider setFloatValue:parameterValue];
+		case kFirst:
+			[m_Slider1 setFloatValue:parameterValue];
 			break;
-		case kPIDki:
-			[m_kiSlider setFloatValue:parameterValue];
+		case kSecond:
+			[m_Slider2 setFloatValue:parameterValue];
 			break;
-		case kPIDkd:
-			[m_kdSlider setFloatValue:parameterValue];
+		case kThird:
+			[m_Slider3 setFloatValue:parameterValue];
 			break;
 		default:
 			break;
 	}
 	activeControlID = [sender tag];
 	[self sendAction:[self action] to:[self target]];
+}
+
+@end
+
+@implementation PIDControlWidgets
+
+- (id)initWithFrame:(NSRect)frameRect
+{
+	self = [super initWithFrame:frameRect];
+	if(self)
+	{
+		NSRect frameSlider1 = NSMakeRect(0, 60, 181, 22);
+		m_Slider1 = [self createSliderWithFrame:frameSlider1 andTag:kFirst];
+		NSRect frameSlider2 = NSMakeRect(0, 30, 181, 22);
+		m_Slider2 = [self createSliderWithFrame:frameSlider2 andTag:kSecond];
+		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
+		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
+		
+		NSRect frameText1 = NSMakeRect(190, 60, 53, 22);
+		m_textfield1 = [self createTextFieldWithFrame:frameText1 andTag:kFirst];
+		NSRect frameText2 = NSMakeRect(190, 30, 53, 22);
+		m_textfield2 = [self createTextFieldWithFrame:frameText2 andTag:kSecond];
+		NSRect frameText3 = NSMakeRect(190, 0, 53, 22);
+		m_textfield3 = [self createTextFieldWithFrame:frameText3 andTag:kThird];
+	}
+	return self;
+}
+
+@end
+
+@implementation HSVHighControlWidgets
+
+- (id)initWithFrame:(NSRect)frameRect
+{
+	self = [super initWithFrame:frameRect];
+	if(self)
+	{
+		NSRect frameSlider1 = NSMakeRect(0, 60, 181, 22);
+		m_Slider1 = [self createSliderWithFrame:frameSlider1 andTag:kFirst];
+		[m_Slider1 setMaxValue:255];
+		NSRect frameSlider2 = NSMakeRect(0, 30, 181, 22);
+		m_Slider2 = [self createSliderWithFrame:frameSlider2 andTag:kSecond];
+		[m_Slider2 setMaxValue:255];
+		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
+		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
+		[m_Slider3 setMaxValue:255];
+	}
+	return self;
+}
+
+@end
+
+@implementation HSVLowControlWidgets
+
+- (id)initWithFrame:(NSRect)frameRect
+{
+	self = [super initWithFrame:frameRect];
+	if(self)
+	{
+		NSRect frameSlider1 = NSMakeRect(0, 60, 181, 22);
+		m_Slider1 = [self createSliderWithFrame:frameSlider1 andTag:kFirst];
+		[m_Slider1 setMaxValue:255];
+		NSRect frameSlider2 = NSMakeRect(0, 30, 181, 22);
+		m_Slider2 = [self createSliderWithFrame:frameSlider2 andTag:kSecond];
+		[m_Slider2 setMaxValue:255];
+		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
+		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
+		[m_Slider3 setMaxValue:255];
+	}
+	return self;
 }
 
 @end

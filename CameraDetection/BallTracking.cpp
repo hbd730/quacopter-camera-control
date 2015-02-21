@@ -21,18 +21,12 @@ const std::string kAccumulatorThresholdTrackbarName = "Accumulator Threshold";
 const float kFoc = 40.0f;
 const float kObjectHeight = 35.0f;
 
-
 BallTracking::BallTracking(cv::Point3i& position):
 	ITracking(position),
 	m_cannyThreshold(kCannyThresholdInitialValue),
-	m_accumulatorThreshold(kAccumulatorThresholdInitialValue)
+	m_accumulatorThreshold(kAccumulatorThresholdInitialValue),
+	m_lowH(kLowH),m_highH(kHighH),m_lowS(kLowS),m_highS(kHighS),m_lowV(kLowV),m_highV(kHighV)
 {
-	gLowH = 5;
-	gHighH = 23;
-	gLowS = 27;
-	gHighS = 218;
-	gLowV = 154;
-	gHighV = 255;
 }
 
 BallTracking::~BallTracking()
@@ -43,13 +37,6 @@ std::string BallTracking::getName() const
 {
 	return "Ball tracking";
 }
-
-//	printf("LowH is : %d\n", gLowH);
-//	printf("HighH is : %d\n", gHighH);
-//	printf("LowS is : %d\n", gLowS);
-//	printf("HighS is : %d\n", gHighS);
-//	printf("LowV is : %d\n", gLowV);
-//	printf("HighV is : %d\n", gHighV);
 
 void BallTracking::init(cv::Mat &image)
 {
@@ -78,7 +65,7 @@ bool BallTracking::processFrame(cv::Mat &image)
 	Mat imgHSV;
 	cvtColor(image, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
 	
-	inRange(imgHSV, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), m_outputImage); //Threshold the image
+	inRange(imgHSV, Scalar(m_lowH, m_lowS, m_lowV), Scalar(m_highH, m_highS, m_highV), m_outputImage); //Threshold the image
 	
 	// morphological opening (removes small objects from the foreground)
 	erode(m_outputImage, m_outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));

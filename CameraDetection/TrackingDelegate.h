@@ -11,6 +11,8 @@
 
 #include "Tracking.h"
 
+#include "BallTracking.h"    // need complete type fot outer app delegate to set tracker data
+
 class TrackingDelegate
 {
 public:
@@ -29,6 +31,7 @@ public:
 	TrackingDelegate();
 	virtual ~TrackingDelegate();
 	void setStrategy(StrategyType type);
+	BallTracking* getBallTracker() const;
 	cv::Point3i startTracking(cv::Mat& image);
 	cv::Mat getOutputImage() const {return m_tracking->getOutputImage();};
 	

@@ -116,6 +116,11 @@
     NSRect	rollFrame = NSMakeRect(510, 100, 270, 180);
 	[self addPIDGroupWithFrame:rollFrame andCalObject:m_rollPIDCalc];
 	
+	NSRect hsvLowFrame = NSMakeRect(80, 9, 270, 180);
+	[self addHSVLowGroupWithFrame:hsvLowFrame];
+	NSRect hsvHighFrame = NSMakeRect(510, 9, 270, 180);
+	[self addHSVHighGroupWithFrame:hsvHighFrame];
+
 	stopFlag = true;
 	[m_stopButton setTitle:@"Start"];
 	m_camera = [[Camera alloc] init];
@@ -150,14 +155,56 @@
 	float value = [sender activeValue];
 	switch(type)
 	{
-		case kPIDkp:
+		case kFirst:
 			cal->setKp(value);
 			break;
-		case kPIDki:
+		case kSecond:
 			cal->setKi(value);
 			break;
-		case kPIDkd:
+		case kThird:
 			cal->setKd(value);
+			break;
+		default:
+			break;
+	}
+}
+
+- (void)hsvLowValueChanged:(ControlWidgets*)sender
+{
+	ParameterType type = [sender activeControlID];
+	float value = [sender activeValue];
+	BallTracking* ballTracker  = m_trackingDelegate->getBallTracker();
+	switch(type)
+	{
+		case kFirst:
+			ballTracker->setLowH(value);
+			break;
+		case kSecond:
+			ballTracker->setLowS(value);
+			break;
+		case kThird:
+			ballTracker->setLowV(value);
+			break;
+		default:
+			break;
+	}
+}
+
+- (void)hsvHighValueChanged:(ControlWidgets*)sender
+{
+	ParameterType type = [sender activeControlID];
+	float value = [sender activeValue];
+	BallTracking* ballTracker  = m_trackingDelegate->getBallTracker();
+	switch(type)
+	{
+		case kFirst:
+			ballTracker->setHighH(value);
+			break;
+		case kSecond:
+			ballTracker->setHighS(value);
+			break;
+		case kThird:
+			ballTracker->setHighV(value);
 			break;
 		default:
 			break;
@@ -176,12 +223,34 @@
 	}
 }
 
-- (void)addPIDGroupWithFrame:(NSRect)freame andCalObject:(pid_calc_t*)obj
+- (void)addPIDGroupWithFrame:(NSRect)frame andCalObject:(pid_calc_t*)obj
 {
-	m_controlWidget = [[[ControlWidgets alloc] initWithFrame:freame] autorelease];
+	m_controlWidget = [[[PIDControlWidgets alloc] initWithFrame:frame] autorelease];
 	[m_controlWidget setTarget:self];
 	[m_controlWidget setAction:@selector(pidValueChanged:)];
 	m_controlWidget.associatedObject = (id)obj;
+	[m_view addSubview:m_controlWidget];
+}
+
+- (void)addHSVLowGroupWithFrame:(NSRect)frame
+{
+	m_controlWidget = [[[HSVLowControlWidgets alloc] initWithFrame:frame] autorelease];
+	[m_controlWidget setTarget:self];
+	[m_controlWidget setAction:@selector(hsvLowValueChanged:)];
+	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kLowH];
+	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kLowS];
+	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kLowV];
+	[m_view addSubview:m_controlWidget];
+}
+
+- (void)addHSVHighGroupWithFrame:(NSRect)frame
+{
+	m_controlWidget = [[[HSVHighControlWidgets alloc] initWithFrame:frame] autorelease];
+	[m_controlWidget setTarget:self];
+	[m_controlWidget setAction:@selector(hsvHighValueChanged:)];
+	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kHighH];
+	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kHighS];
+	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kHighV];
 	[m_view addSubview:m_controlWidget];
 }
 

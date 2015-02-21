@@ -8,15 +8,40 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ControlWidgets :  NSControl
+@interface ControlWidgets : NSControl
 {
 	enum ParameterType: NSInteger
 	{
-		kPIDkp, kPIDki, kPIDkd
+		kFirst, kSecond, kThird
 	};
+@public   // public ?
+	NSSlider* m_Slider1;
+	NSSlider* m_Slider2;
+	NSSlider* m_Slider3;
+	NSTextField* m_textfield1;
+	NSTextField* m_textfield2;
+	NSTextField* m_textfield3;
 }
 @property (assign,readonly) enum ParameterType activeControlID;
 @property (assign,readonly) float activeValue;
 @property (assign) id associatedObject;
-
 @end
+
+
+@interface PIDControlWidgets : ControlWidgets
+{
+}
+@end
+
+@interface HSVLowControlWidgets : ControlWidgets
+{
+}
+@end
+
+@interface HSVHighControlWidgets : ControlWidgets
+{
+}
+@end
+
+
+
