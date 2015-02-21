@@ -42,10 +42,9 @@ CFRadioController::~CFRadioController() noexcept
 	m_stopThread = true;
 	if(m_thread.joinable())
 		m_thread.join();
-	delete m_crRadio;
 	if(m_cfCopter)
-		delete m_cfCopter;
-
+		delete m_cfCopter; // cf instance needs to be destructed first to stop logging data and prevent buffer overflow
+	delete m_crRadio;
 }
 
 void CFRadioController::start()
