@@ -15,7 +15,9 @@ const static int SENSITIVITY_VALUE = 100;
 // size of blur used to smooth the intensity image output from absdiff() function
 const static int BLUR_SIZE = 10;
 
-StaticTracking::StaticTracking(cv::Point3i& position):ITracking(position),m_boundingRectangle(0,0,0,0)
+StaticTracking::StaticTracking(cv::Point3i& position):
+	ITracking(position),
+	m_boundingRectangle(0,0,0,0)
 {
 	
 }
@@ -29,14 +31,9 @@ std::string StaticTracking::getName() const
 	return "Static tracking";
 }
 
-cv::Point3i StaticTracking::getCurrentPosition() const
-{
-	return m_position;
-}
-
 void StaticTracking::init(cv::Mat &image)
 {
-
+	image.copyTo(m_outputImage);
 }
 
 void StaticTracking::setReferenceFrame(cv::Mat& reference)

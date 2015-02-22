@@ -9,7 +9,6 @@
 #include "TrackingDelegate.h"
 #include "StaticTracking.h"
 #include "DynamicTracking.h"
-#include "BallTracking.h"
 
 TrackingDelegate::TrackingDelegate():
 m_tracking(NULL),
@@ -53,6 +52,11 @@ void TrackingDelegate::setStrategy(StrategyType type)
 	m_mutex.unlock();
 }
 
+BallTracking* TrackingDelegate::getBallTracker() const
+{
+	return dynamic_cast<BallTracking*>(m_tracking);
+}
+							
 cv::Point3i TrackingDelegate::startTracking(cv::Mat& currentFrame)
 {
 	m_mutex.lock();

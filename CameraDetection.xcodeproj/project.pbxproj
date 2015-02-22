@@ -143,10 +143,10 @@
 			isa = PBXGroup;
 			children = (
 				DE2E52811A1732FE00384F2B /* DataTraffic.h */,
+				DE3D31D91A88BC7600693BDE /* CFRadioController.h */,
+				DE3D31D81A88BC7600693BDE /* CFRadioController.cpp */,
 				DE2E52831A1733A300384F2B /* ZeroMqController.h */,
 				DE2E52821A1733A300384F2B /* ZeroMqController.cpp */,
-				DE3D31D81A88BC7600693BDE /* CFRadioController.cpp */,
-				DE3D31D91A88BC7600693BDE /* CFRadioController.h */,
 			);
 			name = DataTracffic;
 			sourceTree = "<group>";

@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__TrackingDelegate__
-#define __CameraDetection__TrackingDelegate__
+#pragma once
 
 #include "Tracking.h"
+#include "BallTracking.h" 
 
 class TrackingDelegate
 {
@@ -29,12 +29,12 @@ public:
 	TrackingDelegate();
 	virtual ~TrackingDelegate();
 	void setStrategy(StrategyType type);
+	BallTracking* getBallTracker() const;
 	cv::Point3i startTracking(cv::Mat& image);
+	cv::Mat getOutputImage() const {return m_tracking->getOutputImage();};
 	
 private:
 	ITracking* m_tracking;
 	StateType m_state;
 	std::mutex m_mutex;
 };
-
-#endif /* defined(__CameraDetection__TrackingDelegate__) */

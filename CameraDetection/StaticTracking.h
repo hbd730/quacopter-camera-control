@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__StaticTracking__
-#define __CameraDetection__StaticTracking__
+#pragma once
 
 #include "Tracking.h"
 
@@ -17,7 +16,6 @@ public:
 	StaticTracking(cv::Point3i& position);
 	virtual ~StaticTracking();
 	virtual std::string getName() const;
-	virtual cv::Point3i getCurrentPosition() const;
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
@@ -39,5 +37,3 @@ private:
 	//thresholded difference image (for use in findContours() function)
 	cv::Mat m_thresholdImage;
 };
-
-#endif /* defined(__CameraDetection__StaticTracking__) */

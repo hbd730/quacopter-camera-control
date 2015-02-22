@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__ITracking__
-#define __CameraDetection__ITracking__
+#pragma once
 
 #include <opencv2/opencv.hpp>
 
@@ -15,15 +14,15 @@
 class ITracking
 {
 public:
-	ITracking(cv::Point3i& position):m_position(position){};
+	ITracking(cv::Point3i& position):m_position(position),m_outputImage(){};
+	cv::Point3i getCurrentPosition() const {return m_position;};
+	cv::Mat getOutputImage() const {return m_outputImage;};
 	virtual std::string getName() const = 0;
-	virtual cv::Point3i getCurrentPosition() const = 0;
 	virtual void init(cv::Mat& image) = 0;
 	virtual void setReferenceFrame(cv::Mat& reference) = 0;
 	virtual bool processFrame(cv::Mat& image) = 0;
 	virtual ~ITracking(){};
 protected:
 	cv::Point3i m_position;
+	cv::Mat m_outputImage;
 };
-
-#endif /* defined(__CameraDetection__ITracking__) */

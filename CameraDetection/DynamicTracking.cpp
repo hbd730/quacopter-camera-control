@@ -23,14 +23,9 @@ std::string DynamicTracking::getName() const
 	return "Dynamic tracking";
 }
 
-cv::Point3i DynamicTracking::getCurrentPosition() const
-{
-	return m_position;
-}
-
 void DynamicTracking::init(cv::Mat &image)
 {
-	
+	image.copyTo(m_outputImage);
 }
 
 void DynamicTracking::setReferenceFrame(cv::Mat& reference)

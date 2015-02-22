@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__DynamicTracking__
-#define __CameraDetection__DynamicTracking__
+#pragma once
 
 #include "Tracking.h"
 
@@ -17,10 +16,7 @@ public:
 	DynamicTracking(cv::Point3i& position);
 	virtual ~DynamicTracking();
 	virtual std::string getName() const;
-	virtual cv::Point3i getCurrentPosition() const;
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
 };
-
-#endif /* defined(__CameraDetection__DynamicTracking__) */
