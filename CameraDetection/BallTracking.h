@@ -6,15 +6,14 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__BallTracking__
-#define __CameraDetection__BallTracking__
+#pragma once
 
 #include "Tracking.h"
 
 class BallTracking : public ITracking
 {
 public:
-	enum HSVMetrics
+	enum HSVMetrics  // orange color hsv space 
 	{
 		kLowH = 5,
 		kHighH = 23,
@@ -49,5 +48,3 @@ private:
 	int m_lowV;
 	int m_highV;
 };
-
-#endif /* defined(__CameraDetection__BallTracking__) */

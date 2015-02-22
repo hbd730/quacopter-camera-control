@@ -17,8 +17,6 @@ void CFRadioController::radioTask(string msg)
 	
 	while(m_cfCopter->cycle() && m_stopThread == false)
 	{
-		
-		//std::this_thread::sleep_for( std::chrono::seconds(1) );
 	}
 	cout << "Radio thread terminated!"  << endl;
 }

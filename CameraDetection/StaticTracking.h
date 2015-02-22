@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__StaticTracking__
-#define __CameraDetection__StaticTracking__
+#pragma once
 
 #include "Tracking.h"
 
@@ -38,5 +37,3 @@ private:
 	//thresholded difference image (for use in findContours() function)
 	cv::Mat m_thresholdImage;
 };
-
-#endif /* defined(__CameraDetection__StaticTracking__) */

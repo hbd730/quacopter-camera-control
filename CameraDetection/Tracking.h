@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__ITracking__
-#define __CameraDetection__ITracking__
+#pragma once
 
 #include <opencv2/opencv.hpp>
 
@@ -27,5 +26,3 @@ protected:
 	cv::Point3i m_position;
 	cv::Mat m_outputImage;
 };
-
-#endif /* defined(__CameraDetection__ITracking__) */

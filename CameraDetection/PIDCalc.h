@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__PIDCalc__
-#define __CameraDetection__PIDCalc__
+#pragma once
 
 class pid_calc_if
 {
@@ -60,5 +59,3 @@ private:
 	float error_ = 0.0f;
 	unsigned int count_ = 0;
 };
-
-#endif /* defined(__CameraDetection__PIDCalc__) */

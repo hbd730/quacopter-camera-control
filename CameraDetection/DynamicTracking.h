@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__DynamicTracking__
-#define __CameraDetection__DynamicTracking__
+#pragma once
 
 #include "Tracking.h"
 
@@ -21,5 +20,3 @@ public:
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
 };
-
-#endif /* defined(__CameraDetection__DynamicTracking__) */

@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#ifndef __CameraDetection__utils__
-#define __CameraDetection__utils__
+#pragma once
 
 #include <algorithm>
 
@@ -20,5 +19,3 @@ T bound(T val, T low, T high) noexcept
 	val = std::max(val, low);
 	return val;
 }
-
-#endif /* defined(__CameraDetection__utils__) */
