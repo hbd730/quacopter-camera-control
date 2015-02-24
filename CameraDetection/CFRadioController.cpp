@@ -27,12 +27,7 @@ CFRadioController::CFRadioController() noexcept:
 	m_stopThread(true),
 	m_thread()
 {
-	m_crRadio = new CCrazyRadio("radio://0/10/250K");
-	if(m_crRadio->startRadio())
-	{
-		m_cfCopter = new CCrazyflie(m_crRadio);
-		m_cfCopter->setSendSetpoints(true);
-	}
+	m_crRadio = new CCrazyRadio("radio://0/10/250K"); // should do error checking in the future and put in the start()
 }
 
 CFRadioController::~CFRadioController() noexcept
@@ -47,10 +42,17 @@ CFRadioController::~CFRadioController() noexcept
 
 void CFRadioController::start()
 {
-	if(m_stopThread)
+	if(m_stopThread) // check if thread has been started, only started once
 	{
-		m_stopThread = false;
-		m_thread = thread(&CFRadioController::radioTask, this, "successfully");
+		if(m_crRadio->startRadio())
+		{
+			m_cfCopter = new CCrazyflie(m_crRadio);
+			m_cfCopter->setSendSetpoints(true);
+			m_stopThread = false;
+			m_thread = thread(&CFRadioController::radioTask, this, "successfully");
+		}
+		else
+			cout << "Fail to start radio, please check connection! " << endl;
 	}
 }
 
