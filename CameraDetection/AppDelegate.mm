@@ -240,6 +240,9 @@
 	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kLowH];
 	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kLowS];
 	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kLowV];
+	[m_controlWidget->m_textfield1 setIntValue:BallTracking::kLowH];
+	[m_controlWidget->m_textfield2 setIntValue:BallTracking::kLowS];
+	[m_controlWidget->m_textfield3 setIntValue:BallTracking::kLowV];
 	[m_view addSubview:m_controlWidget];
 }
 
@@ -251,6 +254,9 @@
 	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kHighH];
 	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kHighS];
 	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kHighV];
+	[m_controlWidget->m_textfield1 setIntValue:BallTracking::kHighH];
+	[m_controlWidget->m_textfield2 setIntValue:BallTracking::kHighS];
+	[m_controlWidget->m_textfield3 setIntValue:BallTracking::kHighV];
 	[m_view addSubview:m_controlWidget];
 }
 
