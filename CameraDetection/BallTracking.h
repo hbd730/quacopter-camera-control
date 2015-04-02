@@ -13,13 +13,13 @@
 class BallTracking : public ITracking
 {
 public:
-	enum HSVMetrics  // orange color hsv space 
+	enum HSVMetrics  // green/yellow color hsv space
 	{
-		kLowH = 5,
-		kHighH = 23,
-		kLowS = 27,
-		kHighS = 218,
-		kLowV = 154,
+		kLowH = 20,
+		kHighH = 69,
+		kLowS = 39,
+		kHighS = 132,
+		kLowV = 182,
 		kHighV = 255
 	};
 	BallTracking(cv::Point3i& position);

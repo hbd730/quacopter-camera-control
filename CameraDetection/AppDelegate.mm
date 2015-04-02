@@ -15,6 +15,7 @@
 #include "ControlWidgets.h"
 
 #define CFReleaseSafe(CF) { CFTypeRef _cf = (CF); if (_cf){ (CF) = NULL; CFRelease(_cf); } }
+#define KEYBOARD_CONTROL
 
 @interface AppDelegate ()<CameraDelegate>
 {
@@ -25,6 +26,8 @@
 	pid_calc_t* m_rollPIDCalc;
 	CFRadioController* m_trafficController;
 	ControlWidgets* m_controlWidget;
+	int m_kPitch;
+	int m_kYaw;
 	bool stopFlag;
 }
 @property (assign) IBOutlet NSButton *m_stopButton;
@@ -63,10 +66,14 @@
 	float rollError = currentPosition.x - (int)width/2;
 	float roll = m_rollPIDCalc->run(rollError);
 	
-	float pitchError = currentPosition.z - 75;
+#ifdef KEYBOARD_CONTROL
+	float pitch = m_kPitch;
+	float yaw = m_kYaw;
+#else
+	float pitchError = currentPosition.z - 200;
 	float pitch = m_pitchPIDCalc->run(pitchError);
-	
 	float yaw = 0;
+#endif
 	
 	if(stopFlag)
 		m_trafficController->sendParameter(0, 0, 0, 0);
@@ -102,9 +109,9 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
-	m_thrustPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 5000, -5000, 65000, 0);
-	m_pitchPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
-	m_rollPIDCalc = new pid_calc_t(0, 0, 0, 0.03, 30, -30, 15, -15);
+	m_thrustPIDCalc = new pid_calc_t(20, 8, 0, 0.03, 5000, -5000, 65000, 0);
+	m_pitchPIDCalc = new pid_calc_t(0.1, 0.0025, 0, 0.03, 30, -30, 15, -15);
+	m_rollPIDCalc = new pid_calc_t(0.03, 0.0025, 0, 0.03, 30, -30, 15, -15);
 	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
@@ -125,6 +132,7 @@
 	[m_stopButton setTitle:@"Start"];
 	m_camera = [[Camera alloc] init];
 	m_camera.delegate = self;
+	[m_view.window makeFirstResponder:self];
 	[m_camera startRunning];
 }
 
@@ -253,5 +261,57 @@
 	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kHighV];
 	[m_view addSubview:m_controlWidget];
 }
+
+- (void)keyDown:(NSEvent *)theEvent {
+	// Arrow keys are associated with the numeric keypad
+	if ([theEvent modifierFlags] & NSNumericPadKeyMask)
+	{
+		NSString *theArrow = [theEvent charactersIgnoringModifiers];
+		unichar keyChar = 0;
+		if ([theArrow length] == 1)
+		{
+			keyChar = [theArrow characterAtIndex:0];
+			switch (keyChar)
+			{
+				case NSUpArrowFunctionKey:
+					m_kPitch = 3;
+					break;
+				case NSLeftArrowFunctionKey:
+					m_kYaw = 10;
+					break;
+				case NSRightArrowFunctionKey:
+					m_kYaw = -10;
+					break;
+				case NSDownArrowFunctionKey:
+					m_kPitch = -3;
+					break;
+			}
+		}
+	}
+	else
+	{
+		[super keyDown:theEvent];
+	}
+}
+
+- (void)keyUp:(NSEvent *)theEvent {
+	// Arrow keys are associated with the numeric keypad
+	if ([theEvent modifierFlags] & NSNumericPadKeyMask)
+	{
+		NSString *theArrow = [theEvent charactersIgnoringModifiers];
+		unichar keyChar = 0;
+		if ([theArrow length] == 1)
+		{
+			keyChar = [theArrow characterAtIndex:0];
+			m_kPitch = 0;
+			m_kYaw = 0;
+		}
+	}
+	else
+	{
+		[super keyDown:theEvent];
+	}
+}
+
 
 @end
