@@ -132,6 +132,13 @@
 		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
 		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
 		[m_Slider3 setMaxValue:255];
+		
+		NSRect frameText1 = NSMakeRect(190, 60, 53, 22);
+		m_textfield1 = [self createTextFieldWithFrame:frameText1 andTag:kFirst];
+		NSRect frameText2 = NSMakeRect(190, 30, 53, 22);
+		m_textfield2 = [self createTextFieldWithFrame:frameText2 andTag:kSecond];
+		NSRect frameText3 = NSMakeRect(190, 0, 53, 22);
+		m_textfield3 = [self createTextFieldWithFrame:frameText3 andTag:kThird];
 	}
 	return self;
 }
@@ -154,6 +161,13 @@
 		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
 		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
 		[m_Slider3 setMaxValue:255];
+		
+		NSRect frameText1 = NSMakeRect(190, 60, 53, 22);
+		m_textfield1 = [self createTextFieldWithFrame:frameText1 andTag:kFirst];
+		NSRect frameText2 = NSMakeRect(190, 30, 53, 22);
+		m_textfield2 = [self createTextFieldWithFrame:frameText2 andTag:kSecond];
+		NSRect frameText3 = NSMakeRect(190, 0, 53, 22);
+		m_textfield3 = [self createTextFieldWithFrame:frameText3 andTag:kThird];
 	}
 	return self;
 }

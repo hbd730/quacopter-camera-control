@@ -31,12 +31,12 @@ public:
 	void HoughDetection(const cv::Mat& src_gray, const cv::Mat& src_display, int cannyThreshold, int accumulatorThreshold);
 	void tackerBarHandler(int pos);
 	int calculateDistance(cv::Mat& thresholdImage);
-	void setLowH(int value){ m_lowH = value; printf("LowH is : %d\n", m_lowH);}
-	void setHighH(int value){ m_highH = value; printf("HighH is : %d\n", m_highH);}
-	void setLowS(int value){ m_lowS = value; printf("LowS is : %d\n", m_lowS);}
-	void setHighS(int value){ m_highS = value; printf("HighS is : %d\n", m_highS);}
-	void setLowV(int value){ m_lowV = value; printf("LowV is : %d\n", m_lowV);}
-	void setHighV(int value){ m_highV = value; printf("HighV is : %d\n", m_highV);}
+	void setLowH(int value){ m_lowH = value;}
+	void setHighH(int value){ m_highH = value;}
+	void setLowS(int value){ m_lowS = value;}
+	void setHighS(int value){ m_highS = value;}
+	void setLowV(int value){ m_lowV = value;}
+	void setHighV(int value){ m_highV = value;}
 	
 private:
 	int m_cannyThreshold;
