@@ -33,10 +33,10 @@ public:
 			   float ki,
 			   float kd,
 			   float dt,
-			   float ihigh = 5000.0,
-			   float ilow = -5000.0,
-			   float pidHighLimit = 5000.0,
-			   float pidLowLimit = -5000.0) noexcept;
+			   float ihigh = 500.0,
+			   float ilow = -500.0,
+			   float pidHighLimit = 65000.0,
+			   float pidLowLimit = 0) noexcept;
 	~pid_calc_t() noexcept = default;
 	
 	void reset() noexcept override;
@@ -57,5 +57,5 @@ private:
 	const float pidHighLimit_;
 	float sum_ = 0.0f;
 	float error_ = 0.0f;
-	unsigned int count_ = 0;
 };
+

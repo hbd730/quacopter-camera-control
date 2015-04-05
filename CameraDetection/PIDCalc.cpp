@@ -26,7 +26,6 @@ void pid_calc_t::reset() noexcept
 {
 	sum_ = 0.0f;
 	error_ = 0.0f;
-	count_ = 0;
 	kp_ = 0;
 	ki_ = 0;
 	kd_ = 0;
@@ -35,19 +34,20 @@ void pid_calc_t::reset() noexcept
 
 float pid_calc_t::run(float error) noexcept
 {
-	sum_ += error*dt_;
+	sum_ += error * dt_;
 	sum_ = bound(sum_, ilow_, ihigh_);
-	
 	float deriv = 0.0f;
-	if (count_ != 0)
+	if(dt_ != 0)
 	{
-		if(dt_ != 0)
-			deriv = (error - error_)/dt_;
+		if((error - error_) <= 0)
+			deriv = (error - error_) / dt_;
+		else
+			deriv = 0;
 	}
-	++count_;
+
 	error_ = error;
 	
-	float pidValue = kp_*error_ + ki_*sum_ + kd_*deriv;
+	float pidValue = kp_ * error_ + ki_ * sum_ + kd_ * deriv;
 	pidValue = bound(pidValue, pidLowLimit_, pidHighLimit_);
 	
 	return pidValue;

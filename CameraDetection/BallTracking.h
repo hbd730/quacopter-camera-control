@@ -13,14 +13,14 @@
 class BallTracking : public ITracking
 {
 public:
-	enum HSVMetrics  // Online caculator use range H = 0- 360, S = 0-100, V = 0-100
-	{				 // In OpenCV, H = 0-180, S = 0-255, V = 0-255
-		kLowH = 130,
-		kHighH = 170,
-		kLowS = 80,
-		kHighS = 120,
-		kLowV = 80,
-		kHighV = 120
+	enum HSVMetrics   // Online caculator use range H = 0- 360, S = 0-100, V = 0-100
+	{				  // In OpenCV, H = 0-180, S = 0-255, V = 0-255
+		kLowH = 20,
+		kHighH = 69,
+		kLowS = 39,
+		kHighS = 132,
+		kLowV = 182,
+		kHighV = 255
 	};
 	BallTracking(cv::Point3i& position);
 	virtual ~BallTracking();

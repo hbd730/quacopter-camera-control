@@ -61,7 +61,7 @@
 	cv::Point3i currentPosition = m_trackingDelegate->startTracking(currentFrame);
 	
 	float thrustError = currentPosition.y - (int)height/2;
-	float thrust = m_thrustPIDCalc->run(thrustError);
+	float thrust = 38000 + m_thrustPIDCalc->run(thrustError);
 	
 	float rollError = currentPosition.x - (int)width/2;
 	float roll = m_rollPIDCalc->run(rollError);
@@ -109,7 +109,7 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
-	m_thrustPIDCalc = new pid_calc_t(20, 8, 0, 0.03, 5000, -5000, 65000, 0);
+	m_thrustPIDCalc = new pid_calc_t(30, 40, 2.5, 0.005, 300, -200, 27000, -38000);
 	m_pitchPIDCalc = new pid_calc_t(0.1, 0.0025, 0, 0.03, 30, -30, 15, -15);
 	m_rollPIDCalc = new pid_calc_t(0.03, 0.0025, 0, 0.03, 30, -30, 15, -15);
 	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
@@ -280,7 +280,7 @@
 			switch (keyChar)
 			{
 				case NSUpArrowFunctionKey:
-					m_kPitch = 3;
+					m_kPitch = 8;
 					break;
 				case NSLeftArrowFunctionKey:
 					m_kYaw = 10;
@@ -289,7 +289,7 @@
 					m_kYaw = -10;
 					break;
 				case NSDownArrowFunctionKey:
-					m_kPitch = -3;
+					m_kPitch = -8;
 					break;
 			}
 		}
