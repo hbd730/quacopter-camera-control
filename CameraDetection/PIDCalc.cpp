@@ -16,7 +16,7 @@ float PIDCalcThrust::run(float error) noexcept
 	float deriv = 0.0f;
 	if(kDt)
 	{
-		if((error - error_) <= 0)
+		if((error - error_) > 0) // means a significant drop
 			deriv = (error - error_) / kDt;
 		else
 			deriv = 0;
@@ -26,7 +26,7 @@ float PIDCalcThrust::run(float error) noexcept
 	float pidValue = kp_ * error_ + ki_ * sum_ + kd_ * deriv;
 	
 	int thrustValue = pidValue + kThrustOffset;
-	bound(thrustValue, kMinThrust, kMaxThrust);
+	thrustValue = bound(thrustValue, kMinThrust, kMaxThrust);
 	
 	return thrustValue;
 }
@@ -43,7 +43,7 @@ float PIDCalcRP::run(float error) noexcept
 	error_ = error;
 	
 	float pidValue = kp_ * error_ + ki_ * sum_ + kd_ * deriv;
-	bound(pidValue, kMinRoll, kMaxRoll);
+	pidValue = bound(pidValue, kMinRoll, kMaxRoll);
 		
 	return pidValue;
 }
