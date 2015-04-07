@@ -2,60 +2,74 @@
 //  PIDCalc.h
 //  CameraDetection
 //
-//  Created by Shen He on 15/11/2014.
+//  Created by Peter Huang on 15/11/2014.
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
 #pragma once
 
-class pid_calc_if
+class IPIDCalc
 {
 public:
-	pid_calc_if() noexcept = default;
-	pid_calc_if(const pid_calc_if&) = delete;
-	pid_calc_if(pid_calc_if&&) = delete;
-	pid_calc_if& operator = (const pid_calc_if&) = delete;
-	pid_calc_if& operator = (pid_calc_if&&) = delete;
-	virtual ~pid_calc_if() noexcept = default;
+	IPIDCalc(float kp, float ki, float kd) noexcept
+	:kp_(kp), ki_(ki), kd_(kd), sum_(0), error_(0) {};
+		
+	IPIDCalc(const IPIDCalc&) = delete;
+	IPIDCalc(IPIDCalc&&) = delete;
+	IPIDCalc& operator = (const IPIDCalc&) = delete;
+	IPIDCalc& operator = (IPIDCalc&&) = delete;
+	virtual ~IPIDCalc() noexcept = default;
 	
-	virtual void reset() noexcept = 0;
-	virtual float run(float error) noexcept = 0;
-	virtual void setKp(float kp) noexcept = 0;
-	virtual void setKi(float ki) noexcept = 0;
-	virtual void setKd(float kd) noexcept = 0;
-	virtual void setDt(float dt) noexcept = 0;
-};
-
-class pid_calc_t: public pid_calc_if
-{
-public:
-	pid_calc_t(float kp,
-			   float ki,
-			   float kd,
-			   float dt,
-			   float ihigh = 500.0,
-			   float ilow = -500.0,
-			   float pidHighLimit = 65000.0,
-			   float pidLowLimit = 0) noexcept;
-	~pid_calc_t() noexcept = default;
+	virtual float run(float error) noexcept = 0; // run outputs the final raw data sent to the radio Link, client does not need to consider boundary of PID value
+	void reset() noexcept {sum_ = 0.0f; error_ = 0.0f; kp_ = 0; ki_ = 0; kd_ = 0;};
+	void setKp(float value) {kp_ = value;};
+	void setKi(float value) {ki_ = value;};
+	void setKd(float value) {kd_ = value;};
+	float getKp() const {return kp_;};
+	float getKi() const {return ki_;};
+	float getKd() const {return kd_;};
 	
-	void reset() noexcept override;
-	float run(float error) noexcept override;
-	void setKp(float kp) noexcept override;
-	void setKi(float ki) noexcept override;
-	void setKd(float kd) noexcept override;
-	void setDt(float dt) noexcept override;
-	
-private:
+protected:
 	float kp_;
 	float ki_;
 	float kd_;
-	float dt_;
-	const float ilow_;
-	const float ihigh_;
-	const float pidLowLimit_;
-	const float pidHighLimit_;
-	float sum_ = 0.0f;
-	float error_ = 0.0f;
+	float sum_;
+	float error_;
+};
+
+// this is Thrust PID calulator
+class PIDCalcThrust: public IPIDCalc
+{
+public:
+	PIDCalcThrust(float kp, float ki, float kd) noexcept
+	:IPIDCalc(kp, ki, kd) {};
+	~PIDCalcThrust() noexcept = default;
+	float run(float error) noexcept override;
+	
+private:
+	static constexpr float kIHigh = 300.0;
+	static constexpr float kILow  = -200.0;
+	static constexpr float kDt    = 0.005;
+	const int kThrustOffset = 38000;
+	const int kMinThrust = 0;
+	const int kMaxThrust = 65000;
+};
+
+// this is Roll/Pitch PID calulator
+class PIDCalcRP: public IPIDCalc
+{
+public:
+	PIDCalcRP(float kp, float ki, float kd) noexcept
+	:IPIDCalc(kp, ki, kd) {};
+	~PIDCalcRP() noexcept = default;
+	float run(float error) noexcept override;
+	
+private:
+	static constexpr float kIHigh = 30.0;
+	static constexpr float kILow  = -30.0;
+	static constexpr float kDt    = 0.005; 
+	const float kMinRoll = -15.0;
+	const float kMaxRoll = 15.0;
+
 };
 

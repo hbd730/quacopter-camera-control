@@ -21,7 +21,7 @@
 }
 
 - (void)reshape;
-- (void) render;
+- (void)render;
 - (void)drawView;
 - (void)prepareOpenGL;
 - (void)putBufferInTexture:(CVPixelBufferRef)pixBuf;

@@ -20,16 +20,17 @@
 @interface AppDelegate ()<CameraDelegate>
 {
 	TrackingDelegate* m_trackingDelegate;
-	pid_calc_t* m_thrustPIDCalc;
-	pid_calc_t* m_pitchPIDCalc;
-	pid_calc_t* m_yawPIDCalc;
-	pid_calc_t* m_rollPIDCalc;
+	PIDCalcThrust* m_thrustPIDCalc;
+	PIDCalcRP* m_pitchPIDCalc;
+	PIDCalcRP* m_yawPIDCalc;
+	PIDCalcRP* m_rollPIDCalc;
 	CFRadioController* m_trafficController;
 	ControlWidgets* m_controlWidget;
 	int m_kPitch;
 	int m_kYaw;
 	bool stopFlag;
 }
+
 @property (assign) IBOutlet NSButton *m_stopButton;
 @property (assign) IBOutlet NSView *m_view;
 @property (nonatomic, strong) Camera* m_camera;
@@ -61,7 +62,7 @@
 	cv::Point3i currentPosition = m_trackingDelegate->startTracking(currentFrame);
 	
 	float thrustError = currentPosition.y - (int)height/2;
-	float thrust = 38000 + m_thrustPIDCalc->run(thrustError);
+	float thrust = m_thrustPIDCalc->run(thrustError);
 	
 	float rollError = currentPosition.x - (int)width/2;
 	float roll = m_rollPIDCalc->run(rollError);
@@ -109,10 +110,10 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
-	m_thrustPIDCalc = new pid_calc_t(30, 40, 2.5, 0.005, 300, -200, 27000, -38000);
-	m_pitchPIDCalc = new pid_calc_t(0.1, 0.0025, 0, 0.03, 30, -30, 15, -15);
-	m_rollPIDCalc = new pid_calc_t(0.03, 0.0025, 0, 0.03, 30, -30, 15, -15);
-	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
+	m_thrustPIDCalc = new PIDCalcThrust(30, 40, 2.5);
+	m_pitchPIDCalc = new PIDCalcRP(0.1, 0.0025, 0);
+	m_rollPIDCalc = new PIDCalcRP(0.03, 0.0025, 0);
+	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
 	[self addPIDGroupWithFrame:thrustFrame andCalObject:m_thrustPIDCalc];
@@ -159,7 +160,7 @@
 - (void)pidValueChanged:(ControlWidgets*)sender
 {
 	ParameterType type = [sender activeControlID];
-	pid_calc_t* cal = (pid_calc_t*)[sender associatedObject];
+	IPIDCalc* cal = (IPIDCalc*)[sender associatedObject];
 	float value = [sender activeValue];
 	switch(type)
 	{
@@ -231,12 +232,20 @@
 	}
 }
 
-- (void)addPIDGroupWithFrame:(NSRect)frame andCalObject:(pid_calc_t*)obj
+- (void)addPIDGroupWithFrame:(NSRect)frame andCalObject:(IPIDCalc*)obj
 {
 	m_controlWidget = [[[PIDControlWidgets alloc] initWithFrame:frame] autorelease];
 	[m_controlWidget setTarget:self];
 	[m_controlWidget setAction:@selector(pidValueChanged:)];
+	[m_controlWidget->m_Slider1 setFloatValue:obj->getKp()];
+	[m_controlWidget->m_Slider2 setFloatValue:obj->getKi()];
+	[m_controlWidget->m_Slider3 setFloatValue:obj->getKd()];
+	[m_controlWidget->m_textfield1 setFloatValue:obj->getKp()];
+	[m_controlWidget->m_textfield2 setFloatValue:obj->getKi()];
+	[m_controlWidget->m_textfield3 setFloatValue:obj->getKd()];
 	m_controlWidget.associatedObject = (id)obj;
+	if(dynamic_cast<PIDCalcRP*>(obj))
+	   [m_controlWidget->m_Slider2 setMaxValue: 0.1];
 	[m_view addSubview:m_controlWidget];
 }
 
@@ -318,6 +327,5 @@
 		[super keyDown:theEvent];
 	}
 }
-
 
 @end

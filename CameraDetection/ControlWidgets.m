@@ -27,7 +27,7 @@
 	[slider setTag:tag];
 	[slider setTarget:self];
 	[slider setAction: @selector(sliderValueChanged:)];
-	[slider setMaxValue:100];
+	[slider setMaxValue:50];
 	[self addSubview:slider];
 	return slider;
 }
