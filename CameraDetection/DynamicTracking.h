@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Tracking.h"
+#include "CMT.h"
 
 class DynamicTracking : public ITracking
 {
@@ -19,4 +20,9 @@ public:
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
+
+private:
+	CMT m_cmt;
+	cv::Point2f m_initTopLeft;
+    cv::Point2f m_initBottomDown;
 };
