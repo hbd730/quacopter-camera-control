@@ -67,7 +67,7 @@ public:
 private:
 	static constexpr float kIHigh = 30.0;
 	static constexpr float kILow  = -30.0;
-	static constexpr float kDt    = 0.005; 
+	static constexpr float kDt    = 1;
 	const float kMinRoll = -15.0;
 	const float kMaxRoll = 15.0;
 

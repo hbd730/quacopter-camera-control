@@ -10,8 +10,8 @@
 
 DynamicTracking::DynamicTracking(cv::Point3i& position)
 :ITracking(position),
-m_initBottomDown(150,82),
-m_initTopLeft(170,118)
+m_initTopLeft(0,0),
+m_initBottomDown(150,200)
 {
 
 }

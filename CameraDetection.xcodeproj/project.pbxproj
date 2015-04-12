@@ -10,6 +10,7 @@
 		DE2E52781A17190700384F2B /* PIDCalc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E52761A17190700384F2B /* PIDCalc.cpp */; };
 		DE2E527C1A172F3D00384F2B /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E527A1A172F3C00384F2B /* utils.cpp */; };
 		DE2E52841A1733A300384F2B /* ZeroMqController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE2E52821A1733A300384F2B /* ZeroMqController.cpp */; };
+		DE30C4791AD9F188003F64BA /* CMT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE30C4771AD9F188003F64BA /* CMT.cpp */; };
 		DE32C4151A00EEAA00D3EC9C /* libopencv_core.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4111A00EEAA00D3EC9C /* libopencv_core.3.0.0.dylib */; };
 		DE32C4161A00EEAA00D3EC9C /* libopencv_features2d.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4121A00EEAA00D3EC9C /* libopencv_features2d.3.0.0.dylib */; };
 		DE32C4171A00EEAA00D3EC9C /* libopencv_highgui.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE32C4131A00EEAA00D3EC9C /* libopencv_highgui.3.0.0.dylib */; };
@@ -53,6 +54,8 @@
 		DE2E52811A1732FE00384F2B /* DataTraffic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataTraffic.h; sourceTree = "<group>"; };
 		DE2E52821A1733A300384F2B /* ZeroMqController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZeroMqController.cpp; sourceTree = "<group>"; };
 		DE2E52831A1733A300384F2B /* ZeroMqController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZeroMqController.h; sourceTree = "<group>"; };
+		DE30C4771AD9F188003F64BA /* CMT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CMT.cpp; path = libcmt/CMT.cpp; sourceTree = SOURCE_ROOT; };
+		DE30C4781AD9F188003F64BA /* CMT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMT.h; path = libcmt/CMT.h; sourceTree = SOURCE_ROOT; };
 		DE3128061A0236C900A4C0BA /* TrackingDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackingDelegate.cpp; sourceTree = "<group>"; };
 		DE3128071A0236C900A4C0BA /* TrackingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackingDelegate.h; sourceTree = "<group>"; };
 		DE31280C1A0237C500A4C0BA /* StaticTracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticTracking.cpp; sourceTree = "<group>"; };
@@ -151,6 +154,15 @@
 			name = DataTracffic;
 			sourceTree = "<group>";
 		};
+		DE30C4761AD9F178003F64BA /* LibCMT */ = {
+			isa = PBXGroup;
+			children = (
+				DE30C4771AD9F188003F64BA /* CMT.cpp */,
+				DE30C4781AD9F188003F64BA /* CMT.h */,
+			);
+			name = LibCMT;
+			sourceTree = "<group>";
+		};
 		DE6EA0C919F60AE4006C4847 /* OpenGLPreview */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +218,7 @@
 		DE901E1319F270F4006CE487 /* CameraDetection */ = {
 			isa = PBXGroup;
 			children = (
+				DE30C4761AD9F178003F64BA /* LibCMT */,
 				DEA367291A8B012F00B7F4E7 /* LibCrazyFlie */,
 				DE2E52791A17197E00384F2B /* DataTracffic */,
 				DE2E52721A17111900384F2B /* PIDController */,
@@ -359,6 +372,7 @@
 				DE44C56E1A045863006E4F1C /* BallTracking.cpp in Sources */,
 				DE406E091A27157D00085249 /* ControlWidgets.m in Sources */,
 				DE6EA0CC19F60BB8006C4847 /* OpenGLPreview.m in Sources */,
+				DE30C4791AD9F188003F64BA /* CMT.cpp in Sources */,
 				DE2E527C1A172F3D00384F2B /* utils.cpp in Sources */,
 				DE901E1719F270F5006CE487 /* main.m in Sources */,
 				DE32C42A1A00EF7D00D3EC9C /* AppDelegate.mm in Sources */,

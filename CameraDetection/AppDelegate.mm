@@ -15,7 +15,7 @@
 #include "ControlWidgets.h"
 
 #define CFReleaseSafe(CF) { CFTypeRef _cf = (CF); if (_cf){ (CF) = NULL; CFRelease(_cf); } }
-#define KEYBOARD_CONTROL
+//#define KEYBOARD_CONTROL
 
 @interface AppDelegate ()<CameraDelegate>
 {
@@ -71,7 +71,7 @@
 	float pitch = m_kPitch;
 	float yaw = m_kYaw;
 #else
-	float pitchError = currentPosition.z - 200;
+	float pitchError = currentPosition.z - 300;
 	float pitch = m_pitchPIDCalc->run(pitchError);
 	float yaw = 0;
 #endif
@@ -111,8 +111,8 @@
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
 	m_thrustPIDCalc = new PIDCalcThrust(30, 40, 2.5);
-	m_pitchPIDCalc = new PIDCalcRP(0.1, 0.0025, 0);
-	m_rollPIDCalc = new PIDCalcRP(0.03, 0.0025, 0);
+	m_pitchPIDCalc = new PIDCalcRP(0.1, 0.00025, 1);
+	m_rollPIDCalc = new PIDCalcRP(0.05, 0.00025, 1);
 	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
