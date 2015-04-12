@@ -111,7 +111,7 @@
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
 	m_thrustPIDCalc = new PIDCalcThrust(30, 40, 2.5);
-	m_pitchPIDCalc = new PIDCalcRP(0.1, 0.00025, 1);
+	m_pitchPIDCalc = new PIDCalcRP(0.05, 0.00025, 0.1);
 	m_rollPIDCalc = new PIDCalcRP(0.05, 0.00025, 1);
 	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
 	
