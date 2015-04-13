@@ -15,21 +15,22 @@
 #include "ControlWidgets.h"
 
 #define CFReleaseSafe(CF) { CFTypeRef _cf = (CF); if (_cf){ (CF) = NULL; CFRelease(_cf); } }
-#define KEYBOARD_CONTROL
+//#define KEYBOARD_CONTROL
 
 @interface AppDelegate ()<CameraDelegate>
 {
 	TrackingDelegate* m_trackingDelegate;
-	pid_calc_t* m_thrustPIDCalc;
-	pid_calc_t* m_pitchPIDCalc;
-	pid_calc_t* m_yawPIDCalc;
-	pid_calc_t* m_rollPIDCalc;
+	PIDCalcThrust* m_thrustPIDCalc;
+	PIDCalcRP* m_pitchPIDCalc;
+	PIDCalcRP* m_yawPIDCalc;
+	PIDCalcRP* m_rollPIDCalc;
 	CFRadioController* m_trafficController;
 	ControlWidgets* m_controlWidget;
 	int m_kPitch;
 	int m_kYaw;
 	bool stopFlag;
 }
+
 @property (assign) IBOutlet NSButton *m_stopButton;
 @property (assign) IBOutlet NSView *m_view;
 @property (nonatomic, strong) Camera* m_camera;
@@ -70,7 +71,7 @@
 	float pitch = m_kPitch;
 	float yaw = m_kYaw;
 #else
-	float pitchError = currentPosition.z - 200;
+	float pitchError = currentPosition.z - 300;
 	float pitch = m_pitchPIDCalc->run(pitchError);
 	float yaw = 0;
 #endif
@@ -109,10 +110,10 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
-	m_thrustPIDCalc = new pid_calc_t(20, 8, 0, 0.03, 5000, -5000, 65000, 0);
-	m_pitchPIDCalc = new pid_calc_t(0.1, 0.0025, 0, 0.03, 30, -30, 15, -15);
-	m_rollPIDCalc = new pid_calc_t(0.03, 0.0025, 0, 0.03, 30, -30, 15, -15);
-	m_yawPIDCalc = new pid_calc_t(0, 0, 0, 0);
+	m_thrustPIDCalc = new PIDCalcThrust(30, 40, 2.5);
+	m_pitchPIDCalc = new PIDCalcRP(0.05, 0.00025, 0.1);
+	m_rollPIDCalc = new PIDCalcRP(0.05, 0.00025, 1);
+	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
 	[self addPIDGroupWithFrame:thrustFrame andCalObject:m_thrustPIDCalc];
@@ -159,7 +160,7 @@
 - (void)pidValueChanged:(ControlWidgets*)sender
 {
 	ParameterType type = [sender activeControlID];
-	pid_calc_t* cal = (pid_calc_t*)[sender associatedObject];
+	IPIDCalc* cal = (IPIDCalc*)[sender associatedObject];
 	float value = [sender activeValue];
 	switch(type)
 	{
@@ -231,12 +232,20 @@
 	}
 }
 
-- (void)addPIDGroupWithFrame:(NSRect)frame andCalObject:(pid_calc_t*)obj
+- (void)addPIDGroupWithFrame:(NSRect)frame andCalObject:(IPIDCalc*)obj
 {
 	m_controlWidget = [[[PIDControlWidgets alloc] initWithFrame:frame] autorelease];
 	[m_controlWidget setTarget:self];
 	[m_controlWidget setAction:@selector(pidValueChanged:)];
+	[m_controlWidget->m_Slider1 setFloatValue:obj->getKp()];
+	[m_controlWidget->m_Slider2 setFloatValue:obj->getKi()];
+	[m_controlWidget->m_Slider3 setFloatValue:obj->getKd()];
+	[m_controlWidget->m_textfield1 setFloatValue:obj->getKp()];
+	[m_controlWidget->m_textfield2 setFloatValue:obj->getKi()];
+	[m_controlWidget->m_textfield3 setFloatValue:obj->getKd()];
 	m_controlWidget.associatedObject = (id)obj;
+	if(dynamic_cast<PIDCalcRP*>(obj))
+	   [m_controlWidget->m_Slider2 setMaxValue: 0.1];
 	[m_view addSubview:m_controlWidget];
 }
 
@@ -248,6 +257,9 @@
 	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kLowH];
 	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kLowS];
 	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kLowV];
+	[m_controlWidget->m_textfield1 setIntValue:BallTracking::kLowH];
+	[m_controlWidget->m_textfield2 setIntValue:BallTracking::kLowS];
+	[m_controlWidget->m_textfield3 setIntValue:BallTracking::kLowV];
 	[m_view addSubview:m_controlWidget];
 }
 
@@ -259,6 +271,9 @@
 	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kHighH];
 	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kHighS];
 	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kHighV];
+	[m_controlWidget->m_textfield1 setIntValue:BallTracking::kHighH];
+	[m_controlWidget->m_textfield2 setIntValue:BallTracking::kHighS];
+	[m_controlWidget->m_textfield3 setIntValue:BallTracking::kHighV];
 	[m_view addSubview:m_controlWidget];
 }
 
@@ -274,7 +289,7 @@
 			switch (keyChar)
 			{
 				case NSUpArrowFunctionKey:
-					m_kPitch = 3;
+					m_kPitch = 8;
 					break;
 				case NSLeftArrowFunctionKey:
 					m_kYaw = 10;
@@ -283,7 +298,7 @@
 					m_kYaw = -10;
 					break;
 				case NSDownArrowFunctionKey:
-					m_kPitch = -3;
+					m_kPitch = -8;
 					break;
 			}
 		}
@@ -312,6 +327,5 @@
 		[super keyDown:theEvent];
 	}
 }
-
 
 @end
