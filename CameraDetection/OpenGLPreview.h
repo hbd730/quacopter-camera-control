@@ -11,6 +11,7 @@
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
 
+class ITracking;
 
 @interface OpenGLPreview : NSOpenGLView
 {
@@ -18,6 +19,7 @@
 	GLint				m_textureWidth;
 	GLint				m_textureHeight;
 	BOOL				m_needsReshape;
+	ITracking*			m_viewlistener;
 }
 
 - (void)reshape;
@@ -26,5 +28,5 @@
 - (void)prepareOpenGL;
 - (void)putBufferInTexture:(CVPixelBufferRef)pixBuf;
 - (CVReturn) renderFromBuffer:(CVPixelBufferRef)pixBuf;
-
+- (void) setViewListener:(ITracking*)listener;
 @end

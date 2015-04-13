@@ -28,15 +28,17 @@ public:
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
-	void HoughDetection(const cv::Mat& src_gray, const cv::Mat& src_display, int cannyThreshold, int accumulatorThreshold);
-	void tackerBarHandler(int pos);
-	int calculateDistance(cv::Mat& thresholdImage);
 	void setLowH(int value){ m_lowH = value;}
 	void setHighH(int value){ m_highH = value;}
 	void setLowS(int value){ m_lowS = value;}
 	void setHighS(int value){ m_highS = value;}
 	void setLowV(int value){ m_lowV = value;}
 	void setHighV(int value){ m_highV = value;}
+	
+private:
+	void HoughDetection(const cv::Mat& src_gray, const cv::Mat& src_display, int cannyThreshold, int accumulatorThreshold);
+	void tackerBarHandler(int pos);
+	int calculateDistance(cv::Mat& thresholdImage);
 	
 private:
 	int m_cannyThreshold;

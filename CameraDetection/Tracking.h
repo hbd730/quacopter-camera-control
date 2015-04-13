@@ -21,6 +21,7 @@ public:
 	virtual void init(cv::Mat& image) = 0;
 	virtual void setReferenceFrame(cv::Mat& reference) = 0;
 	virtual bool processFrame(cv::Mat& image) = 0;
+	virtual void setSelectedRegion(int x, int y, bool mouseDown){};
 	virtual ~ITracking(){};
 protected:
 	cv::Point3i m_position;

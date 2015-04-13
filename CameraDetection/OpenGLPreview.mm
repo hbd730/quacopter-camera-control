@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
+#include "Tracking.h"
 #import "OpenGLPreview.h"
 
 #define BAIL_IF(cond, fmt, ...)                                                 \
@@ -30,10 +31,10 @@ if (cond)                                                                       
 	size_t	frameWidth, frameHeight;
 	bool	newTexture = false;
 	int		type;
+	GLint internalFormat = GL_RGBA;
+	GLint format = GL_BGRA;
 	
 	[[self openGLContext] makeCurrentContext];
-	
-
 	BAIL_IF(CVPixelBufferLockBaseAddress(pixBuf, 0), "CVPixelBufferLockBaseAddress failed.\n");
 	
 	address     = CVPixelBufferGetBaseAddress(pixBuf);
@@ -65,8 +66,6 @@ if (cond)                                                                       
 	
 	type = GL_UNSIGNED_BYTE;
 	
-	GLint internalFormat = GL_RGBA;
-	GLint format = GL_BGRA;
 	if(rowBytes != frameWidth)
 	{
 		internalFormat = GL_RGBA;
@@ -175,6 +174,35 @@ bail:
 	[super prepareOpenGL];
 	GLint swapInterval = 1;
 	[[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+}
+
+- (void)setViewListener:(ITracking*)listener
+{
+	m_viewlistener = listener;
+}
+
+- (void)mouseDown:(NSEvent *)theEvent
+{
+	printf("here");
+	if(m_viewlistener)
+	{
+		int x = [theEvent locationInWindow].x;
+		int y = [theEvent locationInWindow].y;
+		m_viewlistener->setSelectedRegion(x, y, true);
+	}
+    [[self nextResponder] mouseDown:theEvent];
+}
+
+- (void)mouseUp:(NSEvent *)theEvent
+{
+	printf("there");
+	if(m_viewlistener)
+	{
+		int x = [theEvent locationInWindow].x;
+		int y = [theEvent locationInWindow].y;
+		m_viewlistener->setSelectedRegion(x, y, false);
+	}
+    [[self nextResponder] mouseDown:theEvent];
 }
 
 @end

@@ -30,7 +30,7 @@
 		DE44C56C1A045863006E4F1C /* StaticTracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE31280C1A0237C500A4C0BA /* StaticTracking.cpp */; };
 		DE44C56D1A045863006E4F1C /* DynamicTracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE31280F1A0237D800A4C0BA /* DynamicTracking.cpp */; };
 		DE44C56E1A045863006E4F1C /* BallTracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE3128121A02381400A4C0BA /* BallTracking.cpp */; };
-		DE6EA0CC19F60BB8006C4847 /* OpenGLPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.m */; };
+		DE6EA0CC19F60BB8006C4847 /* OpenGLPreview.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.mm */; };
 		DE6EA0D619F616EF006C4847 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE6EA0D519F616EF006C4847 /* CoreMedia.framework */; };
 		DE6EA0D819F6171D006C4847 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE6EA0D719F6171D006C4847 /* AVFoundation.framework */; };
 		DE6EA0DB19F619C3006C4847 /* Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6EA0DA19F619C3006C4847 /* Camera.m */; };
@@ -83,7 +83,7 @@
 		DE406E061A27157D00085249 /* ControlWidgets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlWidgets.h; sourceTree = "<group>"; };
 		DE406E071A27157D00085249 /* ControlWidgets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlWidgets.m; sourceTree = "<group>"; };
 		DE6EA0CA19F60BB8006C4847 /* OpenGLPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGLPreview.h; path = CameraDetection/OpenGLPreview.h; sourceTree = "<group>"; };
-		DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpenGLPreview.m; path = CameraDetection/OpenGLPreview.m; sourceTree = "<group>"; };
+		DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = OpenGLPreview.mm; path = CameraDetection/OpenGLPreview.mm; sourceTree = "<group>"; };
 		DE6EA0D519F616EF006C4847 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		DE6EA0D719F6171D006C4847 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DE6EA0D919F619C3006C4847 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				DE6EA0CA19F60BB8006C4847 /* OpenGLPreview.h */,
-				DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.m */,
+				DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.mm */,
 			);
 			name = OpenGLPreview;
 			path = ..;
@@ -371,7 +371,7 @@
 				DE44C56D1A045863006E4F1C /* DynamicTracking.cpp in Sources */,
 				DE44C56E1A045863006E4F1C /* BallTracking.cpp in Sources */,
 				DE406E091A27157D00085249 /* ControlWidgets.m in Sources */,
-				DE6EA0CC19F60BB8006C4847 /* OpenGLPreview.m in Sources */,
+				DE6EA0CC19F60BB8006C4847 /* OpenGLPreview.mm in Sources */,
 				DE30C4791AD9F188003F64BA /* CMT.cpp in Sources */,
 				DE2E527C1A172F3D00384F2B /* utils.cpp in Sources */,
 				DE901E1719F270F5006CE487 /* main.m in Sources */,

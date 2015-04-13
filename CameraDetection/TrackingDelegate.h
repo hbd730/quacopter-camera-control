@@ -29,9 +29,9 @@ public:
 	TrackingDelegate();
 	virtual ~TrackingDelegate();
 	void setStrategy(StrategyType type);
-	BallTracking* getBallTracker() const;
+	ITracking* getCurrentTracker() const { return m_tracking; };
 	cv::Point3i startTracking(cv::Mat& image);
-	cv::Mat getOutputImage() const {return m_tracking->getOutputImage();};
+	cv::Mat getOutputImage() const { return m_tracking->getOutputImage(); };
 	
 private:
 	ITracking* m_tracking;

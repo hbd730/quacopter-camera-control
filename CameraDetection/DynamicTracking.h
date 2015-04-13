@@ -20,9 +20,13 @@ public:
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
-
+	virtual void setSelectedRegion(int x, int y, bool mouseDown);
+	
 private:
 	CMT m_cmt;
+	cv::Mat m_imageGray;
+	cv::Rect m_selection;
+	bool m_initialised;
 	cv::Point2f m_initTopLeft;
     cv::Point2f m_initBottomDown;
 };

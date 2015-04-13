@@ -79,7 +79,11 @@
 	if(stopFlag)
 		m_trafficController->sendParameter(0, 0, 0, 0);
 	else
+	{
+		cout << "thrust is " << thrust << " yaw is " << yaw \
+		<< " pitch is " << pitch << " roll is " << roll << endl;
 		m_trafficController->sendParameter(thrust, yaw, pitch, roll);
+	}
 	
 	// Redering capture preview
 	[m_capturePreview renderFromBuffer:imageBuffer];
@@ -155,6 +159,7 @@
 	TrackingDelegate::StrategyType type;
 	type = (TrackingDelegate::StrategyType)[m_strategyPopup indexOfSelectedItem];
 	m_trackingDelegate->setStrategy(type);
+	[m_capturePreview setViewListener:m_trackingDelegate->getCurrentTracker()];
 }
 
 - (void)pidValueChanged:(ControlWidgets*)sender
@@ -182,20 +187,22 @@
 {
 	ParameterType type = [sender activeControlID];
 	float value = [sender activeValue];
-	BallTracking* ballTracker  = m_trackingDelegate->getBallTracker();
-	switch(type)
+	if (BallTracking* ballTracker  = dynamic_cast<BallTracking*>(m_trackingDelegate->getCurrentTracker()))
 	{
-		case kFirst:
-			ballTracker->setLowH(value);
-			break;
-		case kSecond:
-			ballTracker->setLowS(value);
-			break;
-		case kThird:
-			ballTracker->setLowV(value);
-			break;
-		default:
-			break;
+		switch(type)
+		{
+			case kFirst:
+				ballTracker->setLowH(value);
+				break;
+			case kSecond:
+				ballTracker->setLowS(value);
+				break;
+			case kThird:
+				ballTracker->setLowV(value);
+				break;
+			default:
+				break;
+		}
 	}
 }
 
@@ -203,20 +210,22 @@
 {
 	ParameterType type = [sender activeControlID];
 	float value = [sender activeValue];
-	BallTracking* ballTracker  = m_trackingDelegate->getBallTracker();
-	switch(type)
+	if (BallTracking* ballTracker  = dynamic_cast<BallTracking*>(m_trackingDelegate->getCurrentTracker()))
 	{
-		case kFirst:
-			ballTracker->setHighH(value);
-			break;
-		case kSecond:
-			ballTracker->setHighS(value);
-			break;
-		case kThird:
-			ballTracker->setHighV(value);
-			break;
-		default:
-			break;
+		switch(type)
+		{
+			case kFirst:
+				ballTracker->setHighH(value);
+				break;
+			case kSecond:
+				ballTracker->setHighS(value);
+				break;
+			case kThird:
+				ballTracker->setHighV(value);
+				break;
+			default:
+				break;
+		}
 	}
 }
 
@@ -275,6 +284,10 @@
 	[m_controlWidget->m_textfield2 setIntValue:BallTracking::kHighS];
 	[m_controlWidget->m_textfield3 setIntValue:BallTracking::kHighV];
 	[m_view addSubview:m_controlWidget];
+}
+
+- (BOOL)acceptsFirstResponder {
+    return YES;
 }
 
 - (void)keyDown:(NSEvent *)theEvent {
