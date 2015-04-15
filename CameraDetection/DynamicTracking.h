@@ -24,7 +24,6 @@ public:
 	
 private:
 	CMT m_cmt;
-	cv::Mat m_imageGray;
 	cv::Rect m_selection;
 	bool m_initialised;
 	cv::Point2f m_initTopLeft;

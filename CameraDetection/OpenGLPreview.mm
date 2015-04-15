@@ -186,8 +186,8 @@ bail:
 	printf("here");
 	if(m_viewlistener)
 	{
-		int x = [theEvent locationInWindow].x;
-		int y = [theEvent locationInWindow].y;
+		int x = [self convertPoint: [theEvent locationInWindow] fromView: nil].x;
+		int y = [self convertPoint: [theEvent locationInWindow] fromView: nil].y;
 		m_viewlistener->setSelectedRegion(x, y, true);
 	}
     [[self nextResponder] mouseDown:theEvent];
