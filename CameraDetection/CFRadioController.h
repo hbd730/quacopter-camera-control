@@ -10,6 +10,7 @@
 
 #include "DataTraffic.h"
 #include <thread>
+
 using namespace std;
 
 class CCrazyRadio;
@@ -30,7 +31,6 @@ public:
 	
 private:
 	void radioTask(string msg);
-	
 	CCrazyRadio* m_crRadio;
 	CCrazyflie*  m_cfCopter;
 	bool m_stopThread;

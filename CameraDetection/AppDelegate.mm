@@ -15,7 +15,6 @@
 #include "ControlWidgets.h"
 
 #define CFReleaseSafe(CF) { CFTypeRef _cf = (CF); if (_cf){ (CF) = NULL; CFRelease(_cf); } }
-//#define KEYBOARD_CONTROL
 
 @interface AppDelegate ()<CameraDelegate>
 {
@@ -34,8 +33,8 @@
 @property (assign) IBOutlet NSButton *m_stopButton;
 @property (assign) IBOutlet NSView *m_view;
 @property (nonatomic, strong) Camera* m_camera;
-@property (assign) IBOutlet OpenGLPreview* m_capturePreview;
-@property (assign) IBOutlet OpenGLPreview* m_outputPreview;
+@property (assign) IBOutlet TrackingPreview* m_capturePreview;
+@property (assign) IBOutlet ImageProcessingPreview* m_outputPreview;
 @property (assign) IBOutlet NSPopUpButton* m_strategyPopup;
 @end
 

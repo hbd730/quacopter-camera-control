@@ -6,20 +6,19 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
+#include "Tracking.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreVideo/CoreVideo.h>
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
 
-class ITracking;
-
+// OpenGLPreview takes CVPixelBufferRef as input and render on the view
 @interface OpenGLPreview : NSOpenGLView
 {
 	GLuint				m_textureId;
 	GLint				m_textureWidth;
 	GLint				m_textureHeight;
 	BOOL				m_needsReshape;
-	ITracking*			m_viewlistener;
 }
 
 - (void)reshape;
@@ -28,5 +27,24 @@ class ITracking;
 - (void)prepareOpenGL;
 - (void)putBufferInTexture:(CVPixelBufferRef)pixBuf;
 - (CVReturn) renderFromBuffer:(CVPixelBufferRef)pixBuf;
-- (void) setViewListener:(ITracking*)listener;
+
+@end
+
+// Tracking preview handle mouse event such as region and PID setpoint selection
+@interface TrackingPreview : OpenGLPreview
+{
+	ITracking*	m_viewlistener;
+}
+- (void)setViewListener:(ITracking*)listener;
+- (NSPoint)transform:(NSPoint)clickedPoint;
+- (cv::Point3i)getSetPoint;
+
+@end
+
+// ImageProcessing renders debugging image
+@interface ImageProcessingPreview : OpenGLPreview
+{
+	
+}
+
 @end

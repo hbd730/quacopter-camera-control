@@ -3,6 +3,9 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#define SUCCESS 0;
+#define FAIL    1;
+
 #if __cplusplus < 201103L //test if c++11
 
     #include <limits>
@@ -104,7 +107,7 @@ CMT::CMT()
     nbInitialKeypoints = 0;
 }
 
-void CMT::initialise(cv::Mat im_gray0, cv::Point2f topleft, cv::Point2f bottomright)
+bool CMT::initialise(cv::Mat im_gray0, cv::Point2f topleft, cv::Point2f bottomright)
 {
 
     //Initialise detector, descriptor, matcher
@@ -126,8 +129,8 @@ void CMT::initialise(cv::Mat im_gray0, cv::Point2f topleft, cv::Point2f bottomri
 
     if(selected_keypoints.size() == 0)
     {
-        printf("No keypoints found in selection");
-        return;
+        printf("No keypoints found in selection\n");
+        return FAIL;
     }
 
     //Remember keypoints that are not in the rectangle as background keypoints
@@ -201,6 +204,7 @@ void CMT::initialise(cv::Mat im_gray0, cv::Point2f topleft, cv::Point2f bottomri
 
     //Remember number of initial keypoints
     nbInitialKeypoints = selected_keypoints.size();
+	return SUCCESS;
 }
 
 typedef std::pair<int,int> PairInt;

@@ -14,7 +14,7 @@
 class ITracking
 {
 public:
-	ITracking(cv::Point3i& position):m_position(position),m_outputImage(){};
+	ITracking():m_position(0,0,0){};
 	cv::Point3i getCurrentPosition() const {return m_position;};
 	cv::Mat getOutputImage() const {return m_outputImage;};
 	virtual std::string getName() const = 0;
@@ -23,6 +23,7 @@ public:
 	virtual bool processFrame(cv::Mat& image) = 0;
 	virtual void setSelectedRegion(int x, int y, bool mouseDown){};
 	virtual ~ITracking(){};
+	
 protected:
 	cv::Point3i m_position;
 	cv::Mat m_outputImage;

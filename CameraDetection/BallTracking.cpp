@@ -12,20 +12,13 @@
 using namespace std;
 using namespace cv;
 
-// initial parameters of interests.
-const int kCannyThresholdInitialValue = 200;
-const int kAccumulatorThresholdInitialValue = 100;
-const std::string kWindowName = "Hough Circle Detection Demo";
-const std::string kCannyThresholdTrackbarName = "Canny threshold";
-const std::string kAccumulatorThresholdTrackbarName = "Accumulator Threshold";
+// Camera and tracking object information.
 const float kFoc = 40.0f;
 const float kObjectHeight = 35.0f;
 
-BallTracking::BallTracking(cv::Point3i& position):
-	ITracking(position),
-	m_cannyThreshold(kCannyThresholdInitialValue),
-	m_accumulatorThreshold(kAccumulatorThresholdInitialValue),
-	m_lowH(kLowH),m_highH(kHighH),m_lowS(kLowS),m_highS(kHighS),m_lowV(kLowV),m_highV(kHighV)
+BallTracking::BallTracking():
+ITracking(),
+m_lowH(kLowH),m_highH(kHighH),m_lowS(kLowS),m_highS(kHighS),m_lowV(kLowV),m_highV(kHighV)
 {
 }
 
@@ -40,26 +33,29 @@ std::string BallTracking::getName() const
 
 void BallTracking::init(cv::Mat &image)
 {
-	Mat output(image.rows, image.cols, CV_8UC1);
-	output.copyTo(m_outputImage);
+	m_outputImage = cv::Mat::zeros(image.rows,image.cols, image.type());
 }
 
 void BallTracking::setReferenceFrame(cv::Mat& reference)
 {
-	
+	// not applicable
 }
 
 bool BallTracking::processFrame(cv::Mat &image)
 {
 #ifdef CIRCLE_DETECTION
+	int cannyThreshold;
+	int accumulatorThreshold;
+	const int kCannyThresholdInitialValue = 200;
+	const int kAccumulatorThresholdInitialValue = 100;
 	// Convert it to gray, Hough detection works well only on gray image
 	cvtColor(image, m_outputImage, COLOR_BGR2GRAY);
 	// Reduce the noise so we avoid false circle detection
 	GaussianBlur(m_outputImage, m_outputImage, Size(9, 9), 2, 2);
 
 	// these paramaters cannot be =0
-	m_cannyThreshold = std::max(m_cannyThreshold, 1);
-	m_accumulatorThreshold = std::max(m_accumulatorThreshold, 1);
+	cannyThreshold = std::max(kCannyThresholdInitialValue, 1);
+	accumulatorThreshold = std::max(kAccumulatorThresholdInitialValue, 1);
 #endif
 	
 	Mat imgHSV;
@@ -94,7 +90,7 @@ bool BallTracking::processFrame(cv::Mat &image)
 				
 			// To-do need to think about how to combine shape and color detection properly.
 #ifdef CIRCLE_DETECTION
-			HoughDetection(m_outputImage, image, m_cannyThreshold, m_accumulatorThreshold);
+			HoughDetection(m_outputImage, image, cannyThreshold, accumulatorThreshold);
 #endif
 			m_position.z = calculateDistance(m_outputImage);
 			Point center(posX, posY);

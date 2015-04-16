@@ -13,8 +13,10 @@
 class BallTracking : public ITracking
 {
 public:
-	enum HSVMetrics   // Online caculator use range H = 0- 360, S = 0-100, V = 0-100
-	{				  // In OpenCV, H = 0-180, S = 0-255, V = 0-255
+	// Online caculator use range H = 0- 360, S = 0-100, V = 0-100, In OpenCV, H = 0-180, S = 0-255, V = 0-255
+	// Define light green Color
+	enum HSVMetrics
+	{
 		kLowH = 20,
 		kHighH = 69,
 		kLowS = 39,
@@ -22,7 +24,8 @@ public:
 		kLowV = 182,
 		kHighV = 255
 	};
-	BallTracking(cv::Point3i& position);
+	
+	BallTracking();
 	virtual ~BallTracking();
 	virtual std::string getName() const;
 	virtual void init(cv::Mat& image);
@@ -35,14 +38,12 @@ public:
 	void setLowV(int value){ m_lowV = value;}
 	void setHighV(int value){ m_highV = value;}
 	
-private:
+protected:
 	void HoughDetection(const cv::Mat& src_gray, const cv::Mat& src_display, int cannyThreshold, int accumulatorThreshold);
 	void tackerBarHandler(int pos);
 	int calculateDistance(cv::Mat& thresholdImage);
 	
 private:
-	int m_cannyThreshold;
-	int m_accumulatorThreshold;
 	int m_lowH;
 	int m_highH;
 	int m_lowS;

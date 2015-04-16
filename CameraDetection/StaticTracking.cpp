@@ -15,9 +15,8 @@ const static int SENSITIVITY_VALUE = 100;
 // size of blur used to smooth the intensity image output from absdiff() function
 const static int BLUR_SIZE = 10;
 
-StaticTracking::StaticTracking(cv::Point3i& position):
-	ITracking(position),
-	m_boundingRectangle(0,0,0,0)
+StaticTracking::StaticTracking():
+ITracking()
 {
 	
 }
@@ -33,13 +32,12 @@ std::string StaticTracking::getName() const
 
 void StaticTracking::init(cv::Mat &image)
 {
-	image.copyTo(m_outputImage);
+	m_outputImage = cv::Mat::zeros(image.rows,image.cols, image.type());
 }
 
 void StaticTracking::setReferenceFrame(cv::Mat& reference)
 {
-	m_referenceFrame = reference;
-	cv::cvtColor(m_referenceFrame, m_grayImageRef, COLOR_BGR2GRAY);
+	cv::cvtColor(reference, m_grayImageRef, COLOR_BGR2GRAY);
 }
 
 bool StaticTracking::processFrame(cv::Mat &image)
@@ -47,14 +45,16 @@ bool StaticTracking::processFrame(cv::Mat &image)
 	// make a deep copy of camera current callback image, not a reference
 	image.copyTo(m_currentFrame);
 	
+	cv::Mat grayImageCur, differenceImage;;
+	
 	// convert current frame to gray scale for frame differencing
-	cv::cvtColor(m_currentFrame, m_grayImageCur, COLOR_BGR2GRAY);
+	cv::cvtColor(m_currentFrame, grayImageCur, COLOR_BGR2GRAY);
 	
 	// perform frame differencing between current and reference image
-	cv::absdiff(m_grayImageRef, m_grayImageCur, m_differenceImage);
+	cv::absdiff(m_grayImageRef, grayImageCur, differenceImage);
 	
 	// threshold intensity image at a given sensitivity value
-	cv::threshold(m_differenceImage, m_thresholdImage, SENSITIVITY_VALUE, 255, THRESH_BINARY);
+	cv::threshold(differenceImage, m_thresholdImage, SENSITIVITY_VALUE, 255, THRESH_BINARY);
 	
 	// blur the image to get rid of the noise. This will output an intensity image
 	cv::blur(m_thresholdImage, m_thresholdImage, cv::Size(BLUR_SIZE,BLUR_SIZE));
@@ -89,10 +89,10 @@ void StaticTracking::searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFe
 		largestContourVec.push_back(contours.at(contours.size()-1));
 		
 		// make a bounding rectangle around the largest contour then find its centroid
-		m_boundingRectangle = cv::boundingRect(largestContourVec.at(0));
+		cv::Rect boundingRectangle = cv::boundingRect(largestContourVec.at(0));
 		Point center;
-		center.x = m_boundingRectangle.x + m_boundingRectangle.width/2;
-		center.y = m_boundingRectangle.y + m_boundingRectangle.height/2;
+		center.x = boundingRectangle.x + boundingRectangle.width/2;
+		center.y = boundingRectangle.y + boundingRectangle.height/2;
 		// draw circle and cross around the object
 		circle(cameraFeed, center, 20, Scalar(0,255,0),2);
 		line(cameraFeed, center, cv::Point(center.x,center.y-25), Scalar(0,255,0),2);

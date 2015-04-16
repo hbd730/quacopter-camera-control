@@ -14,7 +14,7 @@
 class DynamicTracking : public ITracking
 {
 public:
-	DynamicTracking(cv::Point3i& position);
+	DynamicTracking();
 	virtual ~DynamicTracking();
 	virtual std::string getName() const;
 	virtual void init(cv::Mat& image);
@@ -24,8 +24,6 @@ public:
 	
 private:
 	CMT m_cmt;
-	cv::Rect m_selection;
 	bool m_initialised;
-	cv::Point2f m_initTopLeft;
-    cv::Point2f m_initBottomDown;
+	cv::Rect m_selection;
 };

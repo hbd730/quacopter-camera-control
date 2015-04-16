@@ -33,17 +33,16 @@ void TrackingDelegate::setStrategy(StrategyType type)
 		m_tracking = NULL;
 		m_state = kInit;
 	}
-	cv::Point3i pos(0,0,0);
 	switch(type)
 	{
 		case kStatic:
-			m_tracking = new StaticTracking(pos);
+			m_tracking = new StaticTracking();
 			break;
 		case kDynamic:
-			m_tracking = new DynamicTracking(pos);
+			m_tracking = new DynamicTracking();
 			break;
 		case kBall:
-			m_tracking = new BallTracking(pos);
+			m_tracking = new BallTracking();
 			break;
 		default:
 			break;

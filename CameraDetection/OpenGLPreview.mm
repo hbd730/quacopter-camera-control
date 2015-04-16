@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#include "Tracking.h"
 #import "OpenGLPreview.h"
 
 #define BAIL_IF(cond, fmt, ...)                                                 \
@@ -176,6 +175,17 @@ bail:
 	[[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 }
 
+@end
+
+
+@implementation TrackingPreview
+
+- (id)initWithFrame:(NSRect)frame
+{
+    self = [super initWithFrame:frame];
+    return self;
+}
+
 - (void)setViewListener:(ITracking*)listener
 {
 	m_viewlistener = listener;
@@ -183,26 +193,42 @@ bail:
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-	printf("here");
 	if(m_viewlistener)
 	{
-		int x = [self convertPoint: [theEvent locationInWindow] fromView: nil].x;
-		int y = [self convertPoint: [theEvent locationInWindow] fromView: nil].y;
-		m_viewlistener->setSelectedRegion(x, y, true);
+		NSPoint clickedPoint = [self transform:[theEvent locationInWindow]];
+		m_viewlistener->setSelectedRegion(clickedPoint.x, clickedPoint.y, true);
 	}
     [[self nextResponder] mouseDown:theEvent];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-	printf("there");
 	if(m_viewlistener)
 	{
-		int x = [theEvent locationInWindow].x;
-		int y = [theEvent locationInWindow].y;
-		m_viewlistener->setSelectedRegion(x, y, false);
+		NSPoint clickedPoint = [self transform:[theEvent locationInWindow]];
+		m_viewlistener->setSelectedRegion(clickedPoint.x, clickedPoint.y, false);
 	}
     [[self nextResponder] mouseDown:theEvent];
+}
+
+- (NSPoint)transform:(NSPoint)clickedPoint
+{
+	NSPoint point;
+	float x = [self convertPoint: clickedPoint fromView: nil].x;  // from physical coorinate to NSView coorindate
+	float y = [self convertPoint: clickedPoint fromView: nil].y;
+	point.x = x * m_textureWidth / [self frame].size.width;     // from NSView coorindate to cv::Mat coordinate
+	point.y = m_textureHeight - y * m_textureHeight / [self frame].size.height;
+	return point;
+}
+
+@end
+
+@implementation ImageProcessingPreview
+
+- (id)initWithFrame:(NSRect)frame
+{
+    self = [super initWithFrame:frame];
+    return self;
 }
 
 @end

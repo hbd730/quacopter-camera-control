@@ -21,7 +21,4 @@ public:
 	IDataTraffic& operator = (IDataTraffic&&) = delete;
 	virtual ~IDataTraffic() noexcept = default;
 	virtual void sendParameter(int thrust, float yaw, float pitch, float roll) = 0;
-
-protected:
-	void test(){printf("from base class\n");};
 };
