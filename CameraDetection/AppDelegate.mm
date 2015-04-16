@@ -25,6 +25,7 @@
 	PIDCalcRP* m_rollPIDCalc;
 	CFRadioController* m_trafficController;
 	ControlWidgets* m_controlWidget;
+	cv::Point3i m_setPoint;
 	int m_kPitch;
 	int m_kYaw;
 	bool stopFlag;
@@ -60,29 +61,8 @@
 	// Start tracking
 	cv::Point3i currentPosition = m_trackingDelegate->startTracking(currentFrame);
 	
-	float thrustError = currentPosition.y - (int)height/2;
-	float thrust = m_thrustPIDCalc->run(thrustError);
-	
-	float rollError = currentPosition.x - (int)width/2;
-	float roll = m_rollPIDCalc->run(rollError);
-	
-#ifdef KEYBOARD_CONTROL
-	float pitch = m_kPitch;
-	float yaw = m_kYaw;
-#else
-	float pitchError = currentPosition.z - 300;
-	float pitch = m_pitchPIDCalc->run(pitchError);
-	float yaw = 0;
-#endif
-	
-	if(stopFlag)
-		m_trafficController->sendParameter(0, 0, 0, 0);
-	else
-	{
-		cout << "thrust is " << thrust << " yaw is " << yaw \
-		<< " pitch is " << pitch << " roll is " << roll << endl;
-		m_trafficController->sendParameter(thrust, yaw, pitch, roll);
-	}
+	// Update PID Controller and send command
+	[self updatePIDAndSendCommand:currentPosition];
 	
 	// Redering capture preview
 	[m_capturePreview renderFromBuffer:imageBuffer];
@@ -101,6 +81,35 @@
 		[m_outputPreview renderFromBuffer:outputBuffer];
 	
 	CFReleaseSafe(outputBuffer);
+}
+
+- (void)updatePIDAndSendCommand:(cv::Point3i)currentPosition
+{
+	float thrustError = currentPosition.y - m_setPoint.y;
+	float thrust = m_thrustPIDCalc->run(thrustError);
+	
+	float rollError = currentPosition.x - m_setPoint.x;
+	float roll = m_rollPIDCalc->run(rollError);
+	
+	float pitchError = currentPosition.z - m_setPoint.z;
+	float pitch = m_pitchPIDCalc->run(pitchError);
+	
+	float yaw = 0; // yaw is not controlled
+
+	if(stopFlag)
+		m_trafficController->sendParameter(0, 0, 0, 0);
+	else
+	{
+		yaw = (m_kYaw != 0) ? m_kYaw : yaw;  // keyboard can override yaw/pitch value
+		pitch = (m_kPitch != 0) ? m_kPitch : pitch;
+		m_trafficController->sendParameter(thrust, yaw, pitch, roll);
+	}
+}
+
+- (void)setPointChanged:(cv::Point2i)point
+{
+	m_setPoint.x = point.x;
+	m_setPoint.y = point.y;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -132,6 +141,8 @@
 	NSRect hsvHighFrame = NSMakeRect(510, 9, 270, 180);
 	[self addHSVHighGroupWithFrame:hsvHighFrame];
 
+	m_setPoint = cv::Point3i(1280/2, 720/2, 300); // hard coded x/y/z
+	[m_capturePreview setCallBack:@selector(setPointChanged:)];
 	stopFlag = true;
 	[m_stopButton setTitle:@"Start"];
 	m_camera = [[Camera alloc] init];

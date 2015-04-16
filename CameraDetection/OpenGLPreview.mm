@@ -195,8 +195,9 @@ bail:
 {
 	if(m_viewlistener)
 	{
-		NSPoint clickedPoint = [self transform:[theEvent locationInWindow]];
-		m_viewlistener->setSelectedRegion(clickedPoint.x, clickedPoint.y, true);
+		m_clickedPoint = [self transform:[theEvent locationInWindow]];
+		m_viewlistener->setSelectedRegion(m_clickedPoint.x, m_clickedPoint.y, true);
+		
 	}
     [[self nextResponder] mouseDown:theEvent];
 }
@@ -205,8 +206,8 @@ bail:
 {
 	if(m_viewlistener)
 	{
-		NSPoint clickedPoint = [self transform:[theEvent locationInWindow]];
-		m_viewlistener->setSelectedRegion(clickedPoint.x, clickedPoint.y, false);
+		m_clickedPoint = [self transform:[theEvent locationInWindow]];
+		m_viewlistener->setSelectedRegion(m_clickedPoint.x, m_clickedPoint.y, false);
 	}
     [[self nextResponder] mouseDown:theEvent];
 }

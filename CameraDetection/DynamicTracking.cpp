@@ -76,5 +76,7 @@ bool DynamicTracking::processFrame(cv::Mat &image)
 		cv::line(image, m_cmt.bottomRight, m_cmt.bottomLeft, cv::Scalar(0,0,255),2);
 		cv::line(image, m_cmt.bottomLeft, m_cmt.topLeft, cv::Scalar(0,0,255),2);
 	}
+	
+	// Todo update position
 	return true;
 }

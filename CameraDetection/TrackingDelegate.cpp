@@ -47,7 +47,6 @@ void TrackingDelegate::setStrategy(StrategyType type)
 		default:
 			break;
 	}
-
 	m_mutex.unlock();
 }
 							

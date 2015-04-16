@@ -34,10 +34,14 @@
 @interface TrackingPreview : OpenGLPreview
 {
 	ITracking*	m_viewlistener;
+	NSPoint m_clickedPoint;
+	SEL callback;
 }
+
 - (void)setViewListener:(ITracking*)listener;
 - (NSPoint)transform:(NSPoint)clickedPoint;
-- (cv::Point3i)getSetPoint;
+- (cv::Point2i)getClickedPoint;
+- (void)setCallBack;
 
 @end
 
