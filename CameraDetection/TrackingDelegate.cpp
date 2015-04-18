@@ -53,6 +53,7 @@ void TrackingDelegate::setStrategy(StrategyType type)
 cv::Point3i TrackingDelegate::startTracking(cv::Mat& currentFrame)
 {
 	m_mutex.lock();
+	cv::Point3i position;
 	switch(m_state)
 	{
 		case kInit:
@@ -61,13 +62,15 @@ cv::Point3i TrackingDelegate::startTracking(cv::Mat& currentFrame)
 			m_state = kProcessFrame;
 			break;
 		case kProcessFrame:
-			m_tracking->processFrame(currentFrame);
+			if (m_tracking->processFrame(currentFrame))
+				position = m_tracking->getCurrentPosition();
+			else
+				position = cv::Point3i(640,360,300);
 			m_state = kProcessFrame;
 			break;
 		default:
 			break;
-	}	
-	cv::Point3i position = m_tracking->getCurrentPosition();
+	}
 	m_mutex.unlock();
 	return position;
 }

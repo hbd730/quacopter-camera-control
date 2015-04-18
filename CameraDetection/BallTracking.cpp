@@ -101,8 +101,10 @@ bool BallTracking::processFrame(cv::Mat &image)
 			putText(image,"(" + std::to_string(m_position.x)+ "," + std::to_string(m_position.y) \
 					+ "," + std::to_string(m_position.z) + ")", center, 4, 2, Scalar(255,0,0), 2);
 		}
+		return true;
 	}
-	return true;
+	else
+		return false;
 }
 
 int BallTracking::calculateDistance(Mat& thresholdImage)
@@ -130,7 +132,7 @@ int BallTracking::calculateDistance(Mat& thresholdImage)
 		if(objectImageHeight > 0)
 		{
 			int temp = (kFoc * kObjectHeight / (static_cast<float>(objectImageHeight) * 0.227f));
-			if(temp < 350)
+			if(temp < 550)
 				distance = temp;
 		}
 	}

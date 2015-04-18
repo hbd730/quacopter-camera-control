@@ -16,6 +16,14 @@
 
 #define CFReleaseSafe(CF) { CFTypeRef _cf = (CF); if (_cf){ (CF) = NULL; CFRelease(_cf); } }
 
+// To-do List
+// 1. PID bumpless transfer, when hit start, set the setpoint to the middle of the screen
+// 2. when not detected, thrust/pitch/roll should reset to 0
+// 3. setpoint selection/seperate openGL view and tracking
+// 4. decrease slider range for roll/pitch
+// 5. video recording
+
+
 @interface AppDelegate ()<CameraDelegate>
 {
 	TrackingDelegate* m_trackingDelegate;
@@ -122,9 +130,9 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
-	m_thrustPIDCalc = new PIDCalcThrust(30, 40, 2.5);
-	m_pitchPIDCalc = new PIDCalcRP(0.05, 0.00025, 0.1);
-	m_rollPIDCalc = new PIDCalcRP(0.05, 0.00025, 1);
+	m_thrustPIDCalc = new PIDCalcThrust(27, 4.3, 14);
+	m_pitchPIDCalc = new PIDCalcRP(0.05, 0.008, 0.005);
+	m_rollPIDCalc = new PIDCalcRP(0.04, 0.0002, 0.0075);
 	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
@@ -142,7 +150,7 @@
 	[self addHSVHighGroupWithFrame:hsvHighFrame];
 
 	m_setPoint = cv::Point3i(1280/2, 720/2, 300); // hard coded x/y/z
-	[m_capturePreview setCallBack:@selector(setPointChanged:)];
+	//[m_capturePreview setCallBack:@selector(setPointChanged:)];
 	stopFlag = true;
 	[m_stopButton setTitle:@"Start"];
 	m_camera = [[Camera alloc] init];
@@ -234,7 +242,7 @@
 				ballTracker->setHighV(value);
 				break;
 			default:
-				break;
+				break;	
 		}
 	}
 }

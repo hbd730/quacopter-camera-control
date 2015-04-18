@@ -8,6 +8,8 @@
 
 #pragma once
 
+// There are three form of PID controller: standard/classic/independent
+// Here we use independent form where 1/dt is sampling frequency, which is 29.97fps
 class IPIDCalc
 {
 public:
@@ -37,7 +39,7 @@ protected:
 	float error_;
 };
 
-// this is Thrust PID calulator
+// This is Thrust PID calulator
 class PIDCalcThrust: public IPIDCalc
 {
 public:
@@ -47,15 +49,15 @@ public:
 	float run(float error) noexcept override;
 	
 private:
-	static constexpr float kIHigh = 300.0;
-	static constexpr float kILow  = -200.0;
-	static constexpr float kDt    = 0.005;
+	static constexpr float kIHigh = 3000.0;
+	static constexpr float kILow  = -1200.0;
+	static constexpr float kDt    = 0.03;
 	const int kThrustOffset = 38000;
 	const int kMinThrust = 0;
 	const int kMaxThrust = 65000;
 };
 
-// this is Roll/Pitch PID calulator
+// This is Roll/Pitch PID calulator
 class PIDCalcRP: public IPIDCalc
 {
 public:
@@ -65,11 +67,10 @@ public:
 	float run(float error) noexcept override;
 	
 private:
-	static constexpr float kIHigh = 30.0;
-	static constexpr float kILow  = -30.0;
-	static constexpr float kDt    = 1;
+	static constexpr float kIHigh = 606.0;
+	static constexpr float kILow  = -606.0;
+	static constexpr float kDt    = 0.03;
 	const float kMinRoll = -15.0;
 	const float kMaxRoll = 15.0;
-
 };
 
