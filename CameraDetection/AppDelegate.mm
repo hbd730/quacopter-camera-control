@@ -22,6 +22,7 @@
 // 3. setpoint selection/seperate openGL view and tracking
 // 4. decrease slider range for roll/pitch
 // 5. video recording
+// 6. try Real-time Compressive Tracking and TLD
 
 
 @interface AppDelegate ()<CameraDelegate>
@@ -130,7 +131,7 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
-	m_thrustPIDCalc = new PIDCalcThrust(27, 4.3, 14);
+	m_thrustPIDCalc = new PIDCalcThrust(27, 4.3, 10.5);
 	m_pitchPIDCalc = new PIDCalcRP(0.05, 0.008, 0.005);
 	m_rollPIDCalc = new PIDCalcRP(0.04, 0.0002, 0.0075);
 	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
