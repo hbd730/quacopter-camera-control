@@ -19,8 +19,7 @@
 // To-do List
 // 1. PID bumpless transfer, when hit start, set the setpoint to the middle of the screen
 // 2. try Real-time Compressive Tracking and TLD
-// 3. decrease slider range for roll/pitch
-// 4. when not detected, thrust/pitch/roll should reset to 0
+// 3. when not detected, thrust/pitch/roll should reset to 0
 
 @interface AppDelegate ()<CameraDelegate, ViewListener>
 {
@@ -276,8 +275,17 @@
 	[m_controlWidget->m_textfield2 setFloatValue:obj->getKi()];
 	[m_controlWidget->m_textfield3 setFloatValue:obj->getKd()];
 	m_controlWidget.associatedObject = (id)obj;
+	if(dynamic_cast<PIDCalcThrust*>(obj))
+	{
+		[m_controlWidget->m_Slider2 setMaxValue: 10];
+		[m_controlWidget->m_Slider3 setMaxValue: 20];
+	}
 	if(dynamic_cast<PIDCalcRP*>(obj))
-	   [m_controlWidget->m_Slider2 setMaxValue: 0.1];
+	{
+		[m_controlWidget->m_Slider1 setMaxValue: 0.1];
+		[m_controlWidget->m_Slider2 setMaxValue: 0.1];
+		[m_controlWidget->m_Slider3 setMaxValue: 0.01];
+	}
 	[m_view addSubview:m_controlWidget];
 }
 
