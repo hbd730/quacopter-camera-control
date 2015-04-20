@@ -180,35 +180,25 @@ bail:
 
 @implementation TrackingPreview
 
+@synthesize m_viewListener;
+
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     return self;
 }
 
-- (void)setViewListener:(ITracking*)listener
-{
-	m_viewlistener = listener;
-}
-
 - (void)mouseDown:(NSEvent *)theEvent
 {
-	if(m_viewlistener)
-	{
-		m_clickedPoint = [self transform:[theEvent locationInWindow]];
-		m_viewlistener->setSelectedRegion(m_clickedPoint.x, m_clickedPoint.y, true);
-		
-	}
+	if(m_viewListener)
+		[m_viewListener viewEventHandler:theEvent];
     [[self nextResponder] mouseDown:theEvent];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-	if(m_viewlistener)
-	{
-		m_clickedPoint = [self transform:[theEvent locationInWindow]];
-		m_viewlistener->setSelectedRegion(m_clickedPoint.x, m_clickedPoint.y, false);
-	}
+	if(m_viewListener)
+		[m_viewListener viewEventHandler:theEvent];
     [[self nextResponder] mouseDown:theEvent];
 }
 

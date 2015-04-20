@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 FlightDynamics. All rights reserved.
 //
 
-#include "Tracking.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreVideo/CoreVideo.h>
 #import <OpenGL/OpenGL.h>
@@ -30,18 +29,21 @@
 
 @end
 
+
+@protocol ViewListener <NSObject>
+
+- (void)viewEventHandler:(NSEvent*)theEvent; // register a viewEvent handler
+
+@end
+
 // Tracking preview handle mouse event such as region and PID setpoint selection
 @interface TrackingPreview : OpenGLPreview
 {
-	ITracking*	m_viewlistener;
-	NSPoint m_clickedPoint;
-	SEL callback;
+	
 }
 
-- (void)setViewListener:(ITracking*)listener;
+@property (assign) id<ViewListener> m_viewListener;
 - (NSPoint)transform:(NSPoint)clickedPoint;
-- (cv::Point2i)getClickedPoint;
-- (void)setCallBack;
 
 @end
 

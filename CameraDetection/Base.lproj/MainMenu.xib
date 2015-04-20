@@ -16,8 +16,10 @@
                 <outlet property="StrategyPopup" destination="lpk-EO-T4X" id="MPp-Ug-XB3"/>
                 <outlet property="m_StrategyPopup" destination="lpk-EO-T4X" id="BNr-PO-IMu"/>
                 <outlet property="m_capturePreview" destination="skn-7P-bUC" id="3pZ-VY-EZ4"/>
+                <outlet property="m_depth" destination="QRX-Fo-WZm" id="Y6r-4V-Png"/>
                 <outlet property="m_outputPreview" destination="USz-aO-7tz" id="qPO-NS-IDe"/>
                 <outlet property="m_preview" destination="skn-7P-bUC" id="Rwm-YT-6RH"/>
+                <outlet property="m_setPointCheckBox" destination="rc7-ZR-pj5" id="5nM-vF-g0P"/>
                 <outlet property="m_stopButton" destination="c8V-5Q-2jV" id="ELv-o1-pIQ"/>
                 <outlet property="m_strategyMenu" destination="lpk-EO-T4X" id="FUK-dA-7nV"/>
                 <outlet property="m_strategyPopup" destination="lpk-EO-T4X" id="2N0-88-rWT"/>
@@ -136,7 +138,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c8V-5Q-2jV">
-                        <rect key="frame" x="286" y="286" width="99" height="32"/>
+                        <rect key="frame" x="440" y="282" width="99" height="32"/>
                         <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="x1R-OV-K80">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -217,38 +219,37 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField appearanceType="aqua" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p8x-8G-zuk">
-                        <rect key="frame" x="525" y="292" width="65" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="X" id="qci-or-aZF">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField appearanceType="aqua" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pzz-Au-ZcR">
-                        <rect key="frame" x="645" y="292" width="65" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Y" id="ol2-yc-f2N">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField appearanceType="aqua" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Oj-QO-UwP">
-                        <rect key="frame" x="765" y="292" width="65" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Z" id="jGL-yK-REm">
+                        <rect key="frame" x="762" y="286" width="65" height="22"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Depth:" id="jGL-yK-REm">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField appearanceType="aqua" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lJe-td-RrA">
-                        <rect key="frame" x="444" y="292" width="65" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="SetPoint" id="7QX-gX-VDj">
+                    <textField appearanceType="aqua" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QRX-Fo-WZm">
+                        <rect key="frame" x="809" y="288" width="65" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="St9-Ir-1Oj">
                             <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <action selector="depthChanged:" target="Voe-Tx-rLC" id="gpJ-D3-33I"/>
+                        </connections>
                     </textField>
+                    <button appearanceType="aqua" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rc7-ZR-pj5">
+                        <rect key="frame" x="590" y="290" width="127" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Change SetPoint" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="EFm-6H-0cX">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="setPointSelectionChanged:" target="Voe-Tx-rLC" id="AxW-I7-R6p"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
         </window>

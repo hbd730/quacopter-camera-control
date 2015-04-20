@@ -18,14 +18,11 @@
 
 // To-do List
 // 1. PID bumpless transfer, when hit start, set the setpoint to the middle of the screen
-// 2. when not detected, thrust/pitch/roll should reset to 0
-// 3. setpoint selection/seperate openGL view and tracking
-// 4. decrease slider range for roll/pitch
-// 5. video recording
-// 6. try Real-time Compressive Tracking and TLD
+// 2. try Real-time Compressive Tracking and TLD
+// 3. decrease slider range for roll/pitch
+// 4. when not detected, thrust/pitch/roll should reset to 0
 
-
-@interface AppDelegate ()<CameraDelegate>
+@interface AppDelegate ()<CameraDelegate, ViewListener>
 {
 	TrackingDelegate* m_trackingDelegate;
 	PIDCalcThrust* m_thrustPIDCalc;
@@ -38,10 +35,13 @@
 	int m_kPitch;
 	int m_kYaw;
 	bool stopFlag;
+	bool changeSetPoint;
 }
 
-@property (assign) IBOutlet NSButton *m_stopButton;
-@property (assign) IBOutlet NSView *m_view;
+@property (assign) IBOutlet NSButton* m_stopButton;
+@property (assign) IBOutlet NSTextField* m_depth;
+@property (assign) IBOutlet NSButton* m_setPointCheckBox;
+@property (assign) IBOutlet NSView* m_view;
 @property (nonatomic, strong) Camera* m_camera;
 @property (assign) IBOutlet TrackingPreview* m_capturePreview;
 @property (assign) IBOutlet ImageProcessingPreview* m_outputPreview;
@@ -55,6 +55,8 @@
 @synthesize m_outputPreview;
 @synthesize m_strategyPopup;
 @synthesize m_stopButton;
+@synthesize m_depth;
+@synthesize m_setPointCheckBox;
 
 - (void) frameCaptured:(CVImageBufferRef) imageBuffer
 {
@@ -115,7 +117,7 @@
 	}
 }
 
-- (void)setPointChanged:(cv::Point2i)point
+- (void)setPointChanged:(NSPoint)point
 {
 	m_setPoint.x = point.x;
 	m_setPoint.y = point.y;
@@ -150,12 +152,15 @@
 	NSRect hsvHighFrame = NSMakeRect(510, 9, 270, 180);
 	[self addHSVHighGroupWithFrame:hsvHighFrame];
 
-	m_setPoint = cv::Point3i(1280/2, 720/2, 300); // hard coded x/y/z
-	//[m_capturePreview setCallBack:@selector(setPointChanged:)];
+	m_setPoint = cv::Point3i(1280/2, 720/2, 300); // initilise setpoint
 	stopFlag = true;
+	changeSetPoint = false;
+	[m_depth setIntValue:m_setPoint.z];
+	[m_setPointCheckBox setState:NSOffState];
 	[m_stopButton setTitle:@"Start"];
 	m_camera = [[Camera alloc] init];
 	m_camera.delegate = self;
+	m_capturePreview.m_viewListener = self;
 	[m_view.window makeFirstResponder:self];
 	[m_camera startRunning];
 }
@@ -178,7 +183,6 @@
 	TrackingDelegate::StrategyType type;
 	type = (TrackingDelegate::StrategyType)[m_strategyPopup indexOfSelectedItem];
 	m_trackingDelegate->setStrategy(type);
-	[m_capturePreview setViewListener:m_trackingDelegate->getCurrentTracker()];
 }
 
 - (void)pidValueChanged:(ControlWidgets*)sender
@@ -305,11 +309,13 @@
 	[m_view addSubview:m_controlWidget];
 }
 
-- (BOOL)acceptsFirstResponder {
+- (BOOL)acceptsFirstResponder
+{
     return YES;
 }
 
-- (void)keyDown:(NSEvent *)theEvent {
+- (void)keyDown:(NSEvent *)theEvent
+{
 	// Arrow keys are associated with the numeric keypad
 	if ([theEvent modifierFlags] & NSNumericPadKeyMask)
 	{
@@ -341,7 +347,8 @@
 	}
 }
 
-- (void)keyUp:(NSEvent *)theEvent {
+- (void)keyUp:(NSEvent *)theEvent
+{
 	// Arrow keys are associated with the numeric keypad
 	if ([theEvent modifierFlags] & NSNumericPadKeyMask)
 	{
@@ -357,6 +364,39 @@
 	else
 	{
 		[super keyDown:theEvent];
+	}
+}
+
+- (IBAction)depthChanged:(NSTextField*)sender
+{
+	m_setPoint.z = [sender intValue];
+}
+
+- (IBAction)setPointSelectionChanged:(NSButton*)sender
+{
+	if(sender.state == NSOnState)
+		changeSetPoint = true;
+	else
+		changeSetPoint = false;
+}
+
+- (void)viewEventHandler:(NSEvent*)theEvent
+{
+	NSPoint clickedPoint;
+	switch(theEvent.type)
+	{
+		case NSLeftMouseDown:
+			clickedPoint = [m_capturePreview transform:[theEvent locationInWindow]];
+			m_trackingDelegate->getCurrentTracker()->setSelectedRegion(clickedPoint.x, clickedPoint.y, true);
+			if(changeSetPoint)
+				[self setPointChanged:clickedPoint];
+			break;
+		case NSLeftMouseUp:
+			clickedPoint = [m_capturePreview transform:[theEvent locationInWindow]];
+			m_trackingDelegate->getCurrentTracker()->setSelectedRegion(clickedPoint.x, clickedPoint.y, false);
+			break;
+		default:
+			break;
 	}
 }
 
