@@ -13,13 +13,10 @@
 #include "PIDCalc.h"
 #include "CFRadioController.h"
 #include "ControlWidgets.h"
-
-#define CFReleaseSafe(CF) { CFTypeRef _cf = (CF); if (_cf){ (CF) = NULL; CFRelease(_cf); } }
+#include "Debug.h"
 
 // To-do List
-// 1. PID bumpless transfer, when hit start, set the setpoint to the middle of the screen
-// 2. try Real-time Compressive Tracking and TLD
-// 3. when not detected, thrust/pitch/roll should reset to 0
+// 1. try Real-time Compressive Tracking and TLD
 
 @interface AppDelegate ()<CameraDelegate, ViewListener>
 {
@@ -57,29 +54,45 @@
 @synthesize m_depth;
 @synthesize m_setPointCheckBox;
 
-- (void) frameCaptured:(CVImageBufferRef) imageBuffer
+- (void)frameCaptured:(CVImageBufferRef)imageBuffer
 {
-	// Get information about the image
-	uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
-	size_t width = CVPixelBufferGetWidth(imageBuffer);  // format kCVPixelFormatType_32BGRA to get use CVPixelBufferGetPixelFormatType
-	size_t height = CVPixelBufferGetHeight(imageBuffer);
-	size_t stride = CVPixelBufferGetBytesPerRow(imageBuffer);
-	
-	// Trasform to OpenCV matrix
-	cv::Mat currentFrame((int)height, (int)width, CV_8UC4, (void*)baseAddress, stride);
+	// Trasform camera buffer to OpenCV matrix
+	cv::Mat currentFrame = [self convertCameraBufferToMat:imageBuffer];
 	
 	// Start tracking
-	cv::Point3i currentPosition = m_trackingDelegate->startTracking(currentFrame);
-	
-	// Update PID Controller and send command
-	[self updatePIDAndSendCommand:currentPosition];
+	cv::Point3i currentPosition;
+	if (m_trackingDelegate->startTracking(currentFrame, currentPosition) && (stopFlag != true))
+		[self updatePIDAndSend:currentPosition];
+	else
+		m_trafficController->sendParameter(0, 0, 0, 0);
 	
 	// Redering capture preview
 	[m_capturePreview renderFromBuffer:imageBuffer];
 	
+	// Convert OpenCV matrix to preview buffer
+	CVPixelBufferRef outputBuffer = [self convertMatToPreviewBuffer:m_trackingDelegate->getOutputImage()];
+	
+	// Redering output preview
+	[m_outputPreview renderFromBuffer:outputBuffer];
+	
+	CFReleaseSafe(outputBuffer);
+}
+
+- (cv::Mat)convertCameraBufferToMat:(CVImageBufferRef)cameraBuffer
+{
+	uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(cameraBuffer);
+	size_t width = CVPixelBufferGetWidth(cameraBuffer);  // format kCVPixelFormatType_32BGRA to get use CVPixelBufferGetPixelFormatType
+	size_t height = CVPixelBufferGetHeight(cameraBuffer);
+	size_t stride = CVPixelBufferGetBytesPerRow(cameraBuffer);
+	return cv::Mat((int)height, (int)width, CV_8UC4, (void*)baseAddress, stride);
+}
+
+- (CVPixelBufferRef)convertMatToPreviewBuffer:(cv::Mat)outputImage
+{
 	CVPixelBufferRef outputBuffer = NULL;
-	cv::Mat outputImage = m_trackingDelegate->getOutputImage();
 	uint8_t *outputAddress = outputImage.data;
+	size_t width = outputImage.cols;
+	size_t height = outputImage.rows;
 	OSStatus error = CVPixelBufferCreateWithBytes(kCFAllocatorDefault, width, height, kCVPixelFormatType_OneComponent8, outputAddress, width, \
 												  NULL, NULL, NULL, &outputBuffer);
 	if(error)
@@ -87,13 +100,10 @@
 		NSError *errorCode = [NSError errorWithDomain:NSOSStatusErrorDomain code:error userInfo:nil];
 		NSLog(@"Error: %@", [errorCode description]);
 	}
-	else // Redering output preview
-		[m_outputPreview renderFromBuffer:outputBuffer];
-	
-	CFReleaseSafe(outputBuffer);
+	return outputBuffer;
 }
 
-- (void)updatePIDAndSendCommand:(cv::Point3i)currentPosition
+- (void)updatePIDAndSend:(cv::Point3i)currentPosition
 {
 	float thrustError = currentPosition.y - m_setPoint.y;
 	float thrust = m_thrustPIDCalc->run(thrustError);
@@ -106,14 +116,9 @@
 	
 	float yaw = 0; // yaw is not controlled
 
-	if(stopFlag)
-		m_trafficController->sendParameter(0, 0, 0, 0);
-	else
-	{
-		yaw = (m_kYaw != 0) ? m_kYaw : yaw;  // keyboard can override yaw/pitch value
-		pitch = (m_kPitch != 0) ? m_kPitch : pitch;
-		m_trafficController->sendParameter(thrust, yaw, pitch, roll);
-	}
+	yaw = (m_kYaw != 0) ? m_kYaw : yaw;  // keyboard can override yaw/pitch value
+	pitch = (m_kPitch != 0) ? m_kPitch : pitch;
+	m_trafficController->sendParameter(thrust, yaw, pitch, roll);
 }
 
 - (void)setPointChanged:(NSPoint)point

@@ -29,8 +29,8 @@ public:
 	TrackingDelegate();
 	virtual ~TrackingDelegate();
 	void setStrategy(StrategyType type);
+	bool startTracking(cv::Mat& image, cv::Point3i& foundPos);
 	ITracking* getCurrentTracker() const { return m_tracking; };
-	cv::Point3i startTracking(cv::Mat& image);
 	cv::Mat getOutputImage() const { return m_tracking->getOutputImage(); };
 	
 private:

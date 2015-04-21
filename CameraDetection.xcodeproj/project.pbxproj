@@ -102,6 +102,7 @@
 		DEA367481A8B03F800B7F4E7 /* CCRTPPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCRTPPacket.cpp; path = libcflie/src/cflie/CCRTPPacket.cpp; sourceTree = SOURCE_ROOT; };
 		DEA367491A8B03F800B7F4E7 /* CTOC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTOC.cpp; path = libcflie/src/cflie/CTOC.cpp; sourceTree = SOURCE_ROOT; };
 		DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-1.0.0.dylib"; path = "../../../../usr/local/lib/libusb-1.0.0.dylib"; sourceTree = "<group>"; };
+		DEEA14411AE5C4E100AA25A7 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +230,7 @@
 				DE32C4291A00EF7D00D3EC9C /* AppDelegate.mm */,
 				DE406E061A27157D00085249 /* ControlWidgets.h */,
 				DE406E071A27157D00085249 /* ControlWidgets.m */,
+				DEEA14411AE5C4E100AA25A7 /* Debug.h */,
 				DE901E1D19F270F5006CE487 /* MainMenu.xib */,
 				DE901E1419F270F5006CE487 /* Supporting Files */,
 			);

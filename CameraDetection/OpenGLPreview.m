@@ -7,13 +7,7 @@
 //
 
 #import "OpenGLPreview.h"
-
-#define BAIL_IF(cond, fmt, ...)                                                 \
-if (cond)                                                                       \
-{                                                                               \
-	fprintf(stderr, "*** %s[%d]: " fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__); \
-	goto bail;                                                                  \
-}
+#include "Debug.h"
 
 @implementation OpenGLPreview
 
@@ -161,11 +155,16 @@ bail:
 	// There is no autorelease pool when this method is called
 	// because it will be called from a background thread.
 	// It's important to create one or app can leak objects.
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self putBufferInTexture:pixBuf];
-	[self drawView];
-	[pool release];
-	return kCVReturnSuccess;
+	if (pixBuf)
+	{
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		[self putBufferInTexture:pixBuf];
+		[self drawView];
+		[pool release];
+		return kCVReturnSuccess;
+	}
+	else
+		return kCVReturnInvalidArgument;
 }
 
 - (void)prepareOpenGL

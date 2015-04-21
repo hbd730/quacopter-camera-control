@@ -49,29 +49,27 @@ void TrackingDelegate::setStrategy(StrategyType type)
 	}
 	m_mutex.unlock();
 }
-							
-cv::Point3i TrackingDelegate::startTracking(cv::Mat& currentFrame)
+
+bool TrackingDelegate::startTracking(cv::Mat& image, cv::Point3i& foundPos)
 {
 	m_mutex.lock();
-	cv::Point3i position;
+	bool found = false;
 	switch(m_state)
 	{
 		case kInit:
-			m_tracking->init(currentFrame);
-			m_tracking->setReferenceFrame(currentFrame); // set the first frame as reference
+			m_tracking->init(image);
+			m_tracking->setReferenceFrame(image); // set the first frame as reference
 			m_state = kProcessFrame;
 			break;
 		case kProcessFrame:
-			if (m_tracking->processFrame(currentFrame))
-				position = m_tracking->getCurrentPosition();
-			else
-				position = cv::Point3i(640,360,300);
+			found = m_tracking->processFrame(image);
+			foundPos = m_tracking->getCurrentPosition();
 			m_state = kProcessFrame;
 			break;
 		default:
 			break;
 	}
 	m_mutex.unlock();
-	return position;
+	return found;
 }
 
