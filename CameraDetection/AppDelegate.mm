@@ -13,6 +13,7 @@
 #include "PIDCalc.h"
 #include "CFRadioController.h"
 #include "ControlWidgets.h"
+#include "Constant.h"
 #include "Debug.h"
 
 // To-do List
@@ -137,9 +138,9 @@
 	m_trackingDelegate = new TrackingDelegate();
 	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
-	m_thrustPIDCalc = new PIDCalcThrust(27, 4.3, 10.5);
-	m_pitchPIDCalc = new PIDCalcRP(0.05, 0.008, 0.005);
-	m_rollPIDCalc = new PIDCalcRP(0.04, 0.0002, 0.0075);
+	m_thrustPIDCalc = new PIDCalcThrust(kThrustKp, kThrustKi, kThrustKd);
+	m_pitchPIDCalc = new PIDCalcRP(kPitchKp, kPitchKi, kPitchKd);
+	m_rollPIDCalc = new PIDCalcRP(kRollKp, kRollKi, kRollKd);
 	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
 	
 	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
@@ -156,7 +157,7 @@
 	NSRect hsvHighFrame = NSMakeRect(510, 9, 270, 180);
 	[self addHSVHighGroupWithFrame:hsvHighFrame];
 
-	m_setPoint = cv::Point3i(1280/2, 720/2, 300); // initilise setpoint
+	m_setPoint = cv::Point3i(1280/2, 720/2, 300); // initialise setpoint
 	stopFlag = true;
 	changeSetPoint = false;
 	[m_depth setIntValue:m_setPoint.z];
@@ -210,49 +211,20 @@
 	}
 }
 
-- (void)hsvLowValueChanged:(ControlWidgets*)sender
+- (void)hsvGroupValueChanged:(ControlWidgets*)sender
 {
-	ParameterType type = [sender activeControlID];
-	float value = [sender activeValue];
-	if (BallTracking* ballTracker  = dynamic_cast<BallTracking*>(m_trackingDelegate->getCurrentTracker()))
+	ParameterType parameterID = [sender activeControlID];
+	int value = [sender activeValue];
+	
+	if([sender isMemberOfClass:[HSVLowControlWidgets class]])
 	{
-		switch(type)
-		{
-			case kFirst:
-				ballTracker->setLowH(value);
-				break;
-			case kSecond:
-				ballTracker->setLowS(value);
-				break;
-			case kThird:
-				ballTracker->setLowV(value);
-				break;
-			default:
-				break;
-		}
+		BallTrackerEvent event(UIControlEvent::HSVLowGroupChanged, parameterID, value);
+		m_trackingDelegate->onParameterChanged(event);
 	}
-}
-
-- (void)hsvHighValueChanged:(ControlWidgets*)sender
-{
-	ParameterType type = [sender activeControlID];
-	float value = [sender activeValue];
-	if (BallTracking* ballTracker  = dynamic_cast<BallTracking*>(m_trackingDelegate->getCurrentTracker()))
+	else if([sender isMemberOfClass:[HSVHighControlWidgets class]])
 	{
-		switch(type)
-		{
-			case kFirst:
-				ballTracker->setHighH(value);
-				break;
-			case kSecond:
-				ballTracker->setHighS(value);
-				break;
-			case kThird:
-				ballTracker->setHighV(value);
-				break;
-			default:
-				break;	
-		}
+		BallTrackerEvent event(UIControlEvent::HSVHighGroupChanged, parameterID, value);
+		m_trackingDelegate->onParameterChanged(event);
 	}
 }
 
@@ -298,13 +270,13 @@
 {
 	m_controlWidget = [[[HSVLowControlWidgets alloc] initWithFrame:frame] autorelease];
 	[m_controlWidget setTarget:self];
-	[m_controlWidget setAction:@selector(hsvLowValueChanged:)];
-	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kLowH];
-	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kLowS];
-	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kLowV];
-	[m_controlWidget->m_textfield1 setIntValue:BallTracking::kLowH];
-	[m_controlWidget->m_textfield2 setIntValue:BallTracking::kLowS];
-	[m_controlWidget->m_textfield3 setIntValue:BallTracking::kLowV];
+	[m_controlWidget setAction:@selector(hsvGroupValueChanged:)];
+	[m_controlWidget->m_Slider1 setIntValue:HSVMatrixs::kLowH];
+	[m_controlWidget->m_Slider2 setIntValue:HSVMatrixs::kLowS];
+	[m_controlWidget->m_Slider3 setIntValue:HSVMatrixs::kLowV];
+	[m_controlWidget->m_textfield1 setIntValue:HSVMatrixs::kLowH];
+	[m_controlWidget->m_textfield2 setIntValue:HSVMatrixs::kLowS];
+	[m_controlWidget->m_textfield3 setIntValue:HSVMatrixs::kLowV];
 	[m_view addSubview:m_controlWidget];
 }
 
@@ -312,13 +284,13 @@
 {
 	m_controlWidget = [[[HSVHighControlWidgets alloc] initWithFrame:frame] autorelease];
 	[m_controlWidget setTarget:self];
-	[m_controlWidget setAction:@selector(hsvHighValueChanged:)];
-	[m_controlWidget->m_Slider1 setIntValue:BallTracking::kHighH];
-	[m_controlWidget->m_Slider2 setIntValue:BallTracking::kHighS];
-	[m_controlWidget->m_Slider3 setIntValue:BallTracking::kHighV];
-	[m_controlWidget->m_textfield1 setIntValue:BallTracking::kHighH];
-	[m_controlWidget->m_textfield2 setIntValue:BallTracking::kHighS];
-	[m_controlWidget->m_textfield3 setIntValue:BallTracking::kHighV];
+	[m_controlWidget setAction:@selector(hsvGroupValueChanged:)];
+	[m_controlWidget->m_Slider1 setIntValue:HSVMatrixs::kHighH];
+	[m_controlWidget->m_Slider2 setIntValue:HSVMatrixs::kHighS];
+	[m_controlWidget->m_Slider3 setIntValue:HSVMatrixs::kHighV];
+	[m_controlWidget->m_textfield1 setIntValue:HSVMatrixs::kHighH];
+	[m_controlWidget->m_textfield2 setIntValue:HSVMatrixs::kHighS];
+	[m_controlWidget->m_textfield3 setIntValue:HSVMatrixs::kHighV];
 	[m_view addSubview:m_controlWidget];
 }
 

@@ -7,14 +7,18 @@
 //
 
 #include "BallTracking.h"
-#include "opencv2/highgui/highgui.hpp"
+#include "Constant.h"
 
 using namespace std;
 using namespace cv;
 
 // Camera and tracking object information.
-const float kFoc = 40.0f;
-const float kObjectHeight = 35.0f;
+const static float kFoc = 40.0f;
+const static float kObjectHeight = 35.0f;
+
+// hough detection constant not used
+const static int kCannyThresholdInitialValue = 200;
+const static int kAccumulatorThresholdInitialValue = 100;
 
 BallTracking::BallTracking():
 ITracking(),
@@ -46,8 +50,6 @@ bool BallTracking::processFrame(cv::Mat &image)
 #ifdef CIRCLE_DETECTION
 	int cannyThreshold;
 	int accumulatorThreshold;
-	const int kCannyThresholdInitialValue = 200;
-	const int kAccumulatorThresholdInitialValue = 100;
 	// Convert it to gray, Hough detection works well only on gray image
 	cvtColor(image, m_outputImage, COLOR_BGR2GRAY);
 	// Reduce the noise so we avoid false circle detection

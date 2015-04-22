@@ -9,7 +9,34 @@
 #pragma once
 
 #include "Tracking.h"
-#include "BallTracking.h" 
+
+class UIControlEvent
+{
+public:
+	enum EventType
+	{
+		HSVLowGroupChanged,
+		HSVHighGroupChanged
+	};
+	UIControlEvent(EventType type):m_type(type){};
+	virtual ~UIControlEvent(){};
+	EventType type() const { return m_type; };
+protected:
+	EventType m_type;
+};
+
+class BallTrackerEvent: public UIControlEvent
+{
+public:
+	BallTrackerEvent(EventType type, int parameterID, int value)
+		:UIControlEvent(type),m_id(parameterID),m_value(value){};
+	~BallTrackerEvent(){};
+	int getID() const { return m_id; };
+	int value() const { return m_value; };
+private:
+	int m_id;
+	int m_value;
+};
 
 class TrackingDelegate
 {
@@ -30,6 +57,7 @@ public:
 	virtual ~TrackingDelegate();
 	void setStrategy(StrategyType type);
 	bool startTracking(cv::Mat& image, cv::Point3i& foundPos);
+	void onParameterChanged(BallTrackerEvent event);
 	ITracking* getCurrentTracker() const { return m_tracking; };
 	cv::Mat getOutputImage() const { return m_tracking->getOutputImage(); };
 	

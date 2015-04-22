@@ -60,7 +60,7 @@
 		default:
 			break;
 	}
-	activeControlID = [sender tag];
+	activeControlID = (int)[sender tag];
 	[self sendAction:[self action] to:[self target]];
 	
 }
@@ -84,7 +84,7 @@
 		default:
 			break;
 	}
-	activeControlID = [sender tag];
+	activeControlID = (int)[sender tag];
 	[self sendAction:[self action] to:[self target]];
 }
 

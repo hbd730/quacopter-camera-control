@@ -8,7 +8,9 @@
 
 #include "TrackingDelegate.h"
 #include "StaticTracking.h"
+#include "BallTracking.h"
 #include "DynamicTracking.h"
+#include "Constant.h"
 
 TrackingDelegate::TrackingDelegate():
 m_tracking(NULL),
@@ -73,3 +75,44 @@ bool TrackingDelegate::startTracking(cv::Mat& image, cv::Point3i& foundPos)
 	return found;
 }
 
+void TrackingDelegate::onParameterChanged(BallTrackerEvent event)
+{
+	if (BallTracking* ballTracker  = dynamic_cast<BallTracking*>(m_tracking))
+	{
+		if (event.type() == UIControlEvent::HSVLowGroupChanged)
+		{
+			switch(event.getID())
+			{
+				case kFirst:
+					ballTracker->setLowH(event.value());
+					break;
+				case kSecond:
+					ballTracker->setLowS(event.value());
+					break;
+				case kThird:
+					ballTracker->setLowV(event.value());
+					break;
+				default:
+					break;
+			}
+		}
+		else if (event.type() == UIControlEvent::HSVHighGroupChanged)
+		{
+			switch(event.getID())
+			{
+				case kFirst:
+					ballTracker->setHighH(event.value());
+					break;
+				case kSecond:
+					ballTracker->setHighS(event.value());
+					break;
+				case kThird:
+					ballTracker->setHighV(event.value());
+					break;
+				default:
+					break;
+			
+			}
+		}
+	}
+}

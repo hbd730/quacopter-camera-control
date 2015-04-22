@@ -41,7 +41,6 @@
 		DEA3674C1A8B03F800B7F4E7 /* CCRTPPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA367481A8B03F800B7F4E7 /* CCRTPPacket.cpp */; };
 		DEA3674D1A8B03F800B7F4E7 /* CTOC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA367491A8B03F800B7F4E7 /* CTOC.cpp */; };
 		DEA3674F1A8B072000B7F4E7 /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */; };
-		DEA367501A8B076300B7F4E7 /* libzmq.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2E527D1A1731DC00384F2B /* libzmq.4.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +48,6 @@
 		DE2E52771A17190700384F2B /* PIDCalc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PIDCalc.h; sourceTree = "<group>"; };
 		DE2E527A1A172F3C00384F2B /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utils.cpp; sourceTree = "<group>"; };
 		DE2E527B1A172F3D00384F2B /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
-		DE2E527D1A1731DC00384F2B /* libzmq.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzmq.4.dylib; path = ../../../../usr/local/lib/libzmq.4.dylib; sourceTree = "<group>"; };
 		DE2E527F1A17326700384F2B /* libzmq.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzmq.4.dylib; path = ../../../../usr/local/lib/libzmq.4.dylib; sourceTree = "<group>"; };
 		DE2E52811A1732FE00384F2B /* DataTraffic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataTraffic.h; sourceTree = "<group>"; };
 		DE2E52821A1733A300384F2B /* ZeroMqController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZeroMqController.cpp; sourceTree = "<group>"; };
@@ -101,8 +99,9 @@
 		DEA367471A8B03F800B7F4E7 /* CCrazyRadio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCrazyRadio.cpp; path = libcflie/src/cflie/CCrazyRadio.cpp; sourceTree = SOURCE_ROOT; };
 		DEA367481A8B03F800B7F4E7 /* CCRTPPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCRTPPacket.cpp; path = libcflie/src/cflie/CCRTPPacket.cpp; sourceTree = SOURCE_ROOT; };
 		DEA367491A8B03F800B7F4E7 /* CTOC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTOC.cpp; path = libcflie/src/cflie/CTOC.cpp; sourceTree = SOURCE_ROOT; };
-		DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-1.0.0.dylib"; path = "../../../../usr/local/lib/libusb-1.0.0.dylib"; sourceTree = "<group>"; };
+		DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-1.0.0.dylib"; path = "/usr/local/lib/libusb-1.0.0.dylib"; sourceTree = "<absolute>"; };
 		DEEA14411AE5C4E100AA25A7 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		DEEA14431AE604C700AA25A7 /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEA367501A8B076300B7F4E7 /* libzmq.4.dylib in Frameworks */,
 				DEA3674F1A8B072000B7F4E7 /* libusb-1.0.0.dylib in Frameworks */,
 				DE32C4181A00EEAA00D3EC9C /* libopencv_videostab.3.0.0.dylib in Frameworks */,
 				DE6EA0D819F6171D006C4847 /* AVFoundation.framework in Frameworks */,
@@ -230,6 +228,7 @@
 				DE32C4291A00EF7D00D3EC9C /* AppDelegate.mm */,
 				DE406E061A27157D00085249 /* ControlWidgets.h */,
 				DE406E071A27157D00085249 /* ControlWidgets.m */,
+				DEEA14431AE604C700AA25A7 /* Constant.h */,
 				DEEA14411AE5C4E100AA25A7 /* Debug.h */,
 				DE901E1D19F270F5006CE487 /* MainMenu.xib */,
 				DE901E1419F270F5006CE487 /* Supporting Files */,
@@ -250,8 +249,6 @@
 		DE901E3619F27F79006CE487 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */,
-				DE2E527D1A1731DC00384F2B /* libzmq.4.dylib */,
 				DE6EA0D719F6171D006C4847 /* AVFoundation.framework */,
 				DE6EA0D519F616EF006C4847 /* CoreMedia.framework */,
 			);
@@ -277,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				DE2E527F1A17326700384F2B /* libzmq.4.dylib */,
+				DEA3674E1A8B071F00B7F4E7 /* libusb-1.0.0.dylib */,
 				DE32C42B1A00EFA300D3EC9C /* libopencv_videoio.3.0.0.dylib */,
 				DE32C4231A00EF3600D3EC9C /* libopencv_stitching.3.0.0.dylib */,
 				DE32C4241A00EF3600D3EC9C /* libopencv_superres.3.0.0.dylib */,

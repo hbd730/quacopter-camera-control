@@ -51,7 +51,7 @@
 		
 		/*We create a serial queue to handle the processing of our frames*/
 		dispatch_queue_t queue;
-		queue = dispatch_queue_create("com.computer-vision-talks.cameraQueue", NULL);
+		queue = dispatch_queue_create("camera queue", NULL);
 		[captureOutput setSampleBufferDelegate:self queue:queue];
 		
 		[session addInput:captureInput];

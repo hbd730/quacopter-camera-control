@@ -13,16 +13,6 @@
 class BallTracking : public ITracking
 {
 public:
-	enum HSVMetrics   // Online caculator use range H = 0- 360, S = 0-100, V = 0-100
-	{				  // In OpenCV, H = 0-180, S = 0-255, V = 0-255
-		kLowH = 22,
-		kHighH = 57,
-		kLowS = 34,
-		kHighS = 225,
-		kLowV = 104,
-		kHighV = 255
-	};
-	
 	BallTracking();
 	virtual ~BallTracking();
 	virtual std::string getName() const;

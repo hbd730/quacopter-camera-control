@@ -7,14 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#include "Constant.h"
 
 @interface ControlWidgets : NSControl
 {
-	enum ParameterType: NSInteger
-	{
-		kFirst, kSecond, kThird
-	};
-@public   // public ?
+@public  
 	NSSlider* m_Slider1;
 	NSSlider* m_Slider2;
 	NSSlider* m_Slider3;
