@@ -27,8 +27,6 @@ public:
 	void setHighV(int value){ m_highV = value;}
 	
 protected:
-	void HoughDetection(const cv::Mat& src_gray, const cv::Mat& src_display, int cannyThreshold, int accumulatorThreshold);
-	void tackerBarHandler(int pos);
 	int calculateDistance(cv::Mat& thresholdImage);
 	
 private:

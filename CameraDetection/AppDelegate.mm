@@ -17,6 +17,7 @@
 #include "Debug.h"
 
 // To-do List
+// 1. need to refactor PID control group handling and controlWidget
 // 1. try Real-time Compressive Tracking and TLD
 
 @interface AppDelegate ()<CameraDelegate, ViewListener>

@@ -109,7 +109,7 @@ bool BallTracking::processFrame(cv::Mat &image)
 		return false;
 }
 
-int BallTracking::calculateDistance(Mat& thresholdImage)
+static int calculateDistance(Mat& thresholdImage)
 {
 	static int distance = 0;
 	//these two vectors needed for output of findContours
@@ -147,11 +147,11 @@ static double euclideanDist(Point p, Point q)
 	return cv::sqrt(diff.x*diff.x + diff.y*diff.y);
 }
 
-void BallTracking::HoughDetection(const Mat& src_gray, const Mat& src_display, int cannyThreshold, int accumulatorThreshold)
+static void HoughDetection(const Mat& src_gray, const Mat& src_display, int cannyThreshold, int accumulatorThreshold)
 {
 	// hold all detected circles
 	std::vector<Vec3f> circles;
-	Point colorObjectCenter(m_position.x,m_position.y);
+	Point colorObjectCenter(0,0);
 	
 	HoughCircles(src_gray, circles, HOUGH_GRADIENT, 1, src_gray.rows/4, cannyThreshold, accumulatorThreshold, 0, 0);
 	
