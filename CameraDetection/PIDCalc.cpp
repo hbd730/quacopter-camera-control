@@ -9,21 +9,39 @@
 #include "PIDCalc.h"
 #include "utils.h"
 
+void IPIDCalc::setGain(PIDGainType type, float value)
+{
+	switch(type)
+	{
+		case kp:
+			m_kp = value;
+			break;
+		case ki:
+			m_ki = value;
+			break;
+		case kd:
+			m_kd = value;
+			break;
+		default:
+			break;
+	}
+};
+
 float PIDCalcThrust::run(float error) noexcept
 {
-	sum_ += error * kDt;
-	sum_ = bound(sum_, kILow, kIHigh);
+	m_sum += error * kDt;
+	m_sum = bound(m_sum, kILow, kIHigh);
 	float deriv = 0.0f;
 	if(kDt)
 	{
-		if((error - error_) > 0) // means a significant drop
-			deriv = (error - error_) / kDt;
+		if((error - m_previousError) > 0) // means a significant drop
+			deriv = (error - m_previousError) / kDt;
 		else
 			deriv = 0;
 	}
 
-	error_ = error;
-	float pidValue = kp_ * error_ + ki_ * sum_ + kd_ * deriv;
+	m_previousError = error;
+	float pidValue = m_kp * m_previousError + m_ki * m_sum + m_kd * deriv;
 	
 	int thrustValue = pidValue + kThrustOffset;
 	thrustValue = bound(thrustValue, kMinThrust, kMaxThrust);
@@ -33,16 +51,16 @@ float PIDCalcThrust::run(float error) noexcept
 
 float PIDCalcRP::run(float error) noexcept
 {
-	sum_ += error * kDt;
-	sum_ = bound(sum_, kILow, kIHigh);
+	m_sum += error * kDt;
+	m_sum = bound(m_sum, kILow, kIHigh);
 	float deriv = 0.0f;
 	
 	if(kDt)
-		deriv = (error - error_) / kDt;
+		deriv = (error - m_previousError) / kDt;
 		
-	error_ = error;
+	m_previousError = error;
 	
-	float pidValue = kp_ * error_ + ki_ * sum_ + kd_ * deriv;
+	float pidValue = m_kp * m_previousError + m_ki * m_sum + m_kd * deriv;
 	pidValue = bound(pidValue, kMinRoll, kMaxRoll);
 		
 	return pidValue;

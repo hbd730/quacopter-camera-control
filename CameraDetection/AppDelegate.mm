@@ -17,7 +17,6 @@
 #include "Debug.h"
 
 // To-do List
-// 1. need to refactor PID control group handling and controlWidget
 // 1. try Real-time Compressive Tracking and TLD
 
 @interface AppDelegate ()<CameraDelegate, ViewListener>
@@ -28,12 +27,17 @@
 	PIDCalcRP* m_yawPIDCalc;
 	PIDCalcRP* m_rollPIDCalc;
 	CFRadioController* m_trafficController;
-	ControlWidgets* m_controlWidget;
+	ControlWidgets* m_controlPIDThrust;
+	ControlWidgets* m_controlPIDPitch;
+	ControlWidgets* m_controlPIDRoll;
+	ControlWidgets* m_controlPIDYaw;
+	ControlWidgets* m_controlHSVHigh;
+	ControlWidgets* m_controlHSVLow;
 	cv::Point3i m_setPoint;
-	int m_kPitch;
-	int m_kYaw;
-	bool stopFlag;
-	bool changeSetPoint;
+	int m_keyboardPitch;
+	int m_keyboardYaw;
+	bool m_stopFlag;
+	bool m_changeSetPoint;
 }
 
 @property (assign) IBOutlet NSButton* m_stopButton;
@@ -63,7 +67,7 @@
 	
 	// Start tracking
 	cv::Point3i currentPosition;
-	if (m_trackingDelegate->startTracking(currentFrame, currentPosition) && (stopFlag != true))
+	if (m_trackingDelegate->startTracking(currentFrame, currentPosition) && (m_stopFlag != true))
 		[self updatePIDAndSend:currentPosition];
 	else
 		m_trafficController->sendParameter(0, 0, 0, 0);
@@ -82,8 +86,9 @@
 
 - (cv::Mat)convertCameraBufferToMat:(CVImageBufferRef)cameraBuffer
 {
+	// format type kCVPixelFormatType_32BGRA, to query use CVPixelBufferGetPixelFormatType
 	uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(cameraBuffer);
-	size_t width = CVPixelBufferGetWidth(cameraBuffer);  // format kCVPixelFormatType_32BGRA to get use CVPixelBufferGetPixelFormatType
+	size_t width = CVPixelBufferGetWidth(cameraBuffer);
 	size_t height = CVPixelBufferGetHeight(cameraBuffer);
 	size_t stride = CVPixelBufferGetBytesPerRow(cameraBuffer);
 	return cv::Mat((int)height, (int)width, CV_8UC4, (void*)baseAddress, stride);
@@ -116,10 +121,11 @@
 	float pitchError = currentPosition.z - m_setPoint.z;
 	float pitch = m_pitchPIDCalc->run(pitchError);
 	
-	float yaw = 0; // yaw is not controlled
+	float yaw = 0;
 
-	yaw = (m_kYaw != 0) ? m_kYaw : yaw;  // keyboard can override yaw/pitch value
-	pitch = (m_kPitch != 0) ? m_kPitch : pitch;
+	// keyboard can override yaw/pitch value
+	yaw = (m_keyboardYaw != 0) ? m_keyboardYaw : yaw;
+	pitch = (m_keyboardPitch != 0) ? m_keyboardPitch : pitch;
 	m_trafficController->sendParameter(thrust, yaw, pitch, roll);
 }
 
@@ -142,25 +148,31 @@
 	m_thrustPIDCalc = new PIDCalcThrust(kThrustKp, kThrustKi, kThrustKd);
 	m_pitchPIDCalc = new PIDCalcRP(kPitchKp, kPitchKi, kPitchKd);
 	m_rollPIDCalc = new PIDCalcRP(kRollKp, kRollKi, kRollKd);
-	m_yawPIDCalc = new PIDCalcRP(0, 0, 0);
+	m_yawPIDCalc = new PIDCalcRP(kYawKp, kYawKi, kYawKd);
 	
-	NSRect thrustFrame = NSMakeRect(80, 195, 270, 180);
-	[self addPIDGroupWithFrame:thrustFrame andCalObject:m_thrustPIDCalc];
-	NSRect pitchFrame = NSMakeRect(510, 195, 270, 180);
-	[self addPIDGroupWithFrame:pitchFrame andCalObject:m_pitchPIDCalc];
-	NSRect yawFrame = NSMakeRect(80, 100, 270, 180);
-	[self addPIDGroupWithFrame:yawFrame andCalObject:m_yawPIDCalc];
-    NSRect	rollFrame = NSMakeRect(510, 100, 270, 180);
-	[self addPIDGroupWithFrame:rollFrame andCalObject:m_rollPIDCalc];
+	m_controlPIDThrust = [self createControlsWithFrame: NSMakeRect(80, 195, 270, 180)];
+	[m_controlPIDThrust initControlsWithValues:kThrustKp control2:kThrustKi control3:kThrustKd];
+	[m_controlPIDThrust setControlsMaxValues:50 control2:10 control3:20];
 	
-	NSRect hsvLowFrame = NSMakeRect(80, 9, 270, 180);
-	[self addHSVLowGroupWithFrame:hsvLowFrame];
-	NSRect hsvHighFrame = NSMakeRect(510, 9, 270, 180);
-	[self addHSVHighGroupWithFrame:hsvHighFrame];
+	m_controlPIDPitch = [self createControlsWithFrame: NSMakeRect(510, 195, 270, 180)];
+	[m_controlPIDPitch initControlsWithValues:kPitchKp control2:kPitchKi control3:kPitchKd];
+	[m_controlPIDPitch setControlsMaxValues:0.1 control2:0.1 control3:0.01];
+	
+	m_controlPIDRoll = [self createControlsWithFrame: NSMakeRect(510, 100, 270, 180)];
+	[m_controlPIDRoll initControlsWithValues:kRollKp control2:kRollKi control3:kRollKd];
+	[m_controlPIDRoll setControlsMaxValues:0.1 control2:0.1 control3:0.01];
+	
+	m_controlPIDYaw = [self createControlsWithFrame: NSMakeRect(80, 100, 270, 180)];
+	[m_controlPIDYaw initControlsWithValues:kYawKp control2:kYawKi control3:kYawKd];
+	
+	m_controlHSVHigh = [self createControlsWithFrame: NSMakeRect(80, 9, 270, 180)];
+	[m_controlHSVHigh initControlsWithValues:kHighH control2:kHighS control3:kHighV];
+	m_controlHSVLow = [self createControlsWithFrame: NSMakeRect(510, 9, 270, 180)];
+	[m_controlHSVLow initControlsWithValues:kLowH control2:kLowS control3:kLowV];
 
-	m_setPoint = cv::Point3i(1280/2, 720/2, 300); // initialise setpoint
-	stopFlag = true;
-	changeSetPoint = false;
+	m_setPoint = cv::Point3i(kWidth/2, kHeight/2, kDepth);
+	m_stopFlag = true;
+	m_changeSetPoint = false;
 	[m_depth setIntValue:m_setPoint.z];
 	[m_setPointCheckBox setState:NSOffState];
 	[m_stopButton setTitle:@"Start"];
@@ -184,6 +196,43 @@
 	[m_camera dealloc];
 }
 
+- (ControlWidgets*)createControlsWithFrame:(NSRect)frame
+{
+	ControlWidgets* controlWidgets = [[[ControlWidgets alloc] initWithFrame:frame] autorelease];
+	[controlWidgets setTarget:self];
+	[controlWidgets setAction:@selector(onAnyChange:)];
+	[m_view addSubview:controlWidgets];
+	return controlWidgets;
+}
+
+- (void)onAnyChange:(ControlWidgets*)sender
+{
+	ParameterType parameterID = [sender activeControlID];
+	float value = [sender activeValue];
+	if(sender == m_controlPIDThrust)
+	{
+		m_thrustPIDCalc->setGain((IPIDCalc::PIDGainType)parameterID, value);
+	}
+	else if(sender == m_controlPIDRoll)
+	{
+		m_rollPIDCalc->setGain((IPIDCalc::PIDGainType)parameterID, value);
+	}
+	else if(sender == m_controlPIDPitch)
+	{
+		m_pitchPIDCalc->setGain((IPIDCalc::PIDGainType)parameterID, value);
+	}
+	else if(sender == m_controlHSVHigh)
+	{
+		BallTrackerEvent event(UIControlEvent::HSVLowGroupChanged, parameterID, value);
+		m_trackingDelegate->onParameterChanged(event);
+	}
+	else if(sender == m_controlHSVLow)
+	{
+		BallTrackerEvent event(UIControlEvent::HSVHighGroupChanged, parameterID, value);
+		m_trackingDelegate->onParameterChanged(event);
+	}
+}
+
 - (IBAction)strategyChanged:(id)sender
 {
 	TrackingDelegate::StrategyType type;
@@ -191,108 +240,16 @@
 	m_trackingDelegate->setStrategy(type);
 }
 
-- (void)pidValueChanged:(ControlWidgets*)sender
-{
-	ParameterType type = [sender activeControlID];
-	IPIDCalc* cal = (IPIDCalc*)[sender associatedObject];
-	float value = [sender activeValue];
-	switch(type)
-	{
-		case kFirst:
-			cal->setKp(value);
-			break;
-		case kSecond:
-			cal->setKi(value);
-			break;
-		case kThird:
-			cal->setKd(value);
-			break;
-		default:
-			break;
-	}
-}
-
-- (void)hsvGroupValueChanged:(ControlWidgets*)sender
-{
-	ParameterType parameterID = [sender activeControlID];
-	int value = [sender activeValue];
-	
-	if([sender isMemberOfClass:[HSVLowControlWidgets class]])
-	{
-		BallTrackerEvent event(UIControlEvent::HSVLowGroupChanged, parameterID, value);
-		m_trackingDelegate->onParameterChanged(event);
-	}
-	else if([sender isMemberOfClass:[HSVHighControlWidgets class]])
-	{
-		BallTrackerEvent event(UIControlEvent::HSVHighGroupChanged, parameterID, value);
-		m_trackingDelegate->onParameterChanged(event);
-	}
-}
-
 - (IBAction)stopAndReset:(id)sender
 {
-	stopFlag = !stopFlag;
-	if(stopFlag)
+	m_stopFlag = !m_stopFlag;
+	if(m_stopFlag)
 		[m_stopButton setTitle:@"Start"];
 	else
 	{
 		m_trafficController->start();
 		[m_stopButton setTitle:@"Stop"];
 	}
-}
-
-- (void)addPIDGroupWithFrame:(NSRect)frame andCalObject:(IPIDCalc*)obj
-{
-	m_controlWidget = [[[PIDControlWidgets alloc] initWithFrame:frame] autorelease];
-	[m_controlWidget setTarget:self];
-	[m_controlWidget setAction:@selector(pidValueChanged:)];
-	[m_controlWidget->m_Slider1 setFloatValue:obj->getKp()];
-	[m_controlWidget->m_Slider2 setFloatValue:obj->getKi()];
-	[m_controlWidget->m_Slider3 setFloatValue:obj->getKd()];
-	[m_controlWidget->m_textfield1 setFloatValue:obj->getKp()];
-	[m_controlWidget->m_textfield2 setFloatValue:obj->getKi()];
-	[m_controlWidget->m_textfield3 setFloatValue:obj->getKd()];
-	m_controlWidget.associatedObject = (id)obj;
-	if(dynamic_cast<PIDCalcThrust*>(obj))
-	{
-		[m_controlWidget->m_Slider2 setMaxValue: 10];
-		[m_controlWidget->m_Slider3 setMaxValue: 20];
-	}
-	if(dynamic_cast<PIDCalcRP*>(obj))
-	{
-		[m_controlWidget->m_Slider1 setMaxValue: 0.1];
-		[m_controlWidget->m_Slider2 setMaxValue: 0.1];
-		[m_controlWidget->m_Slider3 setMaxValue: 0.01];
-	}
-	[m_view addSubview:m_controlWidget];
-}
-
-- (void)addHSVLowGroupWithFrame:(NSRect)frame
-{
-	m_controlWidget = [[[HSVLowControlWidgets alloc] initWithFrame:frame] autorelease];
-	[m_controlWidget setTarget:self];
-	[m_controlWidget setAction:@selector(hsvGroupValueChanged:)];
-	[m_controlWidget->m_Slider1 setIntValue:HSVMatrixs::kLowH];
-	[m_controlWidget->m_Slider2 setIntValue:HSVMatrixs::kLowS];
-	[m_controlWidget->m_Slider3 setIntValue:HSVMatrixs::kLowV];
-	[m_controlWidget->m_textfield1 setIntValue:HSVMatrixs::kLowH];
-	[m_controlWidget->m_textfield2 setIntValue:HSVMatrixs::kLowS];
-	[m_controlWidget->m_textfield3 setIntValue:HSVMatrixs::kLowV];
-	[m_view addSubview:m_controlWidget];
-}
-
-- (void)addHSVHighGroupWithFrame:(NSRect)frame
-{
-	m_controlWidget = [[[HSVHighControlWidgets alloc] initWithFrame:frame] autorelease];
-	[m_controlWidget setTarget:self];
-	[m_controlWidget setAction:@selector(hsvGroupValueChanged:)];
-	[m_controlWidget->m_Slider1 setIntValue:HSVMatrixs::kHighH];
-	[m_controlWidget->m_Slider2 setIntValue:HSVMatrixs::kHighS];
-	[m_controlWidget->m_Slider3 setIntValue:HSVMatrixs::kHighV];
-	[m_controlWidget->m_textfield1 setIntValue:HSVMatrixs::kHighH];
-	[m_controlWidget->m_textfield2 setIntValue:HSVMatrixs::kHighS];
-	[m_controlWidget->m_textfield3 setIntValue:HSVMatrixs::kHighV];
-	[m_view addSubview:m_controlWidget];
 }
 
 - (BOOL)acceptsFirstResponder
@@ -313,24 +270,22 @@
 			switch (keyChar)
 			{
 				case NSUpArrowFunctionKey:
-					m_kPitch = 8;
+					m_keyboardPitch = 8;
 					break;
 				case NSLeftArrowFunctionKey:
-					m_kYaw = 10;
+					m_keyboardYaw = 10;
 					break;
 				case NSRightArrowFunctionKey:
-					m_kYaw = -10;
+					m_keyboardYaw = -10;
 					break;
 				case NSDownArrowFunctionKey:
-					m_kPitch = -8;
+					m_keyboardPitch = -8;
 					break;
 			}
 		}
 	}
 	else
-	{
 		[super keyDown:theEvent];
-	}
 }
 
 - (void)keyUp:(NSEvent *)theEvent
@@ -343,8 +298,8 @@
 		if ([theArrow length] == 1)
 		{
 			keyChar = [theArrow characterAtIndex:0];
-			m_kPitch = 0;
-			m_kYaw = 0;
+			m_keyboardPitch = 0;
+			m_keyboardYaw = 0;
 		}
 	}
 	else
@@ -361,9 +316,9 @@
 - (IBAction)setPointSelectionChanged:(NSButton*)sender
 {
 	if(sender.state == NSOnState)
-		changeSetPoint = true;
+		m_changeSetPoint = true;
 	else
-		changeSetPoint = false;
+		m_changeSetPoint = false;
 }
 
 - (void)viewEventHandler:(NSEvent*)theEvent
@@ -374,7 +329,7 @@
 		case NSLeftMouseDown:
 			clickedPoint = [m_capturePreview transform:[theEvent locationInWindow]];
 			m_trackingDelegate->getCurrentTracker()->setSelectedRegion(clickedPoint.x, clickedPoint.y, true);
-			if(changeSetPoint)
+			if(m_changeSetPoint)
 				[self setPointChanged:clickedPoint];
 			break;
 		case NSLeftMouseUp:

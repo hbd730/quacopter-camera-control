@@ -18,11 +18,18 @@ enum HSVMatrixs   // Online caculator use range H = 0- 360, S = 0-100, V = 0-100
 	kHighV = 255
 };
 
+enum CameraResolution
+{
+	kWidth = 1280,
+	kHeight = 720
+};
+
+const int kDepth = 300;
+
 enum ParameterType
 {
 	kFirst, kSecond, kThird
 };
-
 
 const float kThrustKp = 27;
 const float kThrustKi = 4.3;
@@ -35,3 +42,8 @@ const float kPitchKd = 0.005;
 const float kRollKp = 0.04;
 const float kRollKi = 0.0002;
 const float kRollKd = 0.0075;
+
+const float kYawKp = 0;
+const float kYawKi = 0;
+const float kYawKd = 0;
+

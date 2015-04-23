@@ -26,9 +26,6 @@ public:
 	void setLowV(int value){ m_lowV = value;}
 	void setHighV(int value){ m_highV = value;}
 	
-protected:
-	int calculateDistance(cv::Mat& thresholdImage);
-	
 private:
 	int m_lowH;
 	int m_highH;

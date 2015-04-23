@@ -20,6 +20,38 @@ const static float kObjectHeight = 35.0f;
 const static int kCannyThresholdInitialValue = 200;
 const static int kAccumulatorThresholdInitialValue = 100;
 
+static int calculateDistance(Mat& thresholdImage)
+{
+	static int distance = 0;
+	//these two vectors needed for output of findContours
+	vector< vector<cv::Point> > contours;
+	vector<cv::Vec4i> hierarchy;
+	Mat thImgae;
+	thresholdImage.copyTo(thImgae);
+	//find contours of filtered image using openCV findContours function, it modifys the input image
+	findContours(thImgae, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+	
+	//if contours vector is not empty,object is detected
+	if(contours.size() > 0)
+	{
+		cv::Rect boundingRectangle;
+		// the largest contour is found at the end of the contours vector
+		vector< vector<cv::Point> > largestContourVec;
+		largestContourVec.push_back(contours.at(contours.size()-1));
+		
+		// make a bounding rectangle around the largest contour then find its centroid
+		boundingRectangle = cv::boundingRect(largestContourVec.at(0));
+		int objectImageHeight = boundingRectangle.height;
+		if(objectImageHeight > 0)
+		{
+			int temp = (kFoc * kObjectHeight / (static_cast<float>(objectImageHeight) * 0.227f));
+			if(temp < 550)
+				distance = temp;
+		}
+	}
+	return distance;
+}
+
 BallTracking::BallTracking():
 ITracking(),
 m_lowH(kLowH),m_highH(kHighH),m_lowS(kLowS),m_highS(kHighS),m_lowV(kLowV),m_highV(kHighV)
@@ -29,6 +61,7 @@ m_lowH(kLowH),m_highH(kHighH),m_lowS(kLowS),m_highS(kHighS),m_lowV(kLowV),m_high
 BallTracking::~BallTracking()
 {
 }
+
 
 std::string BallTracking::getName() const
 {
@@ -107,38 +140,6 @@ bool BallTracking::processFrame(cv::Mat &image)
 	}
 	else
 		return false;
-}
-
-static int calculateDistance(Mat& thresholdImage)
-{
-	static int distance = 0;
-	//these two vectors needed for output of findContours
-	vector< vector<cv::Point> > contours;
-	vector<cv::Vec4i> hierarchy;
-	Mat thImgae;
-	thresholdImage.copyTo(thImgae);
-	//find contours of filtered image using openCV findContours function, it modifys the input image
-	findContours(thImgae, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); 
-
-	//if contours vector is not empty,object is detected
-	if(contours.size() > 0)
-	{
-		cv::Rect boundingRectangle;
-		// the largest contour is found at the end of the contours vector
-		vector< vector<cv::Point> > largestContourVec;
-		largestContourVec.push_back(contours.at(contours.size()-1));
-		
-		// make a bounding rectangle around the largest contour then find its centroid
-		boundingRectangle = cv::boundingRect(largestContourVec.at(0));
-		int objectImageHeight = boundingRectangle.height;
-		if(objectImageHeight > 0)
-		{
-			int temp = (kFoc * kObjectHeight / (static_cast<float>(objectImageHeight) * 0.227f));
-			if(temp < 550)
-				distance = temp;
-		}
-	}
-	return distance;
 }
 
 static double euclideanDist(Point p, Point q)

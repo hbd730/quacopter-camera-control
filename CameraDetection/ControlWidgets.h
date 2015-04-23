@@ -19,26 +19,13 @@
 	NSTextField* m_textfield2;
 	NSTextField* m_textfield3;
 }
+
 @property (assign,readonly) enum ParameterType activeControlID;
 @property (assign,readonly) float activeValue;
 @property (assign) id associatedObject;
+
+- (void)initControlsWithValues:(float)value1 control2:(float)value2 control3:(float)value3;
+- (void)setControlsMaxValues:(float)value1 control2:(float)value2 control3:(float)value3;
+
 @end
-
-
-@interface PIDControlWidgets : ControlWidgets
-{
-}
-@end
-
-@interface HSVLowControlWidgets : ControlWidgets
-{
-}
-@end
-
-@interface HSVHighControlWidgets : ControlWidgets
-{
-}
-@end
-
-
 

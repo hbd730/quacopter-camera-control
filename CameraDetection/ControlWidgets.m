@@ -17,8 +17,41 @@
 - (id)initWithFrame:(NSRect)frameRect
 {
 	self = [super initWithFrame:frameRect];
+	if(self)
+	{
+		NSRect frameSlider1 = NSMakeRect(0, 60, 181, 22);
+		m_Slider1 = [self createSliderWithFrame:frameSlider1 andTag:kFirst];
+		NSRect frameSlider2 = NSMakeRect(0, 30, 181, 22);
+		m_Slider2 = [self createSliderWithFrame:frameSlider2 andTag:kSecond];
+		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
+		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
+		
+		NSRect frameText1 = NSMakeRect(190, 60, 53, 22);
+		m_textfield1 = [self createTextFieldWithFrame:frameText1 andTag:kFirst];
+		NSRect frameText2 = NSMakeRect(190, 30, 53, 22);
+		m_textfield2 = [self createTextFieldWithFrame:frameText2 andTag:kSecond];
+		NSRect frameText3 = NSMakeRect(190, 0, 53, 22);
+		m_textfield3 = [self createTextFieldWithFrame:frameText3 andTag:kThird];
+	}
 	activeControlID = 0;
 	return self;
+}
+
+- (void)initControlsWithValues:(float)value1 control2:(float)value2 control3:(float)value3
+{
+	[m_Slider1 setFloatValue:value1];
+	[m_Slider2 setFloatValue:value2];
+	[m_Slider3 setFloatValue:value3];
+	[m_textfield1 setFloatValue:value1];
+	[m_textfield2 setFloatValue:value2];
+	[m_textfield3 setFloatValue:value3];
+}
+
+- (void)setControlsMaxValues:(float)value1 control2:(float)value2 control3:(float)value3
+{
+	[m_Slider1 setMaxValue: value1];
+	[m_Slider2 setMaxValue: value2];
+	[m_Slider3 setMaxValue: value3];
 }
 
 - (NSSlider*)createSliderWithFrame:(NSRect)frame andTag:(NSInteger)tag
@@ -86,90 +119,6 @@
 	}
 	activeControlID = (int)[sender tag];
 	[self sendAction:[self action] to:[self target]];
-}
-
-@end
-
-@implementation PIDControlWidgets
-
-- (id)initWithFrame:(NSRect)frameRect
-{
-	self = [super initWithFrame:frameRect];
-	if(self)
-	{
-		NSRect frameSlider1 = NSMakeRect(0, 60, 181, 22);
-		m_Slider1 = [self createSliderWithFrame:frameSlider1 andTag:kFirst];
-		NSRect frameSlider2 = NSMakeRect(0, 30, 181, 22);
-		m_Slider2 = [self createSliderWithFrame:frameSlider2 andTag:kSecond];
-		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
-		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
-		
-		NSRect frameText1 = NSMakeRect(190, 60, 53, 22);
-		m_textfield1 = [self createTextFieldWithFrame:frameText1 andTag:kFirst];
-		NSRect frameText2 = NSMakeRect(190, 30, 53, 22);
-		m_textfield2 = [self createTextFieldWithFrame:frameText2 andTag:kSecond];
-		NSRect frameText3 = NSMakeRect(190, 0, 53, 22);
-		m_textfield3 = [self createTextFieldWithFrame:frameText3 andTag:kThird];
-	}
-	return self;
-}
-
-@end
-
-@implementation HSVHighControlWidgets
-
-- (id)initWithFrame:(NSRect)frameRect
-{
-	self = [super initWithFrame:frameRect];
-	if(self)
-	{
-		NSRect frameSlider1 = NSMakeRect(0, 60, 181, 22);
-		m_Slider1 = [self createSliderWithFrame:frameSlider1 andTag:kFirst];
-		[m_Slider1 setMaxValue:255];
-		NSRect frameSlider2 = NSMakeRect(0, 30, 181, 22);
-		m_Slider2 = [self createSliderWithFrame:frameSlider2 andTag:kSecond];
-		[m_Slider2 setMaxValue:255];
-		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
-		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
-		[m_Slider3 setMaxValue:255];
-		
-		NSRect frameText1 = NSMakeRect(190, 60, 53, 22);
-		m_textfield1 = [self createTextFieldWithFrame:frameText1 andTag:kFirst];
-		NSRect frameText2 = NSMakeRect(190, 30, 53, 22);
-		m_textfield2 = [self createTextFieldWithFrame:frameText2 andTag:kSecond];
-		NSRect frameText3 = NSMakeRect(190, 0, 53, 22);
-		m_textfield3 = [self createTextFieldWithFrame:frameText3 andTag:kThird];
-	}
-	return self;
-}
-
-@end
-
-@implementation HSVLowControlWidgets
-
-- (id)initWithFrame:(NSRect)frameRect
-{
-	self = [super initWithFrame:frameRect];
-	if(self)
-	{
-		NSRect frameSlider1 = NSMakeRect(0, 60, 181, 22);
-		m_Slider1 = [self createSliderWithFrame:frameSlider1 andTag:kFirst];
-		[m_Slider1 setMaxValue:255];
-		NSRect frameSlider2 = NSMakeRect(0, 30, 181, 22);
-		m_Slider2 = [self createSliderWithFrame:frameSlider2 andTag:kSecond];
-		[m_Slider2 setMaxValue:255];
-		NSRect frameSlider3 = NSMakeRect(0, 0, 181, 22);
-		m_Slider3 = [self createSliderWithFrame:frameSlider3 andTag:kThird];
-		[m_Slider3 setMaxValue:255];
-		
-		NSRect frameText1 = NSMakeRect(190, 60, 53, 22);
-		m_textfield1 = [self createTextFieldWithFrame:frameText1 andTag:kFirst];
-		NSRect frameText2 = NSMakeRect(190, 30, 53, 22);
-		m_textfield2 = [self createTextFieldWithFrame:frameText2 andTag:kSecond];
-		NSRect frameText3 = NSMakeRect(190, 0, 53, 22);
-		m_textfield3 = [self createTextFieldWithFrame:frameText3 andTag:kThird];
-	}
-	return self;
 }
 
 @end

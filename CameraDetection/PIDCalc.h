@@ -13,30 +13,30 @@
 class IPIDCalc
 {
 public:
+	enum PIDGainType
+	{
+		kp,
+		ki,
+		kd
+	};
 	IPIDCalc(float kp, float ki, float kd) noexcept
-	:kp_(kp), ki_(ki), kd_(kd), sum_(0), error_(0) {};
+	:m_kp(kp), m_ki(ki), m_kd(kd), m_sum(0), m_previousError(0) {};
 		
 	IPIDCalc(const IPIDCalc&) = delete;
 	IPIDCalc(IPIDCalc&&) = delete;
 	IPIDCalc& operator = (const IPIDCalc&) = delete;
 	IPIDCalc& operator = (IPIDCalc&&) = delete;
 	virtual ~IPIDCalc() noexcept = default;
-	
-	virtual float run(float error) noexcept = 0; // run outputs the final raw data sent to the radio Link, client does not need to consider boundary of PID value
-	void reset() noexcept {sum_ = 0.0f; error_ = 0.0f; kp_ = 0; ki_ = 0; kd_ = 0;};
-	void setKp(float value) {kp_ = value;};
-	void setKi(float value) {ki_ = value;};
-	void setKd(float value) {kd_ = value;};
-	float getKp() const {return kp_;};
-	float getKi() const {return ki_;};
-	float getKd() const {return kd_;};
+	virtual float run(float error) noexcept = 0; // run outputs the final raw data sent to the radio Link
+	void reset() noexcept {m_sum = 0.0f; m_previousError = 0.0f; m_kp = 0; m_ki = 0; m_kd = 0;};
+	void setGain(PIDGainType type, float value);
 	
 protected:
-	float kp_;
-	float ki_;
-	float kd_;
-	float sum_;
-	float error_;
+	float m_kp;
+	float m_ki;
+	float m_kd;
+	float m_sum;
+	float m_previousError;
 };
 
 // This is Thrust PID calulator
@@ -52,9 +52,9 @@ private:
 	static constexpr float kIHigh = 3000.0;
 	static constexpr float kILow  = -1200.0;
 	static constexpr float kDt    = 0.03;
-	const int kThrustOffset = 38000;
-	const int kMinThrust = 0;
-	const int kMaxThrust = 65000;
+	static constexpr int kThrustOffset = 38000;
+	static constexpr int kMinThrust = 0;
+	static constexpr int kMaxThrust = 65000;
 };
 
 // This is Roll/Pitch PID calulator
@@ -70,7 +70,7 @@ private:
 	static constexpr float kIHigh = 606.0;
 	static constexpr float kILow  = -606.0;
 	static constexpr float kDt    = 0.03;
-	const float kMinRoll = -15.0;
-	const float kMaxRoll = 15.0;
+	static constexpr float kMinRoll = -15.0;
+	static constexpr float kMaxRoll = 15.0;
 };
 
