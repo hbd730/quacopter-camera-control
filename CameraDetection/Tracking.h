@@ -10,7 +10,7 @@
 
 #include <opencv2/opencv.hpp>
 
-// Interface for all tracking algorithm
+// Base class for all tracking algorithm
 class ITracking
 {
 public:

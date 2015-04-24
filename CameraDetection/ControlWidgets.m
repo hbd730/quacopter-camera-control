@@ -12,7 +12,6 @@
 
 @synthesize activeControlID;
 @synthesize activeValue;
-@synthesize associatedObject;
 
 - (id)initWithFrame:(NSRect)frameRect
 {

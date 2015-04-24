@@ -16,10 +16,6 @@ using namespace cv;
 const static float kFoc = 40.0f;
 const static float kObjectHeight = 35.0f;
 
-// hough detection constant not used
-const static int kCannyThresholdInitialValue = 200;
-const static int kAccumulatorThresholdInitialValue = 100;
-
 static int calculateDistance(Mat& thresholdImage)
 {
 	static int distance = 0;
@@ -80,19 +76,6 @@ void BallTracking::setReferenceFrame(cv::Mat& reference)
 
 bool BallTracking::processFrame(cv::Mat &image)
 {
-#ifdef CIRCLE_DETECTION
-	int cannyThreshold;
-	int accumulatorThreshold;
-	// Convert it to gray, Hough detection works well only on gray image
-	cvtColor(image, m_outputImage, COLOR_BGR2GRAY);
-	// Reduce the noise so we avoid false circle detection
-	GaussianBlur(m_outputImage, m_outputImage, Size(9, 9), 2, 2);
-
-	// these paramaters cannot be =0
-	cannyThreshold = std::max(kCannyThresholdInitialValue, 1);
-	accumulatorThreshold = std::max(kAccumulatorThresholdInitialValue, 1);
-#endif
-	
 	Mat imgHSV;
 	cvtColor(image, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
 	
@@ -122,12 +105,8 @@ bool BallTracking::processFrame(cv::Mat &image)
 		{
 			m_position.x = posX;
 			m_position.y = posY;
-				
-			// To-do need to think about how to combine shape and color detection properly.
-#ifdef CIRCLE_DETECTION
-			HoughDetection(m_outputImage, image, cannyThreshold, accumulatorThreshold);
-#endif
 			m_position.z = calculateDistance(m_outputImage);
+			
 			Point center(posX, posY);
 			// circle center
 			circle(image, center, 4, Scalar(0,255,0), -1, 8, 0);
@@ -141,42 +120,3 @@ bool BallTracking::processFrame(cv::Mat &image)
 	else
 		return false;
 }
-
-static double euclideanDist(Point p, Point q)
-{
-	Point diff = p - q;
-	return cv::sqrt(diff.x*diff.x + diff.y*diff.y);
-}
-
-static void HoughDetection(const Mat& src_gray, const Mat& src_display, int cannyThreshold, int accumulatorThreshold)
-{
-	// hold all detected circles
-	std::vector<Vec3f> circles;
-	Point colorObjectCenter(0,0);
-	
-	HoughCircles(src_gray, circles, HOUGH_GRADIENT, 1, src_gray.rows/4, cannyThreshold, accumulatorThreshold, 0, 0);
-	
-	// here is ugly, create the distance array, holding all distance value between color detected center and shape detected center
-	std::vector<double> distanceArray;
-	for( size_t i = 0; i < circles.size(); i++ )
-	{
-		Point circleCenter(cvRound(circles[i][0]), cvRound(circles[i][1]));
-		double distance = euclideanDist(circleCenter, colorObjectCenter);
-		distanceArray.push_back(distance);
-	}
-	
-	// if pingpong is the unique object in the background we filter out other possible orange objects in the background
-	if(circles.size() > 0)
-	{
-		std::vector<double>::iterator it = min_element(distanceArray.begin(), distanceArray.end());
-		int index = (int)distance(distanceArray.begin(),it);
-		colorObjectCenter.x = cvRound(circles[index][0]);
-		colorObjectCenter.y = cvRound(circles[index][1]);
-		int radius = cvRound(circles[index][2]);
-		circle(src_display, colorObjectCenter, radius, Scalar(0,0,255), 3, 8, 0);
-	}
-}
-
-
-
-

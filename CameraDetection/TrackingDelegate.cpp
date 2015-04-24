@@ -111,7 +111,6 @@ void TrackingDelegate::onParameterChanged(BallTrackerEvent event)
 					break;
 				default:
 					break;
-			
 			}
 		}
 	}

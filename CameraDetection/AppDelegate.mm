@@ -165,11 +165,14 @@
 	m_controlPIDYaw = [self createControlsWithFrame: NSMakeRect(80, 100, 270, 180)];
 	[m_controlPIDYaw initControlsWithValues:kYawKp control2:kYawKi control3:kYawKd];
 	
-	m_controlHSVHigh = [self createControlsWithFrame: NSMakeRect(80, 9, 270, 180)];
-	[m_controlHSVHigh initControlsWithValues:kHighH control2:kHighS control3:kHighV];
-	m_controlHSVLow = [self createControlsWithFrame: NSMakeRect(510, 9, 270, 180)];
+	m_controlHSVLow = [self createControlsWithFrame: NSMakeRect(80, 9, 270, 180)];
 	[m_controlHSVLow initControlsWithValues:kLowH control2:kLowS control3:kLowV];
-
+	[m_controlHSVLow setControlsMaxValues:180 control2:255 control3:255];
+	
+	m_controlHSVHigh = [self createControlsWithFrame: NSMakeRect(510, 9, 270, 180)];
+	[m_controlHSVHigh initControlsWithValues:kHighH control2:kHighS control3:kHighV];
+	[m_controlHSVHigh setControlsMaxValues:180 control2:255 control3:255];
+	
 	m_setPoint = cv::Point3i(kWidth/2, kHeight/2, kDepth);
 	m_stopFlag = true;
 	m_changeSetPoint = false;
