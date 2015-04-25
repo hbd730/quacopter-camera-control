@@ -17,7 +17,7 @@
 #include "Debug.h"
 
 // To-do List
-// 1. try Real-time Compressive Tracking and TLD
+// 1.try Real-time Compressive Tracking and TLD
 
 @interface AppDelegate ()<CameraDelegate, ViewListener>
 {
@@ -151,27 +151,27 @@
 	m_yawPIDCalc = new PIDCalcRP(kYawKp, kYawKi, kYawKd);
 	
 	m_controlPIDThrust = [self createControlsWithFrame: NSMakeRect(80, 195, 270, 180)];
-	[m_controlPIDThrust initControlsWithValues:kThrustKp control2:kThrustKi control3:kThrustKd];
 	[m_controlPIDThrust setControlsMaxValues:50 control2:10 control3:20];
+	[m_controlPIDThrust initControlsWithValues:kThrustKp control2:kThrustKi control3:kThrustKd];
 	
 	m_controlPIDPitch = [self createControlsWithFrame: NSMakeRect(510, 195, 270, 180)];
-	[m_controlPIDPitch initControlsWithValues:kPitchKp control2:kPitchKi control3:kPitchKd];
 	[m_controlPIDPitch setControlsMaxValues:0.1 control2:0.1 control3:0.01];
-	
-	m_controlPIDRoll = [self createControlsWithFrame: NSMakeRect(510, 100, 270, 180)];
-	[m_controlPIDRoll initControlsWithValues:kRollKp control2:kRollKi control3:kRollKd];
-	[m_controlPIDRoll setControlsMaxValues:0.1 control2:0.1 control3:0.01];
+	[m_controlPIDPitch initControlsWithValues:kPitchKp control2:kPitchKi control3:kPitchKd];
 	
 	m_controlPIDYaw = [self createControlsWithFrame: NSMakeRect(80, 100, 270, 180)];
 	[m_controlPIDYaw initControlsWithValues:kYawKp control2:kYawKi control3:kYawKd];
+
+	m_controlPIDRoll = [self createControlsWithFrame: NSMakeRect(510, 100, 270, 180)];
+	[m_controlPIDRoll setControlsMaxValues:0.1 control2:0.01 control3:0.01];
+	[m_controlPIDRoll initControlsWithValues:kRollKp control2:kRollKi control3:kRollKd];
 	
 	m_controlHSVLow = [self createControlsWithFrame: NSMakeRect(80, 9, 270, 180)];
-	[m_controlHSVLow initControlsWithValues:kLowH control2:kLowS control3:kLowV];
 	[m_controlHSVLow setControlsMaxValues:180 control2:255 control3:255];
+	[m_controlHSVLow initControlsWithValues:kLowH control2:kLowS control3:kLowV];
 	
 	m_controlHSVHigh = [self createControlsWithFrame: NSMakeRect(510, 9, 270, 180)];
-	[m_controlHSVHigh initControlsWithValues:kHighH control2:kHighS control3:kHighV];
 	[m_controlHSVHigh setControlsMaxValues:180 control2:255 control3:255];
+	[m_controlHSVHigh initControlsWithValues:kHighH control2:kHighS control3:kHighV];
 	
 	m_setPoint = cv::Point3i(kWidth/2, kHeight/2, kDepth);
 	m_stopFlag = true;
@@ -226,12 +226,12 @@
 	}
 	else if(sender == m_controlHSVHigh)
 	{
-		BallTrackerEvent event(UIControlEvent::HSVLowGroupChanged, parameterID, value);
+		BallTrackerEvent event(UIControlEvent::HSVHighGroupChanged, parameterID, value);
 		m_trackingDelegate->onParameterChanged(event);
 	}
 	else if(sender == m_controlHSVLow)
 	{
-		BallTrackerEvent event(UIControlEvent::HSVHighGroupChanged, parameterID, value);
+		BallTrackerEvent event(UIControlEvent::HSVLowGroupChanged, parameterID, value);
 		m_trackingDelegate->onParameterChanged(event);
 	}
 }
