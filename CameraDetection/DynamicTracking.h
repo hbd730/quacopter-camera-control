@@ -20,7 +20,7 @@ public:
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
-	virtual void setSelectedRegion(int x, int y, bool mouseDown);
+	virtual void event(Event* event);
 	
 private:
 	CMT m_cmt;

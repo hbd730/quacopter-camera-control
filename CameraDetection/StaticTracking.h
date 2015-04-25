@@ -19,6 +19,7 @@ public:
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
+	virtual void event(Event* event);
 	void searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFeed);
 	
 private:

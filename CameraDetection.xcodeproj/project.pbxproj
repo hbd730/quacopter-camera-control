@@ -80,6 +80,7 @@
 		DE3D31D91A88BC7600693BDE /* CFRadioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFRadioController.h; sourceTree = "<group>"; };
 		DE406E061A27157D00085249 /* ControlWidgets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlWidgets.h; sourceTree = "<group>"; };
 		DE406E071A27157D00085249 /* ControlWidgets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlWidgets.m; sourceTree = "<group>"; };
+		DE4441671AEB803F002C50E7 /* Event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		DE6EA0CA19F60BB8006C4847 /* OpenGLPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGLPreview.h; path = CameraDetection/OpenGLPreview.h; sourceTree = "<group>"; };
 		DE6EA0CB19F60BB8006C4847 /* OpenGLPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpenGLPreview.m; path = CameraDetection/OpenGLPreview.m; sourceTree = "<group>"; };
 		DE6EA0D519F616EF006C4847 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -228,6 +229,7 @@
 				DE32C4291A00EF7D00D3EC9C /* AppDelegate.mm */,
 				DE406E061A27157D00085249 /* ControlWidgets.h */,
 				DE406E071A27157D00085249 /* ControlWidgets.m */,
+				DE4441671AEB803F002C50E7 /* Event.h */,
 				DEEA14431AE604C700AA25A7 /* Constant.h */,
 				DEEA14411AE5C4E100AA25A7 /* Debug.h */,
 				DE901E1D19F270F5006CE487 /* MainMenu.xib */,

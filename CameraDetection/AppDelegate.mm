@@ -14,9 +14,11 @@
 #include "CFRadioController.h"
 #include "ControlWidgets.h"
 #include "Constant.h"
+#include "Event.h"
 #include "Debug.h"
 
 // To-do List
+// 1. need to fix mutex lock
 // 1.try Real-time Compressive Tracking and TLD
 
 @interface AppDelegate ()<CameraDelegate, ViewListener>
@@ -226,13 +228,13 @@
 	}
 	else if(sender == m_controlHSVHigh)
 	{
-		BallTrackerEvent event(UIControlEvent::HSVHighGroupChanged, parameterID, value);
-		m_trackingDelegate->onParameterChanged(event);
+		HSVControlEvent event(Event::HSVHighGroupChanged, parameterID, value);
+		m_trackingDelegate->notifyTracker(&event);
 	}
 	else if(sender == m_controlHSVLow)
 	{
-		BallTrackerEvent event(UIControlEvent::HSVLowGroupChanged, parameterID, value);
-		m_trackingDelegate->onParameterChanged(event);
+		HSVControlEvent event(Event::HSVLowGroupChanged, parameterID, value);
+		m_trackingDelegate->notifyTracker(&event);
 	}
 }
 
@@ -327,17 +329,20 @@
 - (void)viewEventHandler:(NSEvent*)theEvent
 {
 	NSPoint clickedPoint;
+	MouseEvent event(Event::MousePressedOnView,0,0);
 	switch(theEvent.type)
 	{
 		case NSLeftMouseDown:
 			clickedPoint = [m_capturePreview transform:[theEvent locationInWindow]];
-			m_trackingDelegate->getCurrentTracker()->setSelectedRegion(clickedPoint.x, clickedPoint.y, true);
+			event = MouseEvent(Event::MousePressedOnView, clickedPoint.x, clickedPoint.y);
+			m_trackingDelegate->notifyTracker(&event);
 			if(m_changeSetPoint)
 				[self setPointChanged:clickedPoint];
 			break;
 		case NSLeftMouseUp:
 			clickedPoint = [m_capturePreview transform:[theEvent locationInWindow]];
-			m_trackingDelegate->getCurrentTracker()->setSelectedRegion(clickedPoint.x, clickedPoint.y, false);
+			event = MouseEvent(Event::MouseReleasedOnview, clickedPoint.x, clickedPoint.y);
+			m_trackingDelegate->notifyTracker(&event);
 			break;
 		default:
 			break;

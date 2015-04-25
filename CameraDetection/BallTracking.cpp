@@ -8,6 +8,7 @@
 
 #include "BallTracking.h"
 #include "Constant.h"
+#include "Event.h"
 
 using namespace std;
 using namespace cv;
@@ -119,4 +120,44 @@ bool BallTracking::processFrame(cv::Mat &image)
 	}
 	else
 		return false;
+}
+
+void BallTracking::event(Event* event)
+{
+	if (event->type() == Event::HSVLowGroupChanged)
+	{
+		HSVControlEvent* e = static_cast<HSVControlEvent*>(event);
+		switch(e->getID())
+		{
+			case kFirst:
+				m_lowH = e->value();
+				break;
+			case kSecond:
+				m_lowS = e->value();
+				break;
+			case kThird:
+				m_lowV = e->value();
+				break;
+			default:
+				break;
+		}
+	}
+	else if (event->type() == Event::HSVHighGroupChanged)
+	{
+		HSVControlEvent* e = static_cast<HSVControlEvent*>(event);
+		switch(e->getID())
+		{
+			case kFirst:
+				m_highH = e->value();
+				break;
+			case kSecond:
+				m_highS = e->value();
+				break;
+			case kThird:
+				m_highV = e->value();
+				break;
+			default:
+				break;
+		}
+	}
 }

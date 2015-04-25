@@ -7,6 +7,7 @@
 //
 
 #include "DynamicTracking.h"
+#include "Event.h"
 
 DynamicTracking::DynamicTracking():
 ITracking(),
@@ -17,31 +18,6 @@ m_initialised(false)
 
 DynamicTracking::~DynamicTracking()
 {
-}
-
-void DynamicTracking::setSelectedRegion(int x, int y, bool mouseDown)
-{
-	if (mouseDown)
-	{
-		m_selection.x = x;
-        m_selection.y = y;
-		m_initialised = false;
-	}
-	else
-	{
-		cv::Point2f topLeft;
-		cv::Point2f bottomDown;
-		topLeft.x = std::min(x, m_selection.x);
-		topLeft.y = std::min(y, m_selection.y);
-		bottomDown.x = std::max(x, m_selection.x);
-		bottomDown.y = std::max(y, m_selection.y);
-#ifdef DEBUG_MODE
-		printf("topLeft is (%f, %f)\n",topLeft.x, topLeft.y);
-		printf("BottomDown is (%f, %f)\n",bottomDown.x, bottomDown.y);
-#endif
-		if (m_cmt.initialise(m_outputImage, topLeft, bottomDown) == 0)
-			m_initialised = true;
-	}
 }
 
 std::string DynamicTracking::getName() const
@@ -79,4 +55,31 @@ bool DynamicTracking::processFrame(cv::Mat &image)
 	
 	// Todo update position
 	return true;
+}
+
+void DynamicTracking::event(Event* event)
+{
+	if (event->type() == Event::MousePressedOnView)
+	{
+		MouseEvent* e = static_cast<MouseEvent*>(event);
+		m_selection.x = e->getX();
+		m_selection.y = e->getY();
+		m_initialised = false;
+	}
+	else if (event->type() == Event::MouseReleasedOnview)
+	{
+		MouseEvent* e = static_cast<MouseEvent*>(event);
+		cv::Point2f topLeft;
+		cv::Point2f bottomDown;
+		topLeft.x = std::min(e->getX(), m_selection.x);
+		topLeft.y = std::min(e->getY(), m_selection.y);
+		bottomDown.x = std::max(e->getX(), m_selection.x);
+		bottomDown.y = std::max(e->getY(), m_selection.y);
+#ifdef DEBUG_MODE
+		printf("topLeft is (%f, %f)\n",topLeft.x, topLeft.y);
+		printf("BottomDown is (%f, %f)\n",bottomDown.x, bottomDown.y);
+#endif
+		if (m_cmt.initialise(m_outputImage, topLeft, bottomDown) == 0)
+			m_initialised = true;
+	}
 }

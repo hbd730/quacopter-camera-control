@@ -71,6 +71,11 @@ bool StaticTracking::processFrame(cv::Mat &image)
 	return true;
 }
 
+void StaticTracking::event(Event* event)
+{
+	// nothing to handle
+}
+
 void StaticTracking::searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFeed)
 {
 	//these two vectors needed for output of findContours

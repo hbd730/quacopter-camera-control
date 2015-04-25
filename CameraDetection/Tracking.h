@@ -10,6 +10,8 @@
 
 #include <opencv2/opencv.hpp>
 
+class Event;
+
 // Base class for all tracking algorithm
 class ITracking
 {
@@ -21,7 +23,7 @@ public:
 	virtual void init(cv::Mat& image) = 0;
 	virtual void setReferenceFrame(cv::Mat& reference) = 0;
 	virtual bool processFrame(cv::Mat& image) = 0;
-	virtual void setSelectedRegion(int x, int y, bool mouseDown){};
+	virtual void event(Event* event) = 0; // for derive class to handle specific parameter adjustment/selection
 	virtual ~ITracking(){};
 	
 protected:

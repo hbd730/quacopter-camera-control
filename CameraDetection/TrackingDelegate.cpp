@@ -13,7 +13,7 @@
 #include "Constant.h"
 
 TrackingDelegate::TrackingDelegate():
-m_tracking(NULL),
+m_tracker(NULL),
 m_state(kInit),
 m_mutex()
 {
@@ -22,29 +22,29 @@ m_mutex()
 
 TrackingDelegate::~TrackingDelegate()
 {
-	if(m_tracking != NULL)
-		delete m_tracking;
+	if(m_tracker != NULL)
+		delete m_tracker;
 }
 
 void TrackingDelegate::setStrategy(StrategyType type)
 {
 	m_mutex.lock();
-	if(m_tracking != NULL)
+	if(m_tracker != NULL)
 	{
-		delete m_tracking;
-		m_tracking = NULL;
+		delete m_tracker;
+		m_tracker = NULL;
 		m_state = kInit;
 	}
 	switch(type)
 	{
 		case kStatic:
-			m_tracking = new StaticTracking();
+			m_tracker = new StaticTracking();
 			break;
 		case kDynamic:
-			m_tracking = new DynamicTracking();
+			m_tracker = new DynamicTracking();
 			break;
 		case kBall:
-			m_tracking = new BallTracking();
+			m_tracker = new BallTracking();
 			break;
 		default:
 			break;
@@ -59,13 +59,13 @@ bool TrackingDelegate::startTracking(cv::Mat& image, cv::Point3i& foundPos)
 	switch(m_state)
 	{
 		case kInit:
-			m_tracking->init(image);
-			m_tracking->setReferenceFrame(image); // set the first frame as reference
+			m_tracker->init(image);
+			m_tracker->setReferenceFrame(image); // set the first frame as reference
 			m_state = kProcessFrame;
 			break;
 		case kProcessFrame:
-			found = m_tracking->processFrame(image);
-			foundPos = m_tracking->getCurrentPosition();
+			found = m_tracker->processFrame(image);
+			foundPos = m_tracker->getCurrentPosition();
 			m_state = kProcessFrame;
 			break;
 		default:
@@ -75,43 +75,7 @@ bool TrackingDelegate::startTracking(cv::Mat& image, cv::Point3i& foundPos)
 	return found;
 }
 
-void TrackingDelegate::onParameterChanged(BallTrackerEvent event)
+void TrackingDelegate::notifyTracker(Event* event)
 {
-	if (BallTracking* ballTracker  = dynamic_cast<BallTracking*>(m_tracking))
-	{
-		if (event.type() == UIControlEvent::HSVLowGroupChanged)
-		{
-			switch(event.getID())
-			{
-				case kFirst:
-					ballTracker->setLowH(event.value());
-					break;
-				case kSecond:
-					ballTracker->setLowS(event.value());
-					break;
-				case kThird:
-					ballTracker->setLowV(event.value());
-					break;
-				default:
-					break;
-			}
-		}
-		else if (event.type() == UIControlEvent::HSVHighGroupChanged)
-		{
-			switch(event.getID())
-			{
-				case kFirst:
-					ballTracker->setHighH(event.value());
-					break;
-				case kSecond:
-					ballTracker->setHighS(event.value());
-					break;
-				case kThird:
-					ballTracker->setHighV(event.value());
-					break;
-				default:
-					break;
-			}
-		}
-	}
+	m_tracker->event(event);
 }

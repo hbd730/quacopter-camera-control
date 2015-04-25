@@ -13,19 +13,19 @@
 class BallTracking : public ITracking
 {
 public:
+	enum HSVType
+	{
+		kH,
+		kS,
+		kV
+	};
 	BallTracking();
 	virtual ~BallTracking();
 	virtual std::string getName() const;
 	virtual void init(cv::Mat& image);
 	virtual void setReferenceFrame(cv::Mat& reference);
 	virtual bool processFrame(cv::Mat& image);
-	void setLowH(int value){ m_lowH = value;}
-	void setHighH(int value){ m_highH = value;}
-	void setLowS(int value){ m_lowS = value;}
-	void setHighS(int value){ m_highS = value;}
-	void setLowV(int value){ m_lowV = value;}
-	void setHighV(int value){ m_highV = value;}
-	
+	virtual void event(Event* event);
 private:
 	int m_lowH;
 	int m_highH;
