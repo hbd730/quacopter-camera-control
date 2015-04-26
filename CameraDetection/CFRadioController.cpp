@@ -58,8 +58,6 @@ void CFRadioController::start()
 
 void CFRadioController::sendParameter(int thrust, float yaw, float pitch, float roll)
 {
-	cout << "thrust is " << thrust << " yaw is " << yaw \
-	<< " pitch is " << pitch << " roll is " << roll << endl;
 	if(m_cfCopter)
 	{
 		m_cfCopter->setThrust(thrust);

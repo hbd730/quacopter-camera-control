@@ -13,16 +13,25 @@
 class StaticTracking : public ITracking
 {
 public:
+	enum StateType
+	{
+		kInit,
+		kProcessFrame
+	};
 	StaticTracking();
 	virtual ~StaticTracking();
 	virtual std::string getName() const;
-	virtual void init(cv::Mat& image);
-	virtual void setReferenceFrame(cv::Mat& reference);
-	virtual bool processFrame(cv::Mat& image);
+	virtual void reset();
 	virtual void event(Event* event);
+	virtual bool track(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position);
+
+protected:
+	void setReferenceFrame(cv::Mat& reference);
+	bool processFrame(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position);
 	void searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFeed);
 	
 private:
+	StateType m_state;
 	cv::Mat m_currentFrame;
 	cv::Mat m_grayImageRef;
 	cv::Mat m_thresholdImage;

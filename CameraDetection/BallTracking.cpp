@@ -65,33 +65,28 @@ std::string BallTracking::getName() const
 	return "Ball tracking";
 }
 
-void BallTracking::init(cv::Mat &image)
-{
-	m_outputImage = cv::Mat::zeros(image.rows,image.cols, image.type());
-}
-
-void BallTracking::setReferenceFrame(cv::Mat& reference)
+void BallTracking::reset()
 {
 	// not applicable
 }
 
-bool BallTracking::processFrame(cv::Mat &image)
+bool BallTracking::track(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position)
 {
 	Mat imgHSV;
-	cvtColor(image, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
+	cvtColor(inputImage, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
 	
-	inRange(imgHSV, Scalar(m_lowH, m_lowS, m_lowV), Scalar(m_highH, m_highS, m_highV), m_outputImage); //Threshold the image
+	inRange(imgHSV, Scalar(m_lowH, m_lowS, m_lowV), Scalar(m_highH, m_highS, m_highV), outputImage); //Threshold the image
 	
 	// morphological opening (removes small objects from the foreground)
-	erode(m_outputImage, m_outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-	dilate(m_outputImage, m_outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+	erode(outputImage, outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+	dilate(outputImage, outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 	
 	// morphological closing (removes small holes from the foreground)
-	dilate(m_outputImage, m_outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-	erode(m_outputImage, m_outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+	dilate(outputImage, outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+	erode(outputImage, outputImage, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 	
 	// Calculate the moments of the thresholded image
-	Moments oMoments = moments(m_outputImage);
+	Moments oMoments = moments(outputImage);
 	
 	double dM01 = oMoments.m01;
 	double dM10 = oMoments.m10;
@@ -104,17 +99,17 @@ bool BallTracking::processFrame(cv::Mat &image)
 		
 		if (posX >= 0 && posY >= 0)
 		{
-			m_position.x = posX;
-			m_position.y = posY;
-			m_position.z = calculateDistance(m_outputImage);
+			position.x = posX;
+			position.y = posY;
+			position.z = calculateDistance(outputImage);
 			
 			Point center(posX, posY);
 			// circle center
-			circle(image, center, 4, Scalar(0,255,0), -1, 8, 0);
+			circle(inputImage, center, 4, Scalar(0,255,0), -1, 8, 0);
 						
 			// Put position text around
-			putText(image,"(" + std::to_string(m_position.x)+ "," + std::to_string(m_position.y) \
-					+ "," + std::to_string(m_position.z) + ")", center, 4, 2, Scalar(255,0,0), 2);
+			putText(inputImage,"(" + std::to_string(position.x)+ "," + std::to_string(position.y) \
+					+ "," + std::to_string(position.z) + ")", center, 4, 2, Scalar(255,0,0), 2);
 		}
 		return true;
 	}

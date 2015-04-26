@@ -18,7 +18,6 @@ const static int BLUR_SIZE = 10;
 StaticTracking::StaticTracking():
 ITracking()
 {
-	
 }
 
 StaticTracking::~StaticTracking()
@@ -30,9 +29,9 @@ std::string StaticTracking::getName() const
 	return "Static tracking";
 }
 
-void StaticTracking::init(cv::Mat &image)
+void StaticTracking::reset()
 {
-	m_outputImage = cv::Mat::zeros(image.rows,image.cols, image.type());
+	m_state = kInit;
 }
 
 void StaticTracking::setReferenceFrame(cv::Mat& reference)
@@ -40,10 +39,29 @@ void StaticTracking::setReferenceFrame(cv::Mat& reference)
 	cv::cvtColor(reference, m_grayImageRef, COLOR_BGR2GRAY);
 }
 
-bool StaticTracking::processFrame(cv::Mat &image)
+bool StaticTracking::track(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position)
+{
+	bool found = false;
+	switch(m_state)
+	{
+		case kInit:
+			setReferenceFrame(inputImage); // set the first frame as reference
+			m_state = kProcessFrame;
+			break;
+		case kProcessFrame:
+			found = processFrame(inputImage, outputImage, position);
+			m_state = kProcessFrame;
+			break;
+		default:
+			break;
+	}
+	return found;
+}
+
+bool StaticTracking::processFrame(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position)
 {
 	// make a deep copy of camera current callback image, not a reference
-	image.copyTo(m_currentFrame);
+	inputImage.copyTo(m_currentFrame);
 	
 	cv::Mat grayImageCur, differenceImage;;
 	
@@ -63,11 +81,14 @@ bool StaticTracking::processFrame(cv::Mat &image)
 	cv::threshold(m_thresholdImage, m_thresholdImage, SENSITIVITY_VALUE, 255, THRESH_BINARY);
 	
 	// find the position of moving object and apply as text on image for display
-	searchForMovement(m_thresholdImage,image);
+	searchForMovement(m_thresholdImage,inputImage);
 	
 	// set current frame as reference for the coming frame
 	setReferenceFrame(m_currentFrame);
 	
+	outputImage = m_thresholdImage;
+	
+	// not updating position here
 	return true;
 }
 
@@ -107,6 +128,5 @@ void StaticTracking::searchForMovement(cv::Mat thresholdImage, cv::Mat &cameraFe
 		
 		// apply the position text to the screen
 		putText(cameraFeed,"(" + std::to_string(center.x)+ "," + std::to_string(center.y) + ")", center, 4, 1, Scalar(255,0,0),2);
-
 	}
 }

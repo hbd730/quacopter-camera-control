@@ -14,16 +14,21 @@
 class DynamicTracking : public ITracking
 {
 public:
+	enum StateType
+	{
+		kInit,
+		kProcessFrame
+	};
 	DynamicTracking();
 	virtual ~DynamicTracking();
 	virtual std::string getName() const;
-	virtual void init(cv::Mat& image);
-	virtual void setReferenceFrame(cv::Mat& reference);
-	virtual bool processFrame(cv::Mat& image);
+	virtual void reset();
 	virtual void event(Event* event);
+	virtual bool track(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position);
 	
 private:
 	CMT m_cmt;
-	bool m_initialised;
-	cv::Rect m_selection;
+	StateType m_state;
+	bool m_clicked;
+	cv::Point2f m_topLeft, m_bottomDown;
 };

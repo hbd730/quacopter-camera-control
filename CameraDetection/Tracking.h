@@ -12,21 +12,16 @@
 
 class Event;
 
-// Base class for all tracking algorithm
+// Interface for all tracking algorithm
 class ITracking
 {
 public:
-	ITracking():m_position(0,0,0){};
-	cv::Point3i getCurrentPosition() const {return m_position;};
-	cv::Mat getOutputImage() const {return m_outputImage;};
 	virtual std::string getName() const = 0;
-	virtual void init(cv::Mat& image) = 0;
-	virtual void setReferenceFrame(cv::Mat& reference) = 0;
-	virtual bool processFrame(cv::Mat& image) = 0;
-	virtual void event(Event* event) = 0; // for derive class to handle specific parameter adjustment/selection
+	virtual void reset() = 0;
+	virtual void event(Event* event) = 0; // event handler
+	virtual bool track(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position) = 0;
 	virtual ~ITracking(){};
 	
 protected:
-	cv::Point3i m_position;
-	cv::Mat m_outputImage;
+	ITracking(){};
 };

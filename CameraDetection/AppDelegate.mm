@@ -69,7 +69,8 @@
 	
 	// Start tracking
 	cv::Point3i currentPosition;
-	if (m_trackingDelegate->startTracking(currentFrame, currentPosition) && (m_stopFlag != true))
+	cv::Mat outputImage = cv::Mat::zeros(currentFrame.rows, currentFrame.cols, currentFrame.type());
+	if (m_trackingDelegate->startTracking(currentFrame, outputImage, currentPosition) && (m_stopFlag != true))
 		[self updatePIDAndSend:currentPosition];
 	else
 		m_trafficController->sendParameter(0, 0, 0, 0);
@@ -78,7 +79,7 @@
 	[m_capturePreview renderFromBuffer:imageBuffer];
 	
 	// Convert OpenCV matrix to preview buffer
-	CVPixelBufferRef outputBuffer = [self convertMatToPreviewBuffer:m_trackingDelegate->getOutputImage()];
+	CVPixelBufferRef outputBuffer = [self convertMatToPreviewBuffer:outputImage];
 	
 	// Redering output preview
 	[m_outputPreview renderFromBuffer:outputBuffer];
@@ -128,6 +129,7 @@
 	// keyboard can override yaw/pitch value
 	yaw = (m_keyboardYaw != 0) ? m_keyboardYaw : yaw;
 	pitch = (m_keyboardPitch != 0) ? m_keyboardPitch : pitch;
+	cout << "thrust is " << thrust << " yaw is " << yaw << " pitch is " << pitch << " roll is " << roll << endl;
 	m_trafficController->sendParameter(thrust, yaw, pitch, roll);
 }
 
@@ -145,35 +147,14 @@
 	[m_strategyPopup addItemWithTitle:@"Dynamic Tracking"];
 	
 	m_trackingDelegate = new TrackingDelegate();
-	m_trackingDelegate->setStrategy(TrackingDelegate::kBall);
+	m_trackingDelegate->setTracker(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
 	m_thrustPIDCalc = new PIDCalcThrust(kThrustKp, kThrustKi, kThrustKd);
 	m_pitchPIDCalc = new PIDCalcRP(kPitchKp, kPitchKi, kPitchKd);
 	m_rollPIDCalc = new PIDCalcRP(kRollKp, kRollKi, kRollKd);
 	m_yawPIDCalc = new PIDCalcRP(kYawKp, kYawKi, kYawKd);
 	
-	m_controlPIDThrust = [self createControlsWithFrame: NSMakeRect(80, 195, 270, 180)];
-	[m_controlPIDThrust setControlsMaxValues:50 control2:10 control3:20];
-	[m_controlPIDThrust initControlsWithValues:kThrustKp control2:kThrustKi control3:kThrustKd];
-	
-	m_controlPIDPitch = [self createControlsWithFrame: NSMakeRect(510, 195, 270, 180)];
-	[m_controlPIDPitch setControlsMaxValues:0.1 control2:0.1 control3:0.01];
-	[m_controlPIDPitch initControlsWithValues:kPitchKp control2:kPitchKi control3:kPitchKd];
-	
-	m_controlPIDYaw = [self createControlsWithFrame: NSMakeRect(80, 100, 270, 180)];
-	[m_controlPIDYaw initControlsWithValues:kYawKp control2:kYawKi control3:kYawKd];
-
-	m_controlPIDRoll = [self createControlsWithFrame: NSMakeRect(510, 100, 270, 180)];
-	[m_controlPIDRoll setControlsMaxValues:0.1 control2:0.01 control3:0.01];
-	[m_controlPIDRoll initControlsWithValues:kRollKp control2:kRollKi control3:kRollKd];
-	
-	m_controlHSVLow = [self createControlsWithFrame: NSMakeRect(80, 9, 270, 180)];
-	[m_controlHSVLow setControlsMaxValues:180 control2:255 control3:255];
-	[m_controlHSVLow initControlsWithValues:kLowH control2:kLowS control3:kLowV];
-	
-	m_controlHSVHigh = [self createControlsWithFrame: NSMakeRect(510, 9, 270, 180)];
-	[m_controlHSVHigh setControlsMaxValues:180 control2:255 control3:255];
-	[m_controlHSVHigh initControlsWithValues:kHighH control2:kHighS control3:kHighV];
+	[self createAndInitWidgets];
 	
 	m_setPoint = cv::Point3i(kWidth/2, kHeight/2, kDepth);
 	m_stopFlag = true;
@@ -199,6 +180,32 @@
 	delete m_trafficController;
 	[m_camera stopRunning];
 	[m_camera dealloc];
+}
+
+- (void)createAndInitWidgets
+{
+	m_controlPIDThrust = [self createControlsWithFrame: NSMakeRect(80, 195, 270, 180)];
+	[m_controlPIDThrust setControlsMaxValues:50 control2:10 control3:20];
+	[m_controlPIDThrust initControlsWithValues:kThrustKp control2:kThrustKi control3:kThrustKd];
+	
+	m_controlPIDPitch = [self createControlsWithFrame: NSMakeRect(510, 195, 270, 180)];
+	[m_controlPIDPitch setControlsMaxValues:0.1 control2:0.1 control3:0.01];
+	[m_controlPIDPitch initControlsWithValues:kPitchKp control2:kPitchKi control3:kPitchKd];
+	
+	m_controlPIDYaw = [self createControlsWithFrame: NSMakeRect(80, 100, 270, 180)];
+	[m_controlPIDYaw initControlsWithValues:kYawKp control2:kYawKi control3:kYawKd];
+	
+	m_controlPIDRoll = [self createControlsWithFrame: NSMakeRect(510, 100, 270, 180)];
+	[m_controlPIDRoll setControlsMaxValues:0.1 control2:0.01 control3:0.01];
+	[m_controlPIDRoll initControlsWithValues:kRollKp control2:kRollKi control3:kRollKd];
+	
+	m_controlHSVLow = [self createControlsWithFrame: NSMakeRect(80, 9, 270, 180)];
+	[m_controlHSVLow setControlsMaxValues:180 control2:255 control3:255];
+	[m_controlHSVLow initControlsWithValues:kLowH control2:kLowS control3:kLowV];
+	
+	m_controlHSVHigh = [self createControlsWithFrame: NSMakeRect(510, 9, 270, 180)];
+	[m_controlHSVHigh setControlsMaxValues:180 control2:255 control3:255];
+	[m_controlHSVHigh initControlsWithValues:kHighH control2:kHighS control3:kHighV];
 }
 
 - (ControlWidgets*)createControlsWithFrame:(NSRect)frame
@@ -240,9 +247,9 @@
 
 - (IBAction)strategyChanged:(id)sender
 {
-	TrackingDelegate::StrategyType type;
-	type = (TrackingDelegate::StrategyType)[m_strategyPopup indexOfSelectedItem];
-	m_trackingDelegate->setStrategy(type);
+	TrackingDelegate::TrackerType type;
+	type = (TrackingDelegate::TrackerType)[m_strategyPopup indexOfSelectedItem];
+	m_trackingDelegate->setTracker(type);
 }
 
 - (IBAction)stopAndReset:(id)sender

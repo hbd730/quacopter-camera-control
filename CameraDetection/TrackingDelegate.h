@@ -15,27 +15,22 @@ class Event;
 class TrackingDelegate
 {
 public:
-	enum StrategyType
+	enum TrackerType
 	{
 		kBall,
 	 	kStatic,
 		kDynamic
 	};
-	enum StateType
-	{
-		kInit,
-		kProcessFrame
-	};
 	
 	TrackingDelegate();
 	virtual ~TrackingDelegate();
-	void setStrategy(StrategyType type);
-	bool startTracking(cv::Mat& image, cv::Point3i& foundPos);
+	void setTracker(TrackerType type);
+	void addTracker(TrackerType type, ITracking* tracker);
 	void notifyTracker(Event* event);
-	cv::Mat getOutputImage() const { return m_tracker->getOutputImage(); };
+	bool startTracking(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& foundPos);
 	
 private:
 	ITracking* m_tracker;
-	StateType m_state;
-	std::mutex m_mutex;
+	typedef std::map<TrackerType, ITracking*> TrackerList;
+	TrackerList m_trackerList;
 };

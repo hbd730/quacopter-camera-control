@@ -22,10 +22,10 @@ public:
 	BallTracking();
 	virtual ~BallTracking();
 	virtual std::string getName() const;
-	virtual void init(cv::Mat& image);
-	virtual void setReferenceFrame(cv::Mat& reference);
-	virtual bool processFrame(cv::Mat& image);
+	virtual void reset();
 	virtual void event(Event* event);
+	virtual bool track(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& position);
+
 private:
 	int m_lowH;
 	int m_highH;

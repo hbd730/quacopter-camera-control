@@ -13,66 +13,41 @@
 #include "Constant.h"
 
 TrackingDelegate::TrackingDelegate():
-m_tracker(NULL),
-m_state(kInit),
-m_mutex()
+	m_tracker(NULL)
 {
-
+	addTracker(kBall, new BallTracking());
+	addTracker(kStatic, new StaticTracking());
+	addTracker(kDynamic, new DynamicTracking());
 }
 
 TrackingDelegate::~TrackingDelegate()
 {
-	if(m_tracker != NULL)
-		delete m_tracker;
+	TrackerList::iterator iter;
+	for (iter = m_trackerList.begin(); iter != m_trackerList.end(); iter++)
+	{
+		delete iter->second;
+		iter->second = NULL;
+	}
 }
 
-void TrackingDelegate::setStrategy(StrategyType type)
+void TrackingDelegate::addTracker(TrackerType type, ITracking* tracker)
 {
-	m_mutex.lock();
-	if(m_tracker != NULL)
-	{
-		delete m_tracker;
-		m_tracker = NULL;
-		m_state = kInit;
-	}
-	switch(type)
-	{
-		case kStatic:
-			m_tracker = new StaticTracking();
-			break;
-		case kDynamic:
-			m_tracker = new DynamicTracking();
-			break;
-		case kBall:
-			m_tracker = new BallTracking();
-			break;
-		default:
-			break;
-	}
-	m_mutex.unlock();
+	m_trackerList[type] = tracker;
 }
 
-bool TrackingDelegate::startTracking(cv::Mat& image, cv::Point3i& foundPos)
+void TrackingDelegate::setTracker(TrackerType type)
 {
-	m_mutex.lock();
-	bool found = false;
-	switch(m_state)
+	TrackerList::iterator iter = m_trackerList.find(type);
+	if(iter != m_trackerList.end())
 	{
-		case kInit:
-			m_tracker->init(image);
-			m_tracker->setReferenceFrame(image); // set the first frame as reference
-			m_state = kProcessFrame;
-			break;
-		case kProcessFrame:
-			found = m_tracker->processFrame(image);
-			foundPos = m_tracker->getCurrentPosition();
-			m_state = kProcessFrame;
-			break;
-		default:
-			break;
+		m_tracker = iter->second;
+		m_tracker->reset();
 	}
-	m_mutex.unlock();
-	return found;
+}
+
+bool TrackingDelegate::startTracking(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& foundPos)
+{
+	return m_tracker->track(inputImage, outputImage, foundPos);
 }
 
 void TrackingDelegate::notifyTracker(Event* event)
