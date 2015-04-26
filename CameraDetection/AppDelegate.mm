@@ -18,7 +18,6 @@
 #include "Debug.h"
 
 // To-do List
-// 1. need to fix mutex lock
 // 1.try Real-time Compressive Tracking and TLD
 
 @interface AppDelegate ()<CameraDelegate, ViewListener>
