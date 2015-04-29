@@ -18,6 +18,7 @@ TrackingDelegate::TrackingDelegate():
 	addTracker(kBall, new BallTracking());
 	addTracker(kStatic, new StaticTracking());
 	addTracker(kDynamic, new DynamicTracking());
+	setTracker(TrackingDelegate::kBall);
 }
 
 TrackingDelegate::~TrackingDelegate()

@@ -146,7 +146,6 @@
 	[m_strategyPopup addItemWithTitle:@"Dynamic Tracking"];
 	
 	m_trackingDelegate = new TrackingDelegate();
-	m_trackingDelegate->setTracker(TrackingDelegate::kBall);
 	m_trafficController = new CFRadioController();
 	m_thrustPIDCalc = new PIDCalcThrust(kThrustKp, kThrustKi, kThrustKd);
 	m_pitchPIDCalc = new PIDCalcRP(kPitchKp, kPitchKi, kPitchKd);
