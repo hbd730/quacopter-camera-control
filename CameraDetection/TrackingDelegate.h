@@ -24,8 +24,8 @@ public:
 	
 	TrackingDelegate();
 	virtual ~TrackingDelegate();
+	std::string getName(TrackerType type);
 	void setTracker(TrackerType type);
-	void addTracker(TrackerType type, ITracking* tracker);
 	void notifyTracker(Event* event);
 	bool startTracking(cv::Mat& inputImage, cv::Mat& outputImage, cv::Point3i& foundPos);
 	
@@ -33,4 +33,5 @@ private:
 	ITracking* m_tracker;
 	typedef std::map<TrackerType, ITracking*> TrackerList;
 	TrackerList m_trackerList;
+	void addTracker(TrackerType type, ITracking* tracker);
 };

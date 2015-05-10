@@ -31,6 +31,12 @@ TrackingDelegate::~TrackingDelegate()
 	}
 }
 
+std::string TrackingDelegate::getName(TrackerType type)
+{
+	ITracking* tracker = m_trackerList[type];
+	return tracker->getName();
+}
+
 void TrackingDelegate::addTracker(TrackerType type, ITracking* tracker)
 {
 	m_trackerList[type] = tracker;
