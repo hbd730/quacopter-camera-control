@@ -3,7 +3,7 @@
 //  CameraDetection
 //
 //  Created by Peter Huang on 15/11/2014.
-//  Copyright (c) 2014 FlightDynamics. All rights reserved.
+//  Copyright (c) 2014 Peter Huang. All rights reserved.
 //
 
 #include "ZeroMqController.h"

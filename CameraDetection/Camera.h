@@ -3,7 +3,7 @@
 //  CameraDetection
 //
 //  Created by Peter Huang on 21/10/2014.
-//  Copyright (c) 2014 FlightDynamics. All rights reserved.
+//  Copyright (c) 2014 Peter Huang. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
