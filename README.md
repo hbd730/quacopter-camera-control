@@ -7,6 +7,8 @@ The latest OpenCV 3.0 alpha is used as the image processing library. Since it is
 
 ### How do I get set up? ###
 
+This project is currently built on Mac 10.10 and Xcode 6
+
 All the setup information can be found in http://opencv.org/
 
 
