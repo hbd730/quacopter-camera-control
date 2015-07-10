@@ -1,0 +1,9 @@
+
+^bin/dep/all
+bin/*
+.cproject
+.project
+.settings/*
+*~
+config.mk
+cflie.*
